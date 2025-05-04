@@ -374,59 +374,35 @@
       margin-bottom: 20px;
     }
 
-    .pattern-grid {
+    .color-grid {
       display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 10px;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 15px;
       margin: 20px auto;
-      max-width: 500px;
+      max-width: 400px;
     }
 
-    .pattern-button {
-      width: 60px;
-      height: 60px;
-      border-radius: 15px;
+    .color-button {
+      width: 80px;
+      height: 80px;
+      border-radius: 20px;
       border: 3px solid var(--secondary-color);
-      background-color: white;
       cursor: pointer;
       transition: transform 0.3s ease;
-      font-size: 24px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
       position: relative;
     }
 
-    .pattern-button:hover {
+    .color-button:hover {
       transform: scale(1.1);
     }
 
-    .pattern-button.selected {
-      background-color: var(--primary-color);
-      color: white;
+    .color-button.selected {
+      border: 5px solid var(--primary-color);
+      transform: scale(1.1);
     }
 
-    .pattern-button::after {
-      content: '';
-      position: absolute;
-      top: 5px;
-      right: 5px;
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background-color: var(--secondary-color);
-    }
-
-    .pattern-button[data-color="red"]::after {
-      background-color: #FF6B6B;
-    }
-
-    .pattern-button[data-color="blue"]::after {
-      background-color: #4ECDC4;
-    }
-
-    .pattern-button[data-color="yellow"]::after {
-      background-color: #FFE66D;
+    .wrong-colors {
+      animation: shake 0.5s ease;
     }
 
     .verification-buttons {
@@ -499,6 +475,9 @@
       75% { transform: translateX(10px); }
     }
   </style>
+
+  <script src="scripts/language-manager.js"></script>
+  <script src="scripts/verification-manager.js"></script>
 </head>
 
 <body>
@@ -506,45 +485,28 @@
   <div class="verification-modal" id="verificationModal">
     <div class="verification-box">
       <h2 class="verification-title">Adult Verification</h2>
-      <p class="verification-question">Click the shapes in this order: 🔺(red) ⭕(blue) 🔺(yellow) ⭕(red)</p>
-      <p class="pattern-instructions">Match both the shape AND the color dot in the top-right corner!</p>
-      <div class="timer" id="timer">25</div>
-      <div class="pattern-grid">
-        <button class="pattern-button" data-shape="🔺" data-color="red">🔺</button>
-        <button class="pattern-button" data-shape="⭕" data-color="blue">⭕</button>
-        <button class="pattern-button" data-shape="🔺" data-color="yellow">🔺</button>
-        <button class="pattern-button" data-shape="⭕" data-color="red">⭕</button>
-        <button class="pattern-button" data-shape="🔺" data-color="blue">🔺</button>
-        <button class="pattern-button" data-shape="⭕" data-color="yellow">⭕</button>
-        <button class="pattern-button" data-shape="🔺" data-color="red">🔺</button>
-        <button class="pattern-button" data-shape="⭕" data-color="blue">⭕</button>
-        <button class="pattern-button" data-shape="🔺" data-color="yellow">🔺</button>
-        <button class="pattern-button" data-shape="⭕" data-color="red">⭕</button>
-        <button class="pattern-button" data-shape="🔺" data-color="blue">🔺</button>
-        <button class="pattern-button" data-shape="⭕" data-color="yellow">⭕</button>
-        <button class="pattern-button" data-shape="🔺" data-color="red">🔺</button>
-        <button class="pattern-button" data-shape="⭕" data-color="blue">⭕</button>
-        <button class="pattern-button" data-shape="🔺" data-color="yellow">🔺</button>
-        <button class="pattern-button" data-shape="⭕" data-color="red">⭕</button>
-        <button class="pattern-button" data-shape="🔺" data-color="blue">🔺</button>
-        <button class="pattern-button" data-shape="⭕" data-color="yellow">⭕</button>
-        <button class="pattern-button" data-shape="🔺" data-color="red">🔺</button>
-        <button class="pattern-button" data-shape="⭕" data-color="blue">⭕</button>
-        <button class="pattern-button" data-shape="🔺" data-color="yellow">🔺</button>
-        <button class="pattern-button" data-shape="⭕" data-color="red">⭕</button>
-        <button class="pattern-button" data-shape="🔺" data-color="blue">🔺</button>
-        <button class="pattern-button" data-shape="⭕" data-color="yellow">⭕</button>
-        <button class="pattern-button" data-shape="🔺" data-color="red">🔺</button>
+      <p class="verification-question">Click the colors in this order: Red, Blue, Yellow, Green</p>
+      <p class="pattern-instructions">Just match the colors in the right order!</p>
+      <div class="timer" id="timer">30</div>
+      <div class="color-grid">
+        <button class="color-button" data-color="red" style="background-color: #FF6B6B;"></button>
+        <button class="color-button" data-color="blue" style="background-color: #4ECDC4;"></button>
+        <button class="color-button" data-color="yellow" style="background-color: #FFE66D;"></button>
+        <button class="color-button" data-color="green" style="background-color: #2ECC71;"></button>
+        <button class="color-button" data-color="purple" style="background-color: #9B59B6;"></button>
+        <button class="color-button" data-color="orange" style="background-color: #E67E22;"></button>
+        <button class="color-button" data-color="pink" style="background-color: #FF9FF3;"></button>
+        <button class="color-button" data-color="brown" style="background-color: #8B4513;"></button>
       </div>
       <div class="verification-buttons">
-        <button class="verification-button verify-button" onclick="verifyPattern()">Verify</button>
-        <button class="verification-button cancel-button" onclick="closeVerification()">Cancel</button>
+        <button class="verification-button verify-button">Verify</button>
+        <button class="verification-button cancel-button">Cancel</button>
       </div>
     </div>
   </div>
 
   <!-- Modify the adult mode toggle -->
-  <div class="adult-mode-toggle" id="adultModeToggle" onclick="showVerification()">
+  <div class="adult-mode-toggle" id="adultModeToggle" onclick="verificationManager.showVerification()">
     <i class="fas fa-user"></i>
     <div class="adult-mode-tooltip">Switch to Adult Mode!</div>
   </div>
