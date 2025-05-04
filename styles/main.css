@@ -1,0 +1,52 @@
+/* Language Toggle */
+#language-toggle {
+    width: 100%;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    color: #ffffff;
+    font-size: 16px;
+    margin-bottom: 20px;
+    padding: 0 20px;
+    box-sizing: border-box;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    border-radius: 4px;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+#language-toggle:hover {
+    background-color: var(--primary-color);
+    color: #ffffff;
+    text-decoration: none;
+    transform: translateX(5px);
+}
+
+#language-toggle .language-flag {
+    width: 24px;
+    height: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 15px;
+    object-fit: contain;
+    transition: transform 0.2s ease;
+}
+
+#language-toggle:hover .language-flag {
+    transform: scale(1.1);
+}
+
+#language-toggle .language-tooltip {
+    font-size: 15px;
+    font-weight: 500;
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+#left-sidebar:hover #language-toggle .language-tooltip {
+    opacity: 1;
+} 

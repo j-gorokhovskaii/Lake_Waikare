@@ -886,6 +886,11 @@
       document.querySelector('.child-mode-tooltip').textContent = 'Switch to Regular Mode!';
     }
   </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles/main.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <script src="scripts/language-manager.js"></script>
 </head>
 
 <body>
@@ -1124,25 +1129,29 @@
   <!-- Left sidebar with icons -->
   <div id="left-sidebar">
     <div class="logo">LW</div>
+    <button id="language-toggle" onclick="languageManager.toggleLanguage()">
+      <img class="language-flag" src="images/Tino_Rangatiratanga_Maori_sovereignty_movement_flag.svg" alt="Te Reo Māori">
+      <span class="language-tooltip" data-translate="switch_language">Switch to English</span>
+    </button>
     <a href="home.html" class="sidebar-icon active">
       <i class="fas fa-home"></i>
-      <span>Home</span>
+      <span data-translate="home">Home</span>
     </a>
     <a href="explore.html" class="sidebar-icon">
       <i class="fas fa-compass"></i>
-      <span>Explore</span>
+      <span data-translate="explore">Explore</span>
     </a>
     <a href="search.html" class="sidebar-icon">
       <i class="fas fa-search"></i>
-      <span>Search</span>
+      <span data-translate="search">Search</span>
     </a>
     <a href="layers.html" class="sidebar-icon">
       <i class="fas fa-layer-group"></i>
-      <span>Layers</span>
+      <span data-translate="layers">Layers</span>
     </a>
     <a href="map.html" class="sidebar-icon">
       <i class="fas fa-map-marked-alt"></i>
-      <span>Map View</span>
+      <span data-translate="map_view">Map View</span>
     </a>
   </div>
 
