@@ -33,7 +33,15 @@ class LanguageManager {
         document.querySelectorAll('[data-translate]').forEach(element => {
             const key = element.getAttribute('data-translate');
             if (this.translations[this.currentLanguage][key]) {
-                element.textContent = this.translations[this.currentLanguage][key];
+                let translation = this.translations[this.currentLanguage][key];
+                
+                // Handle dynamic content like the year in copyright
+                if (key === 'copyright') {
+                    const currentYear = new Date().getFullYear();
+                    translation = translation.replace('{{year}}', currentYear);
+                }
+                
+                element.textContent = translation;
             }
         });
     }
