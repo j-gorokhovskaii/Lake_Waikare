@@ -23,6 +23,11 @@
   <meta property="og:title" content="Lake Waikare Digital Library"/>
   <meta name="twitter:title" content="Lake Waikare Digital Library"/>
   
+  <!-- Add dark mode support -->
+  <link rel="stylesheet" href="styles/dark-mode.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <script src="scripts/dark-mode.js" defer></script>
+  
   <style>
     :root {
       --primary-color: #4A8C6A;
@@ -843,7 +848,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="apple-touch-icon" href="icon.png"/>
   <link rel="icon" href="icon.png"/>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <script>
     document.addEventListener('DOMContentLoaded', function() {
       // Find all clickable elements containing the word 'map' (case insensitive)
@@ -934,16 +938,18 @@
           <a class="highlightedLink" href="/map.html">Explore the Map</a>
           <a class="highlightedLink" href="explore.html">Explore by collection</a>
      
-          <div class="userFunctions">
-            <i class="fas fa-user"></i>
-            <ul>
-              <li>
-                <a href="/log_in">Log in</a>
-              </li>
-              <li>
-                <a href="/sign_up">Sign up</a>
-              </li>
-            </ul>
+          <div class="user-functions-container">
+            <div class="userFunctions">
+              <i class="fas fa-user"></i>
+              <ul>
+                <li>
+                  <a href="/log_in">Log in</a>
+                </li>
+                <li>
+                  <a href="/sign_up">Sign up</a>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
 
@@ -968,16 +974,18 @@
 
           <a class="highlightedLink" href="/map.html">Explore the Map</a>
       
-          <div class="userFunctions">
-            <i class="fas fa-user"></i>
-            <ul>
-              <li>
-                <a href="/log_in">Log in</a>
-              </li>
-              <li>
-                <a href="/sign_up">Sign up</a>
-              </li>
-            </ul>
+          <div class="user-functions-container">
+            <div class="userFunctions">
+              <i class="fas fa-user"></i>
+              <ul>
+                <li>
+                  <a href="/log_in">Log in</a>
+                </li>
+                <li>
+                  <a href="/sign_up">Sign up</a>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
       </div>

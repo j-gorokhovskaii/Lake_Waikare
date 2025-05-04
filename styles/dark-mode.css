@@ -1,0 +1,101 @@
+/* Dark mode styles */
+:root[data-theme="dark"] {
+    --bg-primary: #121212;
+    --bg-secondary: #1f1f1f;
+    --text-primary: #ffffff;
+    --text-secondary: #e0e0e0;
+    --accent-color: #64b5f6;
+    --border-color: #333333;
+    --hover-color: #2c2c2c;
+}
+
+/* Light mode (default) */
+:root {
+    --bg-primary: #ffffff;
+    --bg-secondary: #f5f5f5;
+    --text-primary: #121212;
+    --text-secondary: #424242;
+    --accent-color: #1976d2;
+    --border-color: #e0e0e0;
+    --hover-color: #eeeeee;
+}
+
+/* Apply theme variables */
+body {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    transition: background-color 0.3s, color 0.3s;
+}
+
+/* Navigation and header styles */
+nav, header {
+    background-color: var(--bg-secondary);
+    border-color: var(--border-color);
+}
+
+/* Links */
+a {
+    color: var(--accent-color);
+}
+
+/* Buttons */
+button, .btn {
+    background-color: var(--accent-color);
+    color: var(--bg-primary);
+}
+
+button:hover, .btn:hover {
+    background-color: var(--hover-color);
+}
+
+/* Cards and containers */
+.card, .container {
+    background-color: var(--bg-secondary);
+    border-color: var(--border-color);
+}
+
+/* Input fields */
+input, textarea, select {
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+    border-color: var(--border-color);
+}
+
+/* Tables */
+table {
+    border-color: var(--border-color);
+}
+
+tr:nth-child(even) {
+    background-color: var(--bg-secondary);
+}
+
+/* Dark mode toggle button styles */
+.theme-toggle {
+    padding: 8px 12px;
+    border-radius: 4px;
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    margin-left: 10px;
+}
+
+.theme-toggle:hover {
+    background-color: var(--hover-color);
+}
+
+.theme-toggle i {
+    font-size: 16px;
+    color: var(--text-primary);
+}
+
+/* Header container for user functions */
+.user-functions-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+} 

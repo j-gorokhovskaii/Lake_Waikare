@@ -1,16 +1,19 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Lake Waikare Digital Library - Explore</title>
   <meta name="csrf-param" content="authenticity_token" />
   <meta name="csrf-token" content="0X9UWZkQtKntUcdEFvcF/0bcGu+8Zmhs/qMO7I4OFm2+imL0XOz6fSO4AwUi15NbDRc6qC2dbM8oyCa4zw6Lig==" />
   
-  <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="apple-touch-icon" href="icon.png"/>
   <link rel="icon" href="icon.png"/>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <link rel="stylesheet" href="styles/dark-mode.css">
+  <script src="scripts/dark-mode.js" defer></script>
 
   <style>
     :root {
@@ -654,6 +657,22 @@
             <div class="collection-date">Updated 2023</div>
           </div>
         </div>
+      </div>
+    </div>
+
+    <a class="highlightedLink" href="/map.html">Explore the Map</a>
+      
+    <div class="user-functions-container">
+      <div class="userFunctions">
+        <i class="fas fa-user"></i>
+        <ul>
+          <li>
+            <a href="/log_in">Log in</a>
+          </li>
+          <li>
+            <a href="/sign_up">Sign up</a>
+          </li>
+        </ul>
       </div>
     </div>
   </div>

@@ -1,11 +1,17 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Lake Waikare Digital Library - Kids Mode</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lake Waikare - Child Mode</title>
+  
+  <!-- Add dark mode support -->
+  <link rel="stylesheet" href="styles/dark-mode.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <script src="scripts/dark-mode.js" defer></script>
+  
   <link rel="apple-touch-icon" href="icon.png"/>
   <link rel="icon" href="icon.png"/>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&display=swap" rel="stylesheet">
 
   <style>
@@ -629,6 +635,20 @@
           <li>🔍 Explore the lake through fun activities</li>
         </ul>
         <p>Click on any activity to start your adventure!</p>
+      </div>
+    </div>
+
+    <div class="user-functions-container">
+      <div class="userFunctions">
+        <i class="fas fa-user"></i>
+        <ul>
+          <li>
+            <a href="/log_in">Log in</a>
+          </li>
+          <li>
+            <a href="/sign_up">Sign up</a>
+          </li>
+        </ul>
       </div>
     </div>
   </div>
