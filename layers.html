@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Lake Waikare Digital Library - Layers</title>
+  <meta name="csrf-param" content="authenticity_token" />
+  <meta name="csrf-token" content="6FjlUT/TUiBcQMgUsOA1SCryH76gGXQTMuDWpSWdyCWHrdP8+i8c9JKpDFWEwKPsYTk/+THicLDki/7xZJ1Vwg==" />
+  
+  <meta name="tenant-id" content="64">
+  <meta name="tenant-slug" content="lakewaikare">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="apple-touch-icon" href="icon.png"/>
+  <link rel="icon" href="icon.png"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <!-- Add Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+     crossorigin=""/>
+  <!-- Add Leaflet JavaScript -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+     crossorigin=""></script>
+  
+  <style>
+    :root {
+      --primary-color: #4A8C6A;
+      --secondary-color: #FFC000;
+      --dark-bg: #222222;
+      --light-bg: #ffffff;
+      --gray-bg: #f8f8f8;
+      --text-dark: #333333;
+      --text-light: #666666;
+      --sidebar-width: 80px;
+      --sidebar-expanded: 200px;
+      --content-width: 480px;
+    }
+    
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      font-family: Arial, sans-serif;
+    }
+    
+    .dark-toolbar {
+      background-color: #222;
+    }
+    
+    #left-sidebar {
+      width: var(--sidebar-width);
+      height: 100%;
+      background-color: var(--dark-bg);
+      position: fixed;
+      left: 0;
+      top: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 15px;
+      z-index: 1000;
+      transition: width 0.3s ease;
+    }
+
+    #left-sidebar:hover {
+      width: var(--sidebar-expanded);
+    }
+    
+    .sidebar-icon {
+      width: 100%;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      color: #ffffff;
+      font-size: 16px;
+      margin-bottom: 10px;
+      padding: 0 20px;
+      box-sizing: border-box;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      border-radius: 4px;
+    }
+
+    .sidebar-icon:hover, .sidebar-icon.active {
+      background-color: var(--primary-color);
+      color: #ffffff;
+      text-decoration: none;
+      transform: translateX(5px);
+    }
+
+    .sidebar-icon i {
+      width: 24px;
+      height: 24px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-right: 15px;
+      font-size: 18px;
+    }
+
+    .sidebar-icon span {
+      font-size: 15px;
+      font-weight: 500;
+      white-space: nowrap;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    #left-sidebar:hover .sidebar-icon span {
+      opacity: 1;
+    }
+    
+    .logo {
+      width: 50px;
+      height: 50px;
+      background-color: var(--primary-color);
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #ffffff;
+      font-weight: bold;
+      font-size: 20px;
+      margin: 0 auto 30px;
+      transition: transform 0.3s ease;
+      cursor: pointer;
+    }
+
+    .logo:hover {
+      transform: scale(1.1);
+    }
+    
+    #content-panel {
+      position: fixed;
+      left: 80px;
+      top: 0;
+      width: 480px;
+      height: 100%;
+      background-color: #ffffff;
+      overflow-y: auto;
+      padding: 20px;
+      box-sizing: border-box;
+      z-index: 900;
+      transition: left 0.3s ease;
+    }
+    
+    #map-container {
+      position: fixed;
+      left: 560px;
+      top: 0;
+      right: 0;
+      height: 100%;
+      background-color: #eeeeee;
+      overflow: hidden;
+      transition: left 0.3s ease;
+    }
+    
+    .map-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 1;
+    }
+    
+    .header {
+      color: #4A8C6A;
+      margin-bottom: 20px;
+      font-size: 36px;
+    }
+    
+    .description {
+      color: #333;
+      margin-bottom: 30px;
+      line-height: 1.5;
+    }
+    
+    .layer-group {
+      margin-bottom: 30px;
+      border: 1px solid #eee;
+      border-radius: 8px;
+      padding: 15px;
+    }
+    
+    .layer-group-title {
+      font-size: 18px;
+      font-weight: bold;
+      color: #4A8C6A;
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    
+    .layer-item {
+      display: flex;
+      align-items: center;
+      padding: 10px;
+      border-bottom: 1px solid #eee;
+    }
+    
+    .layer-item:last-child {
+      border-bottom: none;
+    }
+    
+    .layer-toggle {
+      width: 50px;
+      height: 26px;
+      background-color: #ccc;
+      border-radius: 13px;
+      position: relative;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    
+    .layer-toggle.active {
+      background-color: #4A8C6A;
+    }
+    
+    .layer-toggle::after {
+      content: '';
+      width: 20px;
+      height: 20px;
+      background-color: white;
+      border-radius: 50%;
+      position: absolute;
+      top: 3px;
+      left: 3px;
+      transition: transform 0.3s;
+    }
+    
+    .layer-toggle.active::after {
+      transform: translateX(24px);
+    }
+    
+    .layer-info {
+      flex-grow: 1;
+      margin-left: 15px;
+    }
+    
+    .layer-name {
+      font-weight: 500;
+      margin-bottom: 4px;
+    }
+    
+    .layer-description {
+      font-size: 14px;
+      color: #666;
+    }
+    
+    .opacity-slider {
+      width: 100%;
+      margin-top: 10px;
+    }
+    
+    .layer-controls {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .layer-visibility {
+      color: #4A8C6A;
+      cursor: pointer;
+    }
+    
+    .map-controls {
+      position: absolute;
+      top: 20px;
+      display: flex;
+      width: 100%;
+      justify-content: center;
+      gap: 20px;
+      z-index: 800;
+    }
+    
+    .zoom-controls {
+      position: absolute;
+      right: 20px;
+      top: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      z-index: 800;
+    }
+    
+    .zoom-button {
+      width: 30px;
+      height: 30px;
+      background-color: white;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      cursor: pointer;
+    }
+    
+    .attribution {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      font-size: 12px;
+      color: #666;
+    }
+
+    /* Handle sidebar hover state */
+    #left-sidebar:hover ~ #content-panel {
+      left: 200px;
+    }
+
+    #left-sidebar:hover ~ #map-container {
+      left: 680px;
+    }
+
+    /* Update map container styles for Leaflet */
+    #map {
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+    }
+
+    /* Ensure Leaflet controls appear above the map */
+    .leaflet-control-container {
+      z-index: 1000;
+    }
+
+    /* Style for layer opacity controls */
+    .opacity-control {
+      background: white;
+      padding: 8px;
+      border-radius: 4px;
+      box-shadow: 0 1px 5px rgba(0,0,0,0.4);
+      margin: 5px;
+    }
+
+    .opacity-control label {
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    .opacity-control input {
+      width: 100%;
+    }
+  </style>
+</head>
+
+<body class="dark-toolbar">
+  <!-- Left sidebar with icons -->
+  <div id="left-sidebar">
+    <div class="logo">LW</div>
+    <a href="home.html" class="sidebar-icon">
+      <i class="fas fa-home"></i>
+      <span>Home</span>
+    </a>
+    <a href="explore.html" class="sidebar-icon">
+      <i class="fas fa-compass"></i>
+      <span>Explore</span>
+    </a>
+    <a href="search.html" class="sidebar-icon">
+      <i class="fas fa-search"></i>
+      <span>Search</span>
+    </a>
+    <a href="layers.html" class="sidebar-icon active">
+      <i class="fas fa-layer-group"></i>
+      <span>Layers</span>
+    </a>
+    <a href="map.html" class="sidebar-icon">
+      <i class="fas fa-map-marked-alt"></i>
+      <span>Map View</span>
+    </a>
+  </div>
+
+  <!-- Content panel on the left -->
+  <div id="content-panel">
+    <h1 class="header">Map Layers</h1>
+    
+    <p class="description">
+      Customize your view of Lake Waikare by toggling different map layers. 
+      Explore environmental data, historical imagery, and cultural information.
+    </p>
+    
+    <div class="layer-group">
+      <div class="layer-group-title">
+        <span>Base Maps</span>
+      </div>
+      <div class="layer-item">
+        <div class="layer-toggle active"></div>
+        <div class="layer-info">
+          <div class="layer-name">Satellite Imagery</div>
+          <div class="layer-description">Current satellite view of Lake Waikare</div>
+        </div>
+      </div>
+      <div class="layer-item">
+        <div class="layer-toggle"></div>
+        <div class="layer-info">
+          <div class="layer-name">Topographic Map</div>
+          <div class="layer-description">Detailed terrain and elevation data</div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="layer-group">
+      <div class="layer-group-title">
+        <span>Environmental Data</span>
+      </div>
+      <div class="layer-item">
+        <div class="layer-toggle"></div>
+        <div class="layer-info">
+          <div class="layer-name">Water Quality Monitoring</div>
+          <div class="layer-description">Current water quality measurements</div>
+        </div>
+      </div>
+      <div class="layer-item">
+        <div class="layer-toggle"></div>
+        <div class="layer-info">
+          <div class="layer-name">Wetland Areas</div>
+          <div class="layer-description">Protected and restored wetland regions</div>
+        </div>
+      </div>
+      <div class="layer-item">
+        <div class="layer-toggle"></div>
+        <div class="layer-info">
+          <div class="layer-name">Wildlife Habitats</div>
+          <div class="layer-description">Known areas of significant wildlife activity</div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="layer-group">
+      <div class="layer-group-title">
+        <span>Cultural Heritage</span>
+      </div>
+      <div class="layer-item">
+        <div class="layer-toggle"></div>
+        <div class="layer-info">
+          <div class="layer-name">Historical Sites</div>
+          <div class="layer-description">Significant cultural and historical locations</div>
+        </div>
+      </div>
+      <div class="layer-item">
+        <div class="layer-toggle"></div>
+        <div class="layer-info">
+          <div class="layer-name">Traditional Food Gathering</div>
+          <div class="layer-description">Traditional food gathering areas</div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="layer-group">
+      <div class="layer-group-title">
+        <span>Historical Imagery</span>
+      </div>
+      <div class="layer-item">
+        <div class="layer-toggle"></div>
+        <div class="layer-info">
+          <div class="layer-name">1950s Aerial Photos</div>
+          <div class="layer-description">Historical aerial photography from the 1950s</div>
+        </div>
+      </div>
+      <div class="layer-item">
+        <div class="layer-toggle"></div>
+        <div class="layer-info">
+          <div class="layer-name">1980s Aerial Photos</div>
+          <div class="layer-description">Historical aerial photography from the 1980s</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Map container on the right -->
+  <div id="map-container">
+    <div id="map"></div>
+    <div class="zoom-controls">
+      <div class="zoom-button">+</div>
+      <div class="zoom-button">-</div>
+    </div>
+    <div class="attribution">© OpenStreetMap contributors</div>
+  </div>
+
+  <script>
+    // Initialize the map centered on Lake Waikare
+    const map = L.map('map', {
+      zoomControl: false  // Disable default zoom controls
+    }).setView([-37.4307, 175.2244], 13);
+
+    // Add OpenStreetMap base layer
+    const osm = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
+
+    // Add satellite imagery layer
+    const satellite = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+      attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+    });
+
+    // Define cultural site markers
+    const culturalSites = {
+      taurangamirumiru: L.marker([-37.4157, 175.2278], {
+        title: 'Taurangamirumiru Pā'
+      }).bindPopup('<h3>Taurangamirumiru Pā</h3><p>Ancient pā site where the sisters Reipae and Reitu once lived. A significant cultural and historical location for local iwi.</p>'),
+      
+      hingakaka: L.marker([-37.4392, 175.2344], {
+        title: 'Hingakākā'
+      }).bindPopup('<h3>Hingakākā</h3><p>Site of one of the largest intertribal battles in Aotearoa\'s history, fought in the late 1700s.</p>'),
+      
+      uenukuTapu: L.marker([-37.4486, 175.2167], {
+        title: 'Te Wāhi o Uenuku'
+      }).bindPopup('<h3>Te Wāhi o Uenuku</h3><p>Sacred site where the ancient carved figure Uenuku was submerged in the lake before the Battle of Hingakākā.</p>'),
+      
+      waahiTapu: L.marker([-37.4234, 175.2089], {
+        title: 'Wāhi Tapu'
+      }).bindPopup('<h3>Wāhi Tapu</h3><p>Sacred grounds where ancient ceremonies were performed and important tribal gatherings were held.</p>'),
+      
+      mahingaKai: L.marker([-37.4312, 175.2401], {
+        title: 'Mahinga Kai'
+      }).bindPopup('<h3>Mahinga Kai</h3><p>Traditional food gathering area where tuna (eels), īnanga (whitebait), and waterfowl were harvested.</p>')
+    };
+
+    // Create a layer group for cultural sites
+    const culturalLayer = L.layerGroup([
+      culturalSites.taurangamirumiru,
+      culturalSites.hingakaka,
+      culturalSites.uenukuTapu,
+      culturalSites.waahiTapu,
+      culturalSites.mahingaKai
+    ]);
+
+    // Sample data layers (you can replace these with real data)
+    const waterQuality = L.circle([-37.4307, 175.2244], {
+      color: '#4A8C6A',
+      fillColor: '#4A8C6A',
+      fillOpacity: 0.5,
+      radius: 500
+    });
+
+    const wetlands = L.polygon([
+      [-37.42, 175.21],
+      [-37.43, 175.22],
+      [-37.44, 175.23]
+    ], {
+      color: '#FFC000',
+      fillOpacity: 0.3
+    });
+
+    // Create layer groups
+    const layers = {
+      'Satellite': satellite,
+      'Water Quality': waterQuality,
+      'Wetlands': wetlands,
+      'Cultural Sites': culturalLayer
+    };
+
+    // Add cultural layer to map by default
+    culturalLayer.addTo(map);
+
+    // Add click handlers for layer toggles
+    document.querySelectorAll('.layer-toggle').forEach(toggle => {
+      const layerName = toggle.closest('.layer-item').querySelector('.layer-name').textContent;
+      
+      // Set Cultural Sites toggle to active by default
+      if (layerName === 'Historical Sites') {
+        toggle.classList.add('active');
+      }
+      
+      toggle.addEventListener('click', function() {
+        const layerName = this.closest('.layer-item').querySelector('.layer-name').textContent;
+        this.classList.toggle('active');
+        
+        if (layers[layerName]) {
+          if (this.classList.contains('active')) {
+            layers[layerName].addTo(map);
+          } else {
+            map.removeLayer(layers[layerName]);
+          }
+        }
+      });
+    });
+
+    // Handle zoom controls
+    const zoomButtons = document.querySelectorAll('.zoom-button');
+    zoomButtons[0].addEventListener('click', () => map.zoomIn());
+    zoomButtons[1].addEventListener('click', () => map.zoomOut());
+  </script>
+</body>
+</html> 

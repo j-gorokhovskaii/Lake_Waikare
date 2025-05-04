@@ -1,0 +1,1114 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Lake Waikare Digital Library - Search</title>
+  <meta name="csrf-param" content="authenticity_token" />
+  <meta name="csrf-token" content="6FjlUT/TUiBcQMgUsOA1SCryH76gGXQTMuDWpSWdyCWHrdP8+i8c9JKpDFWEwKPsYTk/+THicLDki/7xZJ1Vwg==" />
+  
+  <meta name="tenant-id" content="64">
+  <meta name="tenant-slug" content="lakewaikare">
+
+  <meta name="user-id" content="">
+  <meta name="user-name" content="">
+  <meta name="user-token" content="">
+  <meta name="user-is-admin" content="">
+
+  <meta name="default-map-style-url" content="https://api.maptiler.com/maps/68a8c6bf-0173-4e27-9570-08cdb190867a/style.json?key=TC2voBv0sR7pmWS38FHi">
+  <meta name="place-search-countries" content="nz">
+
+  <meta property="og:type" content="article" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:site" content="https://twitter.com/LakeWaikareDigital" />
+
+  <link rel="canonical" href="https://www.lakewaikare.org/map/search"/>
+  <meta property="og:url" content="https://www.lakewaikare.org/map/search"/>
+
+  <meta property="og:title" content="Lake Waikare Digital Library"/>
+  <meta name="twitter:title" content="Lake Waikare Digital Library"/>
+
+  <meta name="origins" content="[&quot;www.lakewaikare.org&quot;,&quot;lakewaikare.humap.site&quot;]">
+  <meta name="features" content="[&quot;map&quot;,&quot;pages&quot;,&quot;records&quot;,&quot;collections&quot;,&quot;overlays&quot;,&quot;trails&quot;,&quot;projects&quot;,&quot;placemaker&quot;,&quot;ugc&quot;,&quot;allow_public_ugc_signups&quot;,&quot;favourites&quot;,&quot;content_feedback&quot;,&quot;suggest_better&quot;,&quot;date_filtering&quot;,&quot;custom_basemaps&quot;,&quot;deduplicate_term_links&quot;,&quot;api&quot;,&quot;associated_overlay_groups&quot;,&quot;embedded_content&quot;,&quot;social_sharing&quot;,&quot;map_custom_html&quot;,&quot;pages_custom_html&quot;,&quot;search_for_a_place&quot;]">
+  
+  <style>
+    :root {
+      --primary-color: #4A8C6A;
+      --secondary-color: #FFC000;
+      --dark-bg: #222222;
+      --light-bg: #ffffff;
+      --gray-bg: #f8f8f8;
+      --text-dark: #333333;
+      --text-light: #666666;
+      --sidebar-width: 80px;
+      --sidebar-expanded: 200px;
+      --content-width: 480px;
+    }
+    
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      font-family: Arial, sans-serif;
+    }
+    
+    .dark-toolbar {
+      background-color: #222;
+    }
+    
+    #left-sidebar {
+      width: var(--sidebar-width);
+      height: 100%;
+      background-color: var(--dark-bg);
+      position: fixed;
+      left: 0;
+      top: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 15px;
+      z-index: 1000;
+      transition: width 0.3s ease;
+    }
+    
+    #left-sidebar:hover {
+      width: var(--sidebar-expanded);
+    }
+    
+    #content-panel {
+      position: fixed;
+      left: 80px;
+      top: 0;
+      width: 480px;
+      height: 100%;
+      background-color: #ffffff;
+      overflow-y: auto;
+      padding: 20px;
+      box-sizing: border-box;
+      z-index: 900;
+      transition: left 0.3s ease;
+    }
+    
+    #map-container {
+      position: fixed;
+      left: 560px;
+      top: 0;
+      right: 0;
+      height: 100%;
+      background-color: #eeeeee;
+      overflow: hidden;
+      transition: left 0.3s ease;
+      z-index: 1;
+    }
+    
+    #map {
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+    }
+    
+    .map-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 1;
+    }
+    
+    .logo {
+      width: 50px;
+      height: 50px;
+      background-color: var(--primary-color);
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #ffffff;
+      font-weight: bold;
+      font-size: 20px;
+      margin: 0 auto 30px;
+      transition: transform 0.3s ease;
+      cursor: pointer;
+    }
+    
+    .logo:hover {
+      transform: scale(1.1);
+    }
+    
+    .sidebar-icon {
+      width: 100%;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      color: #ffffff;
+      font-size: 16px;
+      margin-bottom: 10px;
+      padding: 0 20px;
+      box-sizing: border-box;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      border-radius: 4px;
+    }
+    
+    .sidebar-icon:hover, .sidebar-icon.active {
+      background-color: var(--primary-color);
+      color: #ffffff;
+      text-decoration: none;
+      transform: translateX(5px);
+    }
+    
+    .sidebar-icon i {
+      width: 24px;
+      height: 24px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-right: 15px;
+      font-size: 18px;
+    }
+    
+    .sidebar-icon span {
+      font-size: 15px;
+      font-weight: 500;
+      white-space: nowrap;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    
+    #left-sidebar:hover .sidebar-icon span {
+      opacity: 1;
+    }
+    
+    .header {
+      color: #4A8C6A;
+      margin-bottom: 20px;
+      font-size: 36px;
+    }
+    
+    .subheader {
+      color: #4A8C6A;
+      margin: 30px 0 15px 0;
+      font-size: 24px;
+    }
+    
+    .description {
+      color: #333;
+      margin-bottom: 30px;
+      line-height: 1.5;
+    }
+    
+    .search-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 15px;
+      margin-bottom: 20px;
+    }
+    
+    .close-tray {
+      color: #999;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    
+    .search-form {
+      margin-bottom: 30px;
+    }
+    
+    .search-input-container {
+      display: flex;
+      margin-bottom: 15px;
+    }
+    
+    .search-input {
+      flex-grow: 1;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 4px 0 0 4px;
+      font-size: 16px;
+    }
+    
+    .search-button {
+      background-color: #4A8C6A;
+      color: white;
+      border: none;
+      padding: 0 20px;
+      border-radius: 0 4px 4px 0;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    
+    .search-options {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+    
+    .search-option {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .search-option label {
+      font-size: 14px;
+      color: #333;
+    }
+    
+    .search-category {
+      margin-bottom: 25px;
+    }
+    
+    .category-title {
+      font-weight: bold;
+      margin-bottom: 10px;
+      color: #333;
+    }
+    
+    .category-items {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    
+    .category-item {
+      background-color: #f0f0f0;
+      padding: 8px 15px;
+      border-radius: 20px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+    
+    .category-item.selected {
+      background-color: #4A8C6A;
+      color: white;
+    }
+    
+    .date-range {
+      display: flex;
+      gap: 15px;
+      align-items: center;
+      margin-bottom: 25px;
+    }
+    
+    .date-input {
+      width: 120px;
+      padding: 8px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+    
+    .date-range-label {
+      font-size: 14px;
+      color: #333;
+    }
+    
+    .search-results {
+      margin-top: 30px;
+    }
+    
+    .results-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+    
+    .results-count {
+      font-weight: bold;
+      color: #333;
+    }
+    
+    .results-sort {
+      font-size: 14px;
+      color: #666;
+    }
+    
+    .result-item {
+      border-bottom: 1px solid #eee;
+      padding: 15px 0;
+      cursor: pointer;
+    }
+    
+    .result-title {
+      font-weight: bold;
+      margin-bottom: 8px;
+      color: #4A8C6A;
+    }
+    
+    .result-meta {
+      font-size: 12px;
+      color: #666;
+      margin-bottom: 8px;
+    }
+    
+    .result-content {
+      font-size: 14px;
+      color: #333;
+      line-height: 1.4;
+    }
+    
+    .zoom-controls {
+      position: absolute;
+      right: 20px;
+      top: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      z-index: 800;
+    }
+    
+    .zoom-button {
+      width: 30px;
+      height: 30px;
+      background-color: white;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      cursor: pointer;
+    }
+    
+    .search-area-toggle {
+      position: absolute;
+      bottom: 50px;
+      left: 600px;
+      background-color: white;
+      padding: 8px 15px;
+      border-radius: 20px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      font-size: 14px;
+      cursor: pointer;
+      z-index: 800;
+    }
+    
+    .map-pin {
+      width: 20px;
+      height: 20px;
+      background-color: #4A8C6A;
+      border-radius: 50%;
+      position: absolute;
+      transform: translate(-50%, -50%);
+    }
+    
+    .map-pin::after {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      left: 50%;
+      transform: translateX(-50%);
+      border-left: 8px solid transparent;
+      border-right: 8px solid transparent;
+      border-top: 8px solid #4A8C6A;
+    }
+    
+    .attribution {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      font-size: 12px;
+      color: #666;
+    }
+    
+    .no-results {
+      text-align: center;
+      padding: 40px 0;
+      color: #666;
+    }
+    
+    .no-results p {
+      margin: 5px 0;
+    }
+
+    /* Handle sidebar hover state */
+    #left-sidebar:hover ~ #content-panel {
+      left: 200px;
+    }
+
+    #left-sidebar:hover ~ #map-container {
+      left: 680px;
+    }
+
+    /* Custom Marker Popup Styles */
+    .leaflet-popup-content-wrapper {
+      border-radius: 8px;
+      padding: 1rem;
+    }
+
+    .leaflet-popup-content {
+      margin: 0;
+    }
+
+    .popup-content {
+      min-width: 200px;
+    }
+
+    .popup-content h3 {
+      color: var(--primary-color);
+      margin-bottom: 0.5rem;
+      font-size: 16px;
+    }
+
+    .popup-content p {
+      color: var(--text-light);
+      font-size: 14px;
+      line-height: 1.4;
+      margin: 0;
+    }
+
+    /* Enhanced Popup Styles */
+    .custom-popup {
+        max-width: 400px !important;
+        padding: 0 !important;
+    }
+
+    .popup-header {
+        background-color: var(--primary-color);
+        color: white;
+        padding: 15px;
+        border-radius: 8px 8px 0 0;
+    }
+
+    .popup-header h3 {
+        margin: 0;
+        font-size: 1.2rem;
+    }
+
+    .popup-type-badge {
+        display: inline-block;
+        background: var(--secondary-color);
+        padding: 4px 8px;
+        border-radius: 12px;
+        font-size: 0.8rem;
+        margin-top: 5px;
+    }
+
+    .popup-content {
+        padding: 15px;
+    }
+
+    .popup-section {
+        margin-bottom: 15px;
+    }
+
+    .popup-section-title {
+        font-weight: 600;
+        color: var(--primary-color);
+        margin-bottom: 5px;
+        font-size: 0.9rem;
+    }
+
+    .popup-description {
+        color: var(--text-light);
+        font-size: 0.9rem;
+        line-height: 1.4;
+        margin-bottom: 10px;
+    }
+
+    .popup-gallery {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+        margin: 10px 0;
+    }
+
+    .popup-gallery img {
+        width: 100%;
+        height: 80px;
+        object-fit: cover;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: transform 0.2s;
+    }
+
+    .popup-gallery img:hover {
+        transform: scale(1.05);
+    }
+
+    .popup-details {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+        margin: 10px 0;
+    }
+
+    .detail-item {
+        background: var(--gray-bg);
+        padding: 8px;
+        border-radius: 4px;
+        font-size: 0.85rem;
+    }
+
+    .detail-label {
+        color: var(--text-light);
+        font-size: 0.8rem;
+    }
+
+    .detail-value {
+        color: var(--text-dark);
+        font-weight: 500;
+    }
+
+    .popup-actions {
+        display: flex;
+        gap: 10px;
+        margin-top: 15px;
+        padding-top: 15px;
+        border-top: 1px solid var(--gray-bg);
+    }
+
+    .popup-button {
+        flex: 1;
+        padding: 8px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 0.9rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 5px;
+        transition: all 0.2s;
+    }
+
+    .popup-button.primary {
+        background: var(--primary-color);
+        color: white;
+    }
+
+    .popup-button.secondary {
+        background: var(--gray-bg);
+        color: var(--text-dark);
+    }
+
+    .popup-button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .resources-list {
+        list-style: none;
+        padding: 0;
+        margin: 10px 0;
+    }
+
+    .resource-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 5px 0;
+        color: var(--text-light);
+        font-size: 0.85rem;
+    }
+
+    .resource-item i {
+        color: var(--primary-color);
+    }
+
+    /* Tabs for popup content */
+    .popup-tabs {
+        display: flex;
+        border-bottom: 1px solid var(--gray-bg);
+        margin-bottom: 15px;
+    }
+
+    .popup-tab {
+        padding: 8px 15px;
+        cursor: pointer;
+        font-size: 0.9rem;
+        color: var(--text-light);
+        border-bottom: 2px solid transparent;
+        transition: all 0.2s;
+    }
+
+    .popup-tab.active {
+        color: var(--primary-color);
+        border-bottom-color: var(--primary-color);
+    }
+
+    .tab-content {
+        display: none;
+    }
+
+    .tab-content.active {
+        display: block;
+    }
+  </style>
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="apple-touch-icon" href="icon.png"/>
+  <link rel="icon" href="icon.png"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <!-- Add Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+     crossorigin=""/>
+  <!-- Make sure Leaflet JS is loaded after the CSS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+     crossorigin=""></script>
+</head>
+
+<body class="dark-toolbar">
+  <!-- Left sidebar with icons -->
+  <div id="left-sidebar">
+    <div class="logo">LW</div>
+    <a href="home.html" class="sidebar-icon">
+      <i class="fas fa-home"></i>
+      <span>Home</span>
+    </a>
+    <a href="explore.html" class="sidebar-icon">
+      <i class="fas fa-compass"></i>
+      <span>Explore</span>
+    </a>
+    <a href="search.html" class="sidebar-icon active">
+      <i class="fas fa-search"></i>
+      <span>Search</span>
+    </a>
+    <a href="layers.html" class="sidebar-icon">
+      <i class="fas fa-layer-group"></i>
+      <span>Layers</span>
+    </a>
+    <a href="map.html" class="sidebar-icon">
+      <i class="fas fa-map-marked-alt"></i>
+      <span>Map View</span>
+    </a>
+  </div>
+
+  <!-- Content panel on the left -->
+  <div id="content-panel">
+    <div class="search-header">
+      <h2>Search Lake Waikare</h2>
+      <div class="close-tray">Close tray</div>
+    </div>
+    
+    <p class="description">
+      Use these tools to search the records on Lake Waikare Digital Library - free text, 
+      categories, water quality data, and cultural knowledge.
+    </p>
+    
+    <div class="search-form">
+      <div class="search-input-container">
+        <input type="text" class="search-input" placeholder="Search for stories, places, or environmental data...">
+        <button class="search-button">Search</button>
+      </div>
+      
+      <div class="search-options">
+        <div class="search-option">
+          <input type="checkbox" id="search-area" checked>
+          <label for="search-area">Search visible area</label>
+        </div>
+        <div class="search-option">
+          <input type="checkbox" id="search-whole-map">
+          <label for="search-whole-map">Search whole map</label>
+        </div>
+      </div>
+      
+      <div class="search-category">
+        <div class="category-title">Content type</div>
+        <div class="category-items">
+          <div class="category-item selected">All</div>
+          <div class="category-item">Records</div>
+          <div class="category-item">Collections</div>
+          <div class="category-item">Trails</div>
+          <div class="category-item">Overlays</div>
+        </div>
+      </div>
+      
+      <div class="search-category">
+        <div class="category-title">Categories</div>
+        <div class="category-items">
+          <div class="category-item">Māori History</div>
+          <div class="category-item">Environmental Data</div>
+          <div class="category-item">Cultural Heritage</div>
+          <div class="category-item">Water Quality</div>
+          <div class="category-item">Oral Histories</div>
+          <div class="category-item">Local Flora</div>
+          <div class="category-item">Local Fauna</div>
+        </div>
+      </div>
+      
+      <div class="date-range">
+        <span class="date-range-label">Date range:</span>
+        <input type="text" class="date-input" placeholder="From">
+        <span>to</span>
+        <input type="text" class="date-input" placeholder="To">
+      </div>
+    </div>
+    
+    <div class="search-results">
+      <div class="results-header">
+        <div class="results-count">8 results found</div>
+        <div class="results-sort">Sort by: Relevance</div>
+      </div>
+      
+      <div class="result-item">
+        <div class="result-title">Water Quality Monitoring Station</div>
+        <div class="result-meta">Record • Environmental Data • Added 2025</div>
+        <div class="result-content">Historical water quality data from the eastern shore monitoring station, showing levels of Total Phosphorus, Total Nitrogen, and E. coli bacteria from 2010-2025.</div>
+      </div>
+      
+      <div class="result-item">
+        <div class="result-title">Te Kete o Waikare: Traditional Food Gathering</div>
+        <div class="result-meta">Collection • Cultural Heritage, Māori History • Added 2025</div>
+        <div class="result-content">Collection of oral histories about traditional food gathering practices at Lake Waikare before water quality declined.</div>
+      </div>
+      
+      <div class="result-item">
+        <div class="result-title">Wetland Restoration Project</div>
+        <div class="result-meta">Record • Environmental Data • Added 2024</div>
+        <div class="result-content">Documentation of community-led wetland restoration efforts at the northern edge of Lake Waikare.</div>
+      </div>
+      
+      <div class="result-item">
+        <div class="result-title">Lake Waikare Timeline: 1950-2025</div>
+        <div class="result-meta">Timeline • Environmental Data • Added 2025</div>
+        <div class="result-content">Visual timeline showing the changes in Lake Waikare's water quality, indigenous plant species, and land use over 75 years.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Map container on the right -->
+  <div id="map-container">
+    <div id="map"></div>
+    <div class="zoom-controls">
+      <div class="zoom-button">+</div>
+      <div class="zoom-button">-</div>
+    </div>
+    
+    <div class="search-area-toggle">Search in visible area</div>
+    
+    <div class="attribution">© OpenStreetMap contributors</div>
+  </div>
+
+  <script>
+    // Initialize the map centered on Lake Waikare
+    const map = L.map('map-container', {
+      zoomControl: false  // Disable default zoom controls
+    }).setView([-37.4307, 175.2244], 13);
+
+    // Add OpenStreetMap base layer
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
+
+    // Add satellite imagery layer
+    const satellite = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+      attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+    }).addTo(map);
+
+    // Define cultural site markers with custom icons
+    const customIcon = L.icon({
+        iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
+        shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34],
+        shadowSize: [41, 41]
+    });
+
+    // Helper function to create consistent popup content
+    function createPopupContent(data) {
+        return `
+            <div class="custom-popup">
+                <div class="popup-header">
+                    <h3>${data.title}</h3>
+                    <div class="popup-type-badge">${data.type}</div>
+                </div>
+                <div class="popup-content">
+                    <div class="popup-section">
+                        <p class="popup-description">${data.description}</p>
+                    </div>
+                    
+                    ${data.gallery ? `
+                    <div class="popup-section">
+                        <div class="popup-section-title">Gallery</div>
+                        <div class="popup-gallery">
+                            ${data.gallery.map(img => `<img src="${img}" alt="Site Image">`).join('')}
+                        </div>
+                    </div>
+                    ` : ''}
+                    
+                    <div class="popup-section">
+                        <div class="popup-section-title">Details</div>
+                        <div class="popup-details">
+                            ${Object.entries(data.details).map(([key, value]) => `
+                                <div class="detail-item">
+                                    <div class="detail-label">${key}</div>
+                                    <div class="detail-value">${value}</div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                    
+                    ${data.resources ? `
+                    <div class="popup-section">
+                        <div class="popup-section-title">Resources</div>
+                        <ul class="resources-list">
+                            ${data.resources.map(resource => `
+                                <li class="resource-item">
+                                    <i class="${resource.icon}"></i>
+                                    ${resource.text}
+                                </li>
+                            `).join('')}
+                        </ul>
+                    </div>
+                    ` : ''}
+                    
+                    ${data.sections ? `
+                    <div class="popup-tabs">
+                        ${data.sections.map((section, index) => `
+                            <div class="popup-tab ${index === 0 ? 'active' : ''}" 
+                                 onclick="switchTab(this, ${index})">${section.title}</div>
+                        `).join('')}
+                    </div>
+                    ${data.sections.map((section, index) => `
+                        <div class="tab-content ${index === 0 ? 'active' : ''}" id="tab-${index}">
+                            <p>${section.content}</p>
+                        </div>
+                    `).join('')}
+                    ` : ''}
+                    
+                    <div class="popup-actions">
+                        <button class="popup-button primary">
+                            <i class="fas fa-info-circle"></i>
+                            Learn More
+                        </button>
+                        <button class="popup-button secondary">
+                            <i class="fas fa-map-marker-alt"></i>
+                            Directions
+                        </button>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    // Define cultural site markers
+    const culturalSites = {
+      taurangamirumiru: L.marker([-37.4157, 175.2278], {
+        title: 'Taurangamirumiru Pā',
+        icon: customIcon
+      }).bindPopup(createPopupContent({
+        title: 'Taurangamirumiru Pā',
+        type: 'Cultural & Historical Site',
+        description: 'Ancient pā site where the sisters Reipae and Reitu once lived. A significant cultural and historical location for local iwi.',
+        details: {
+          'Historical Period': 'Pre-1800s',
+          'Cultural Significance': 'Major settlement and defensive position',
+          'Current Status': 'Archaeological site',
+          'Access': 'Guided Tours Only'
+        },
+        gallery: ['images/taurangamirumiru1.jpg', 'images/taurangamirumiru2.jpg', 'images/taurangamirumiru3.jpg'],
+        resources: [
+          { icon: 'fas fa-book', text: 'Historical Documentation' },
+          { icon: 'fas fa-video', text: 'Oral History Recordings' },
+          { icon: 'fas fa-map-marked-alt', text: 'Site Map & Guide' }
+        ],
+        sections: [
+          {
+            title: 'History',
+            content: 'This pā site holds great historical and cultural significance as the residence of the sisters Reipae and Reitu, whose stories are deeply woven into local tribal narratives.'
+          },
+          {
+            title: 'Cultural Significance',
+            content: 'The site remains an important location for cultural practices and education, helping maintain connections with ancestral heritage.'
+          }
+        ]
+      })),
+      
+      hingakaka: L.marker([-37.4392, 175.2344], {
+        title: 'Hingakākā',
+        icon: customIcon
+      }).bindPopup(createPopupContent({
+        title: 'Hingakākā',
+        type: 'Historical Battle Site',
+        description: 'Site of one of the largest intertribal battles in Aotearoa\'s history, fought in the late 1700s.',
+        details: {
+          'Date': 'Circa 1780s',
+          'Historical Significance': 'Major battle site',
+          'Participating Iwi': 'Multiple iwi from central North Island',
+          'Status': 'Protected Heritage Site'
+        },
+        gallery: ['images/hingakaka1.jpg', 'images/hingakaka2.jpg', 'images/hingakaka3.jpg'],
+        resources: [
+          { icon: 'fas fa-book', text: 'Battle Documentation' },
+          { icon: 'fas fa-landmark', text: 'Heritage Site Information' },
+          { icon: 'fas fa-users', text: 'Tribal Histories' }
+        ],
+        sections: [
+          {
+            title: 'Battle History',
+            content: 'The Battle of Hingakākā was one of the largest conflicts between iwi in pre-European New Zealand history.'
+          },
+          {
+            title: 'Archaeological Evidence',
+            content: 'The site contains significant archaeological evidence of the battle, including traditional weapons and defensive structures.'
+          }
+        ]
+      })),
+      
+      uenukuTapu: L.marker([-37.4486, 175.2167], {
+        title: 'Te Wāhi o Uenuku',
+        icon: customIcon
+      }).bindPopup(createPopupContent({
+        title: 'Te Wāhi o Uenuku',
+        type: 'Sacred Site',
+        description: 'Sacred site where the ancient carved figure Uenuku was submerged in the lake before the Battle of Hingakākā.',
+        details: {
+          'Type': 'Wāhi Tapu (Sacred Site)',
+          'Cultural Significance': 'Home of Uenuku carving',
+          'Associated Events': 'Battle of Hingakākā',
+          'Access': 'Cultural Protocol Required'
+        },
+        gallery: ['images/uenuku1.jpg', 'images/uenuku2.jpg', 'images/uenuku3.jpg'],
+        resources: [
+          { icon: 'fas fa-scroll', text: 'Sacred Site Protocols' },
+          { icon: 'fas fa-history', text: 'Historical Records' },
+          { icon: 'fas fa-hands', text: 'Cultural Practices' }
+        ],
+        sections: [
+          {
+            title: 'Sacred History',
+            content: 'This site holds deep spiritual significance as the resting place of the Uenuku carving before the historic battle.'
+          },
+          {
+            title: 'Cultural Protocols',
+            content: 'Access to this sacred site requires adherence to specific cultural protocols and guidance from local kaitiaki.'
+          }
+        ]
+      })),
+      
+      waahiTapu: L.marker([-37.4234, 175.2089], {
+        title: 'Wāhi Tapu',
+        icon: customIcon
+      }).bindPopup(createPopupContent({
+        title: 'Wāhi Tapu',
+        type: 'Sacred Ceremonial Ground',
+        description: 'Sacred grounds where ancient ceremonies were performed and important tribal gatherings were held.',
+        details: {
+          'Type': 'Ceremonial Grounds',
+          'Usage': 'Traditional ceremonies and gatherings',
+          'Status': 'Protected cultural site',
+          'Access': 'By Permission Only'
+        },
+        gallery: ['images/waahi-tapu1.jpg', 'images/waahi-tapu2.jpg', 'images/waahi-tapu3.jpg'],
+        resources: [
+          { icon: 'fas fa-pray', text: 'Ceremonial Practices' },
+          { icon: 'fas fa-drum', text: 'Traditional Rituals' },
+          { icon: 'fas fa-star', text: 'Spiritual Significance' }
+        ],
+        sections: [
+          {
+            title: 'Ceremonial History',
+            content: 'This sacred ground has been used for centuries as a place of important ceremonies and tribal gatherings.'
+          },
+          {
+            title: 'Modern Usage',
+            content: 'Today, the site continues to be used for significant cultural ceremonies and educational purposes.'
+          }
+        ]
+      })),
+      
+      mahingaKai: L.marker([-37.4312, 175.2401], {
+        title: 'Mahinga Kai',
+        icon: customIcon
+      }).bindPopup(createPopupContent({
+        title: 'Mahinga Kai',
+        type: 'Traditional Food Gathering Site',
+        description: 'Traditional food gathering area where tuna (eels), īnanga (whitebait), and waterfowl were harvested.',
+        details: {
+          'Type': 'Food Gathering Site',
+          'Traditional Resources': 'Tuna, īnanga, waterfowl',
+          'Seasonal Usage': 'Year-round with peak seasons',
+          'Current Status': 'Active gathering site'
+        },
+        gallery: ['images/mahinga-kai1.jpg', 'images/mahinga-kai2.jpg', 'images/mahinga-kai3.jpg'],
+        resources: [
+          { icon: 'fas fa-fish', text: 'Traditional Fishing Methods' },
+          { icon: 'fas fa-calendar-alt', text: 'Seasonal Guide' },
+          { icon: 'fas fa-leaf', text: 'Environmental Status' }
+        ],
+        sections: [
+          {
+            title: 'Traditional Practices',
+            content: 'This site has been used for generations as a primary food gathering location, particularly known for its abundant tuna and īnanga populations.'
+          },
+          {
+            title: 'Environmental Health',
+            content: 'Ongoing monitoring ensures the sustainability of traditional food resources and maintains the health of the ecosystem.'
+          }
+        ]
+      }))
+    };
+
+    // Add all markers to the map
+    Object.values(culturalSites).forEach(marker => marker.addTo(map));
+
+    // Function to switch between tabs in popups
+    function switchTab(tab, index) {
+        const popup = tab.closest('.custom-popup');
+        popup.querySelectorAll('.popup-tab').forEach(t => t.classList.remove('active'));
+        popup.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+        tab.classList.add('active');
+        popup.querySelector(`#tab-${index}`).classList.add('active');
+    }
+
+    // Function to focus on a specific marker
+    function focusMarker(siteId) {
+      const marker = culturalSites[siteId];
+      if (marker) {
+        map.setView(marker.getLatLng(), 15);
+        marker.openPopup();
+      }
+    }
+
+    // Add click handlers for filter tags
+    document.querySelectorAll('.category-item').forEach(item => {
+      item.addEventListener('click', () => {
+        document.querySelectorAll('.category-item').forEach(i => i.classList.remove('selected'));
+        item.classList.add('selected');
+      });
+    });
+
+    // Add search functionality
+    const searchInput = document.querySelector('.search-input');
+    const searchButton = document.querySelector('.search-button');
+
+    searchButton.addEventListener('click', () => {
+      const searchTerm = searchInput.value.trim();
+      if (searchTerm) {
+        // Here you would typically make an API call to search the database
+        console.log('Searching for:', searchTerm);
+      }
+    });
+
+    // Add enter key support for search
+    searchInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        searchButton.click();
+      }
+    });
+
+    // Handle map search area toggle
+    const searchAreaToggle = document.querySelector('.search-area-toggle');
+    const searchAreaCheckbox = document.getElementById('search-area');
+    const searchWholeMapCheckbox = document.getElementById('search-whole-map');
+
+    searchAreaToggle.addEventListener('click', () => {
+      searchAreaCheckbox.checked = !searchAreaCheckbox.checked;
+      searchWholeMapCheckbox.checked = !searchAreaCheckbox.checked;
+    });
+
+    // Handle zoom controls
+    const zoomButtons = document.querySelectorAll('.zoom-button');
+    zoomButtons[0].addEventListener('click', () => map.zoomIn());
+    zoomButtons[1].addEventListener('click', () => map.zoomOut());
+  </script>
+</body>
+</html>

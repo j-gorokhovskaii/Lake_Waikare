@@ -1,0 +1,1047 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Lake Waikare Digital Library - Explore</title>
+  <meta name="csrf-param" content="authenticity_token" />
+  <meta name="csrf-token" content="0X9UWZkQtKntUcdEFvcF/0bcGu+8Zmhs/qMO7I4OFm2+imL0XOz6fSO4AwUi15NbDRc6qC2dbM8oyCa4zw6Lig==" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="apple-touch-icon" href="icon.png"/>
+  <link rel="icon" href="icon.png"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+  <style>
+    :root {
+      --primary-color: #4A8C6A;
+      --secondary-color: #FFC000;
+      --dark-bg: #222222;
+      --light-bg: #ffffff;
+      --gray-bg: #f8f8f8;
+      --text-dark: #333333;
+      --text-light: #666666;
+      --sidebar-width: 80px;
+      --sidebar-expanded: 200px;
+      --content-width: 480px;
+    }
+
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      font-family: 'Segoe UI', Arial, sans-serif;
+    }
+    
+    .dark-toolbar {
+      background-color: var(--dark-bg);
+    }
+    
+    #left-sidebar {
+      width: var(--sidebar-width);
+      height: 100%;
+      background-color: var(--dark-bg);
+      position: fixed;
+      left: 0;
+      top: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 15px;
+      z-index: 1000;
+      transition: width 0.3s ease;
+    }
+    
+    #left-sidebar:hover {
+      width: var(--sidebar-expanded);
+    }
+
+    .sidebar-icon {
+      width: 100%;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      color: #ffffff;
+      font-size: 16px;
+      margin-bottom: 10px;
+      padding: 0 20px;
+      box-sizing: border-box;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      border-radius: 4px;
+    }
+
+    .sidebar-icon:hover, .sidebar-icon.active {
+      background-color: var(--primary-color);
+      color: #ffffff;
+      text-decoration: none;
+      transform: translateX(5px);
+    }
+
+    .sidebar-icon i {
+      width: 24px;
+      height: 24px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-right: 15px;
+      font-size: 18px;
+    }
+
+    .sidebar-icon span {
+      font-size: 15px;
+      font-weight: 500;
+      white-space: nowrap;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    #left-sidebar:hover .sidebar-icon span {
+      opacity: 1;
+    }
+
+    .logo {
+      width: 50px;
+      height: 50px;
+      background-color: var(--primary-color);
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #ffffff;
+      font-weight: bold;
+      font-size: 20px;
+      margin: 0 auto 30px;
+      transition: transform 0.3s ease;
+      cursor: pointer;
+    }
+
+    .logo:hover {
+      transform: scale(1.1);
+    }
+    
+    #content-panel {
+      position: fixed;
+      left: var(--sidebar-width);
+      top: 0;
+      width: var(--content-width);
+      height: 100%;
+      background-color: var(--light-bg);
+      overflow-y: auto;
+      padding: 20px;
+      box-sizing: border-box;
+      transition: left 0.3s ease;
+    }
+    
+    #map-container {
+      position: fixed;
+      left: calc(var(--sidebar-width) + var(--content-width));
+      top: 0;
+      right: 0;
+      height: 100%;
+      background-color: var(--gray-bg);
+      overflow: hidden;
+      transition: left 0.3s ease;
+    }
+    
+    .map-image {
+      display: none;
+    }
+    
+    .header {
+      color: var(--primary-color);
+      margin-bottom: 20px;
+      font-size: 36px;
+    }
+    
+    .description {
+      color: var(--text-dark);
+      margin-bottom: 30px;
+      line-height: 1.5;
+    }
+
+    .explore-filters {
+      margin-bottom: 30px;
+      padding: 15px;
+      background-color: var(--gray-bg);
+      border-radius: 8px;
+    }
+
+    .filter-group {
+      margin-bottom: 20px;
+    }
+
+    .filter-title {
+      font-weight: 600;
+      color: var(--text-dark);
+      margin-bottom: 10px;
+    }
+
+    .filter-options {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .filter-tag {
+      padding: 8px 16px;
+      background-color: var(--light-bg);
+      border-radius: 20px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-size: 14px;
+      color: var(--text-dark);
+    }
+
+    .filter-tag:hover {
+      background-color: var(--secondary-color);
+      transform: translateY(-2px);
+    }
+
+    .filter-tag.active {
+      background-color: var(--primary-color);
+      color: var(--light-bg);
+    }
+
+    .collection-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+
+    .collection-card {
+      background-color: var(--light-bg);
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease;
+      cursor: pointer;
+    }
+
+    .collection-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .collection-image {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+      background-color: var(--gray-bg);
+    }
+
+    .collection-content {
+      padding: 15px;
+    }
+
+    .collection-title {
+      font-weight: 600;
+      color: var(--primary-color);
+      margin-bottom: 8px;
+      font-size: 16px;
+    }
+
+    .collection-description {
+      color: var(--text-light);
+      font-size: 14px;
+      line-height: 1.4;
+      margin-bottom: 10px;
+    }
+
+    .collection-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      color: var(--text-light);
+    }
+
+    .collection-type {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .collection-date {
+      font-style: italic;
+    }
+
+    .zoom-controls {
+      position: absolute;
+      right: 20px;
+      top: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      z-index: 800;
+    }
+    
+    .zoom-button {
+      width: 30px;
+      height: 30px;
+      background-color: white;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: bold;
+      color: var(--text-dark);
+      transition: all 0.2s ease;
+    }
+
+    .zoom-button:hover {
+      background-color: var(--primary-color);
+      color: white;
+      transform: scale(1.1);
+    }
+
+    .attribution {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      font-size: 12px;
+      color: var(--text-light);
+    }
+
+    /* Handle sidebar hover state */
+    #left-sidebar:hover ~ #content-panel {
+      left: var(--sidebar-expanded);
+    }
+
+    #left-sidebar:hover ~ #map-container {
+      left: calc(var(--sidebar-expanded) + var(--content-width));
+    }
+
+    /* Update map container styles */
+    #map {
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+    }
+
+    /* Custom Marker Popup Styles */
+    .leaflet-popup-content-wrapper {
+      border-radius: 8px;
+      padding: 1rem;
+    }
+
+    .leaflet-popup-content {
+      margin: 0;
+    }
+
+    .popup-content {
+      min-width: 200px;
+    }
+
+    .popup-content h3 {
+      color: var(--primary-color);
+      margin-bottom: 0.5rem;
+      font-size: 16px;
+    }
+
+    .popup-content p {
+      color: var(--text-light);
+      font-size: 14px;
+      line-height: 1.4;
+      margin: 0;
+    }
+
+    /* Enhanced Popup Styles */
+    .custom-popup {
+        max-width: 400px !important;
+        padding: 0 !important;
+    }
+
+    .popup-header {
+        background-color: var(--primary-color);
+        color: white;
+        padding: 15px;
+        border-radius: 8px 8px 0 0;
+    }
+
+    .popup-header h3 {
+        margin: 0;
+        font-size: 1.2rem;
+    }
+
+    .popup-type-badge {
+        display: inline-block;
+        background: var(--secondary-color);
+        padding: 4px 8px;
+        border-radius: 12px;
+        font-size: 0.8rem;
+        margin-top: 5px;
+    }
+
+    .popup-content {
+        padding: 15px;
+    }
+
+    .popup-section {
+        margin-bottom: 15px;
+    }
+
+    .popup-section-title {
+        font-weight: 600;
+        color: var(--primary-color);
+        margin-bottom: 5px;
+        font-size: 0.9rem;
+    }
+
+    .popup-description {
+        color: var(--text-light);
+        font-size: 0.9rem;
+        line-height: 1.4;
+        margin-bottom: 10px;
+    }
+
+    .popup-gallery {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+        margin: 10px 0;
+    }
+
+    .popup-gallery img {
+        width: 100%;
+        height: 80px;
+        object-fit: cover;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: transform 0.2s;
+    }
+
+    .popup-gallery img:hover {
+        transform: scale(1.05);
+    }
+
+    .popup-details {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+        margin: 10px 0;
+    }
+
+    .detail-item {
+        background: var(--gray-bg);
+        padding: 8px;
+        border-radius: 4px;
+        font-size: 0.85rem;
+    }
+
+    .detail-label {
+        color: var(--text-light);
+        font-size: 0.8rem;
+    }
+
+    .detail-value {
+        color: var(--text-dark);
+        font-weight: 500;
+    }
+
+    .popup-actions {
+        display: flex;
+        gap: 10px;
+        margin-top: 15px;
+        padding-top: 15px;
+        border-top: 1px solid var(--gray-bg);
+    }
+
+    .popup-button {
+        flex: 1;
+        padding: 8px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 0.9rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 5px;
+        transition: all 0.2s;
+    }
+
+    .popup-button.primary {
+        background: var(--primary-color);
+        color: white;
+    }
+
+    .popup-button.secondary {
+        background: var(--gray-bg);
+        color: var(--text-dark);
+    }
+
+    .popup-button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .resources-list {
+        list-style: none;
+        padding: 0;
+        margin: 10px 0;
+    }
+
+    .resource-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 5px 0;
+        color: var(--text-light);
+        font-size: 0.85rem;
+    }
+
+    .resource-item i {
+        color: var(--primary-color);
+    }
+
+    /* Tabs for popup content */
+    .popup-tabs {
+        display: flex;
+        border-bottom: 1px solid var(--gray-bg);
+        margin-bottom: 15px;
+    }
+
+    .popup-tab {
+        padding: 8px 15px;
+        cursor: pointer;
+        font-size: 0.9rem;
+        color: var(--text-light);
+        border-bottom: 2px solid transparent;
+        transition: all 0.2s;
+    }
+
+    .popup-tab.active {
+        color: var(--primary-color);
+        border-bottom-color: var(--primary-color);
+    }
+
+    .tab-content {
+        display: none;
+    }
+
+    .tab-content.active {
+        display: block;
+    }
+  </style>
+</head>
+
+<body class="dark-toolbar">
+  <!-- Left sidebar with icons -->
+  <div id="left-sidebar">
+    <div class="logo">LW</div>
+    <a href="home.html" class="sidebar-icon">
+      <i class="fas fa-home"></i>
+      <span>Home</span>
+    </a>
+    <a href="explore.html" class="sidebar-icon active">
+      <i class="fas fa-compass"></i>
+      <span>Explore</span>
+    </a>
+    <a href="search.html" class="sidebar-icon">
+      <i class="fas fa-search"></i>
+      <span>Search</span>
+    </a>
+    <a href="layers.html" class="sidebar-icon">
+      <i class="fas fa-layer-group"></i>
+      <span>Layers</span>
+    </a>
+    <a href="map.html" class="sidebar-icon">
+      <i class="fas fa-map-marked-alt"></i>
+      <span>Map View</span>
+    </a>
+  </div>
+
+  <!-- Content panel on the left -->
+  <div id="content-panel">
+    <h1 class="header">Explore Collections</h1>
+    
+    <p class="description">
+      Discover curated collections of Lake Waikare's rich history, environmental data, 
+      and cultural heritage. Browse through our digital archives and interactive exhibits.
+    </p>
+
+    <div class="explore-filters">
+      <div class="filter-group">
+        <div class="filter-title">Categories</div>
+        <div class="filter-options">
+          <div class="filter-tag active">All</div>
+          <div class="filter-tag">Environmental</div>
+          <div class="filter-tag">Cultural</div>
+          <div class="filter-tag">Historical</div>
+          <div class="filter-tag">Scientific</div>
+        </div>
+      </div>
+
+      <div class="filter-group">
+        <div class="filter-title">Time Period</div>
+        <div class="filter-options">
+          <div class="filter-tag">Pre-1900</div>
+          <div class="filter-tag">1900-1950</div>
+          <div class="filter-tag">1950-2000</div>
+          <div class="filter-tag">2000-Present</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="collection-grid">
+      <div class="collection-card">
+        <div class="collection-image"></div>
+        <div class="collection-content">
+          <div class="collection-title">Water Quality Monitoring</div>
+          <div class="collection-description">
+            Historical water quality data and analysis from monitoring stations around Lake Waikare.
+          </div>
+          <div class="collection-meta">
+            <div class="collection-type">
+              <i class="fas fa-chart-line"></i>
+              Environmental Data
+            </div>
+            <div class="collection-date">Updated 2024</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="collection-card">
+        <div class="collection-image"></div>
+        <div class="collection-content">
+          <div class="collection-title">Māori Cultural Heritage</div>
+          <div class="collection-description">
+            Traditional stories, practices, and significant sites around Lake Waikare.
+          </div>
+          <div class="collection-meta">
+            <div class="collection-type">
+              <i class="fas fa-landmark"></i>
+              Cultural Heritage
+            </div>
+            <div class="collection-date">Updated 2024</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="collection-card">
+        <div class="collection-image"></div>
+        <div class="collection-content">
+          <div class="collection-title">Wetland Restoration</div>
+          <div class="collection-description">
+            Documentation of ongoing wetland restoration projects and their impact.
+          </div>
+          <div class="collection-meta">
+            <div class="collection-type">
+              <i class="fas fa-leaf"></i>
+              Environmental
+            </div>
+            <div class="collection-date">Updated 2024</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="collection-card">
+        <div class="collection-image"></div>
+        <div class="collection-content">
+          <div class="collection-title">Historical Photographs</div>
+          <div class="collection-description">
+            Archive of historical photographs showing Lake Waikare through the decades.
+          </div>
+          <div class="collection-meta">
+            <div class="collection-type">
+              <i class="fas fa-camera-retro"></i>
+              Historical
+            </div>
+            <div class="collection-date">Updated 2023</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Map container -->
+  <div id="map-container">
+    <div id="map"></div>
+    <div class="zoom-controls">
+      <div class="zoom-button">+</div>
+      <div class="zoom-button">-</div>
+    </div>
+    <div class="attribution">© OpenStreetMap contributors</div>
+  </div>
+
+  <script>
+    // Handle filter tag clicks
+    document.querySelectorAll('.filter-tag').forEach(tag => {
+      tag.addEventListener('click', () => {
+        // If it's in the same filter group, deactivate siblings
+        const group = tag.closest('.filter-group');
+        if (group) {
+          group.querySelectorAll('.filter-tag').forEach(sibling => {
+            if (sibling !== tag) sibling.classList.remove('active');
+          });
+        }
+        tag.classList.toggle('active');
+      });
+    });
+
+    // Initialize the map centered on Lake Waikare
+    const map = L.map('map', {
+      zoomControl: false  // Disable default zoom controls
+    }).setView([-37.4307, 175.2244], 13);
+
+    // Add OpenStreetMap base layer
+    const osm = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
+
+    // Handle zoom controls
+    const zoomInBtn = document.querySelector('.zoom-button:first-child');
+    const zoomOutBtn = document.querySelector('.zoom-button:last-child');
+
+    zoomInBtn.addEventListener('click', () => {
+      map.zoomIn();
+      zoomInBtn.classList.add('active');
+      setTimeout(() => zoomInBtn.classList.remove('active'), 200);
+    });
+
+    zoomOutBtn.addEventListener('click', () => {
+      map.zoomOut();
+      zoomOutBtn.classList.add('active');
+      setTimeout(() => zoomOutBtn.classList.remove('active'), 200);
+    });
+
+    // Add keyboard support for zooming
+    document.addEventListener('keydown', (e) => {
+      if (e.key === '+') {
+        map.zoomIn();
+        zoomInBtn.classList.add('active');
+        setTimeout(() => zoomInBtn.classList.remove('active'), 200);
+      } else if (e.key === '-') {
+        map.zoomOut();
+        zoomOutBtn.classList.add('active');
+        setTimeout(() => zoomOutBtn.classList.remove('active'), 200);
+      }
+    });
+
+    // Define cultural site markers with custom icons
+    const customIcon = L.icon({
+        iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
+        shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34],
+        shadowSize: [41, 41]
+    });
+
+    // Define cultural sites data with enhanced popup content
+    const culturalSites = {
+        taurangamirumiru: L.marker([-37.4157, 175.2278], {
+            title: 'Taurangamirumiru Pā',
+            icon: customIcon
+        }).bindPopup(createPopupContent({
+            title: 'Taurangamirumiru Pā',
+            type: 'Cultural & Historical Site',
+            description: 'Ancient pā site where the sisters Reipae and Reitu once lived. A significant cultural and historical location for local iwi.',
+            details: {
+                'Time Period': 'Pre-1800s',
+                'Status': 'Protected Site',
+                'Access': 'Guided Tours Only',
+                'Iwi': 'Local Iwi Connection'
+            },
+            gallery: [
+                'images/taurangamirumiru1.jpg',
+                'images/taurangamirumiru2.jpg',
+                'images/taurangamirumiru3.jpg'
+            ],
+            resources: [
+                { icon: 'fas fa-book', text: 'Historical Documentation' },
+                { icon: 'fas fa-video', text: 'Oral History Recordings' },
+                { icon: 'fas fa-map-marked-alt', text: 'Site Map & Guide' }
+            ],
+            sections: [
+                {
+                    title: 'Historical Significance',
+                    content: 'This pā site holds great historical and cultural significance as the residence of the sisters Reipae and Reitu, whose stories are deeply woven into local tribal narratives.'
+                },
+                {
+                    title: 'Archaeological Findings',
+                    content: 'Recent archaeological studies have revealed evidence of extensive occupation, including traditional food storage pits and defensive structures.'
+                },
+                {
+                    title: 'Cultural Practices',
+                    content: 'The site continues to be of importance for cultural practices and educational purposes, helping to maintain connections with ancestral heritage.'
+                }
+            ]
+        }), { className: 'custom-popup' }),
+
+        hingakaka: L.marker([-37.4392, 175.2344], {
+            title: 'Hingakākā',
+            icon: customIcon
+        }).bindPopup(createPopupContent({
+            title: 'Hingakākā',
+            type: 'Historical Battle Site',
+            description: 'Site of one of the largest intertribal battles in Aotearoa\'s history, fought in the late 1700s.',
+            details: {
+                'Time Period': 'Late 1700s',
+                'Status': 'Historical Site',
+                'Access': 'Public Access',
+                'Significance': 'Major Battle Site'
+            },
+            gallery: [
+                'images/hingakaka1.jpg',
+                'images/hingakaka2.jpg',
+                'images/hingakaka3.jpg'
+            ],
+            resources: [
+                { icon: 'fas fa-book', text: 'Battle Documentation' },
+                { icon: 'fas fa-scroll', text: 'Historical Records' },
+                { icon: 'fas fa-landmark', text: 'Memorial Information' }
+            ],
+            sections: [
+                {
+                    title: 'Battle History',
+                    content: 'This site witnessed one of the largest intertribal battles in New Zealand history, marking a significant moment in Māori warfare and tribal relations.'
+                },
+                {
+                    title: 'Archaeological Evidence',
+                    content: 'The area contains various artifacts and evidence from the battle, providing insights into traditional warfare methods and tribal alliances.'
+                },
+                {
+                    title: 'Cultural Significance',
+                    content: 'Today, the site serves as a reminder of historical events and their impact on tribal relationships and territorial boundaries.'
+                }
+            ]
+        }), { className: 'custom-popup' }),
+
+        uenukuTapu: L.marker([-37.4486, 175.2167], {
+            title: 'Te Wāhi o Uenuku',
+            icon: customIcon
+        }).bindPopup(createPopupContent({
+            title: 'Te Wāhi o Uenuku',
+            type: 'Sacred Site',
+            description: 'Sacred site where the ancient carved figure Uenuku was submerged in the lake before the Battle of Hingakākā.',
+            details: {
+                'Time Period': 'Pre-1800s',
+                'Status': 'Sacred Site',
+                'Access': 'Cultural Permission Required',
+                'Significance': 'Spiritual Location'
+            },
+            gallery: [
+                'images/uenuku1.jpg',
+                'images/uenuku2.jpg',
+                'images/uenuku3.jpg'
+            ],
+            resources: [
+                { icon: 'fas fa-pray', text: 'Spiritual Significance' },
+                { icon: 'fas fa-history', text: 'Historical Context' },
+                { icon: 'fas fa-map', text: 'Site Location Guide' }
+            ],
+            sections: [
+                {
+                    title: 'Spiritual Significance',
+                    content: 'This sacred site holds deep spiritual meaning, particularly in relation to the carved figure Uenuku and its role in tribal history.'
+                },
+                {
+                    title: 'Historical Events',
+                    content: 'The site gained additional significance when the Uenuku carving was submerged here before the Battle of Hingakākā.'
+                },
+                {
+                    title: 'Current Practices',
+                    content: 'Today, the site continues to be respected as a place of spiritual significance and cultural ceremonies.'
+                }
+            ]
+        }), { className: 'custom-popup' }),
+
+        waahiTapu: L.marker([-37.4234, 175.2089], {
+            title: 'Wāhi Tapu',
+            icon: customIcon
+        }).bindPopup(createPopupContent({
+            title: 'Wāhi Tapu',
+            type: 'Sacred Ceremonial Ground',
+            description: 'Sacred grounds where ancient ceremonies were performed and important tribal gatherings were held.',
+            details: {
+                'Time Period': 'Ancient - Present',
+                'Status': 'Protected Site',
+                'Access': 'Cultural Protocol Required',
+                'Usage': 'Ceremonial Ground'
+            },
+            gallery: [
+                'images/waahitapu1.jpg',
+                'images/waahitapu2.jpg',
+                'images/waahitapu3.jpg'
+            ],
+            resources: [
+                { icon: 'fas fa-drum', text: 'Ceremonial Practices' },
+                { icon: 'fas fa-users', text: 'Tribal Gatherings' },
+                { icon: 'fas fa-hand-paper', text: 'Visiting Protocol' }
+            ],
+            sections: [
+                {
+                    title: 'Ceremonial History',
+                    content: 'This wāhi tapu has been a sacred place for ceremonies and tribal gatherings for generations.'
+                },
+                {
+                    title: 'Cultural Protocols',
+                    content: 'Specific tikanga and protocols must be observed when visiting or conducting ceremonies at this site.'
+                },
+                {
+                    title: 'Modern Usage',
+                    content: 'The site continues to be used for important cultural ceremonies and educational purposes.'
+                }
+            ]
+        }), { className: 'custom-popup' }),
+
+        mahingaKai: L.marker([-37.4312, 175.2401], {
+            title: 'Mahinga Kai',
+            icon: customIcon
+        }).bindPopup(createPopupContent({
+            title: 'Mahinga Kai',
+            type: 'Traditional Food Gathering Site',
+            description: 'Traditional food gathering area where tuna (eels), īnanga (whitebait), and waterfowl were harvested.',
+            details: {
+                'Resources': 'Tuna, Īnanga, Waterfowl',
+                'Season': 'Varies by Species',
+                'Status': 'Active Gathering Site',
+                'Access': 'Local Community'
+            },
+            gallery: [
+                'images/mahingakai1.jpg',
+                'images/mahingakai2.jpg',
+                'images/mahingakai3.jpg'
+            ],
+            resources: [
+                { icon: 'fas fa-fish', text: 'Fishing Methods' },
+                { icon: 'fas fa-calendar-alt', text: 'Seasonal Guide' },
+                { icon: 'fas fa-leaf', text: 'Conservation Practices' }
+            ],
+            sections: [
+                {
+                    title: 'Traditional Methods',
+                    content: 'This site preserves traditional food gathering practices, including specific techniques for catching tuna and īnanga.'
+                },
+                {
+                    title: 'Seasonal Patterns',
+                    content: 'Different resources are gathered according to seasonal patterns and traditional knowledge.'
+                },
+                {
+                    title: 'Conservation',
+                    content: 'Modern conservation practices are integrated with traditional gathering methods to ensure sustainability.'
+                }
+            ]
+        }), { className: 'custom-popup' })
+    };
+
+    // Add all markers to the map
+    Object.values(culturalSites).forEach(marker => marker.addTo(map));
+
+    // Handle collection card clicks
+    document.querySelectorAll('.collection-card').forEach(card => {
+        card.addEventListener('click', () => {
+            const title = card.querySelector('.collection-title').textContent;
+            // Find corresponding marker and focus on it
+            Object.entries(culturalSites).forEach(([key, marker]) => {
+                if (marker.options.title.includes(title.split(' ')[0])) {
+                    map.setView(marker.getLatLng(), 15);
+                    marker.openPopup();
+                }
+            });
+        });
+    });
+
+    // Function to create rich popup content
+    function createPopupContent(data) {
+        return `
+            <div class="popup-header">
+                <h3>${data.title}</h3>
+                <div class="popup-type-badge">${data.type}</div>
+            </div>
+            <div class="popup-content">
+                <div class="popup-tabs">
+                    <div class="popup-tab active" onclick="switchTab(event, 'overview')">Overview</div>
+                    <div class="popup-tab" onclick="switchTab(event, 'details')">Details</div>
+                    <div class="popup-tab" onclick="switchTab(event, 'resources')">Resources</div>
+                </div>
+
+                <div id="overview" class="tab-content active">
+                    <div class="popup-section">
+                        <div class="popup-description">${data.description}</div>
+                    </div>
+                    ${data.sections.map(section => `
+                        <div class="popup-section">
+                            <div class="popup-section-title">${section.title}</div>
+                            <div class="popup-description">${section.content}</div>
+                        </div>
+                    `).join('')}
+                </div>
+
+                <div id="details" class="tab-content">
+                    <div class="popup-details">
+                        ${Object.entries(data.details).map(([label, value]) => `
+                            <div class="detail-item">
+                                <div class="detail-label">${label}</div>
+                                <div class="detail-value">${value}</div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+
+                <div id="resources" class="tab-content">
+                    <ul class="resources-list">
+                        ${data.resources.map(resource => `
+                            <li class="resource-item">
+                                <i class="${resource.icon}"></i>
+                                ${resource.text}
+                            </li>
+                        `).join('')}
+                    </ul>
+                </div>
+
+                <div class="popup-actions">
+                    <button class="popup-button primary" onclick="startTour('${data.title}')">
+                        <i class="fas fa-walking"></i> Start Tour
+                    </button>
+                    <button class="popup-button secondary" onclick="learnMore('${data.title}')">
+                        <i class="fas fa-info-circle"></i> Learn More
+                    </button>
+                </div>
+            </div>
+        `;
+    }
+
+    // Tab switching functionality
+    function switchTab(event, tabId) {
+        const popup = event.target.closest('.popup-content');
+        
+        // Update tab states
+        popup.querySelectorAll('.popup-tab').forEach(tab => {
+            tab.classList.remove('active');
+        });
+        event.target.classList.add('active');
+
+        // Update content visibility
+        popup.querySelectorAll('.tab-content').forEach(content => {
+            content.classList.remove('active');
+        });
+        popup.querySelector(`#${tabId}`).classList.add('active');
+    }
+
+    // Function to show full-size image
+    function showFullImage(imgSrc) {
+        // Implement lightbox functionality
+        console.log('Show full image:', imgSrc);
+    }
+
+    // Function to start virtual tour
+    function startTour(siteTitle) {
+        // Implement tour functionality
+        console.log('Start tour for:', siteTitle);
+    }
+
+    // Function to show more information
+    function learnMore(siteTitle) {
+        // Implement additional information display
+        console.log('Learn more about:', siteTitle);
+    }
+  </script>
+</body>
+</html> 
