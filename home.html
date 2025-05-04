@@ -173,10 +173,12 @@
       font-size: 16px;
       transition: border-color 0.3s, box-shadow 0.3s;
       outline: none;
+      background-color: white;
+      color: var(--text-dark);
     }
     
     .SearchInput:focus {
-      border-color: #4A8C6A;
+      border-color: var(--primary-color);
       box-shadow: 0 0 0 3px rgba(74, 140, 106, 0.1);
     }
     
@@ -187,7 +189,7 @@
       transform: translateY(-50%);
       background: none;
       border: none;
-      color: #4A8C6A;
+      color: var(--primary-color);
       padding: 8px;
       cursor: pointer;
       transition: color 0.3s;
@@ -877,7 +879,25 @@
     }
     
     .dark-toolbar {
-      background-color: #222;
+      background-color: var(--dark-bg);
+    }
+    
+    .dark-toolbar .SearchInput {
+      background-color: var(--dark-bg);
+      color: white;
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .dark-toolbar .SearchInput::placeholder {
+      color: rgba(255, 255, 255, 0.6);
+    }
+
+    .dark-toolbar .SearchButton {
+      color: white;
+    }
+
+    .dark-toolbar .SearchButton:hover {
+      color: var(--secondary-color);
     }
     
     .logo {
