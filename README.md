@@ -32,6 +32,22 @@ An interactive digital library that preserves and presents the cultural and envi
 2. Open any of the HTML files in a modern web browser
 3. No build process required - static HTML/CSS/JS implementation
 
+### Running with http-server
+
+For a better development experience, you can use http-server to serve the files locally:
+
+1. Install http-server globally (optional):
+   ```bash
+   npm install -g http-server
+   ```
+
+2. Run http-server from the project directory:
+   ```bash
+   npx http-server
+   ```
+
+3. Access the website through one of the provided URLs (typically http://localhost:8080)
+
 ## Contributing
 
 This project is maintained by Group 10. Contributions are welcome through pull requests.
