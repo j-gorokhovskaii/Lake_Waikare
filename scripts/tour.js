@@ -14,6 +14,12 @@ var tour = new Tour({
       placement: "bottom"
     },
     {
+      element: "#childModeToggle",
+      title: "Kids Mode",
+      content: "Looking for a kid-friendly experience? Click this button to switch to Kids Mode! The interface will transform into a more engaging, colorful, and simplified version perfect for younger users. Kids Mode includes special games, stories, and interactive activities about Lake Waikare.",
+      placement: "left"
+    },
+    {
       element: "#hero-section",
       title: "Explore Lake Waikare",
       content: "This is the heart of our digital library. Here you'll find quick access to our interactive map and collections. The statistics below show the growing number of records, collections, and contributors in our library. Scroll down to discover more about Lake Waikare's rich heritage.",
