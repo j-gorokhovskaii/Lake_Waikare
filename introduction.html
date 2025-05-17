@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Presentation Main Page</title>
+    <title>Presentation Introduction Page</title>
     <style>
         * {
             margin: 0;
@@ -27,8 +27,14 @@
             width: 100%;
             display: flex;
             align-items: center;
-            justify-content: flex-end;
+            justify-content: space-between;
             padding: 0 30px;
+            color: white;
+        }
+
+        .main-topic {
+            font-size: 2.5em;
+            font-weight: bold;
         }
 
         /* 学校 logo 和名字 */
@@ -52,10 +58,14 @@
             /* 除去顶部横条 */
             display: flex;
             flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 2em;
+            align-items: flex-start;
+            /* 内容靠左 */
+            justify-content: flex-start;
+            /* 从顶部开始 */
+            padding: 80px 60px;
+            /* 上边距和左边距 */
+            text-align: left;
+            /* 文本左对齐 */
         }
 
         .project-title {
@@ -85,6 +95,38 @@
         .next-button:hover {
             opacity: 1;
         }
+
+        .prev-button {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            opacity: 0.4;
+            font-size: 2em;
+            color: #4A8C6A;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .prev-button:hover {
+            opacity: 1;
+        }
+
+        .main-text {
+            font-size: 2em;
+            /* 更大字号 */
+            line-height: 1.5em;
+            /* 更舒服的行距 */
+            margin-bottom: 2em;
+            /* 段落间距 */
+            max-width: 90%;
+            color: #333;
+        }
+
+        .center-content strong {
+            font-weight: bold;
+            /* 强调 Lake Waikare */
+        }
     </style>
 </head>
 
@@ -92,6 +134,8 @@
 
     <!-- 顶部红色横条 -->
     <div class="header-bar">
+        <div class="main-topic">Introduction & Project Goal</div>
+
         <div class="school-header">
             <img src="images/Waikato_logo.svg" alt="School Logo">
         </div>
@@ -99,26 +143,35 @@
 
     <!-- 中间标题内容 -->
     <div class="center-content">
-        <div class="project-title">Lake Waikare Desktop-2</div>
-        <div class="team">
-            Joseph Gorokhovskaii (1048854)<br>
-            Chen Li (1672194)<br>
-            Pranavkrishnan Ravichandran (1660319)<br>
-            Hina Lin (1646541)
-        </div>
+        <p class="main-text">
+            This platform specifically focuses on the dying <strong>Lake Waikare</strong> and aims to preserve Māori
+            culture and stories passed down through the generations.
+        </p>
+        <p class="main-text">
+            Its core purpose is to create a platform that promotes learning and brings in awareness on the pollution
+            plaguing <strong>Lake Waikare</strong>.
+        </p>
     </div>
+
+    <button class="prev-button" onclick="goToPrevious()">←</button>
 
     <!-- 右下角跳转按钮 -->
     <button class="next-button" onclick="goToNext()">→</button>
 
     <script>
         function goToNext() {
-            window.location.href = "introduction.html";
+            window.location.href = "home.html";
+        }
+
+        function goToPrevious() {
+            history.back();
         }
 
         document.addEventListener('keydown', function (e) {
             if (e.key === "ArrowRight") {
                 goToNext();
+            } else if (e.key === "ArrowLeft") {
+                goToPrevious();
             }
         });
     </script>
