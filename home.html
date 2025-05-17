@@ -259,42 +259,67 @@
       position: relative;
     }
     
-    .userFunctions i {
-      font-size: 20px;
+    .userFunctions > i {
+      font-size: 24px;
+      color: var(--text-dark);
       cursor: pointer;
-      color: #666;
+      padding: 8px;
     }
-    
+
     .userFunctions ul {
       display: none;
       position: absolute;
-      top: 100%;
+      top: calc(100% + 5px);
       right: 0;
-      background-color: white;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-      padding: 10px 0;
-      border-radius: 4px;
-      list-style: none;
-      margin-top: 10px;
-      min-width: 150px;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      min-width: 200px;
+      padding: 0.5rem 0;
+      z-index: 1000;
     }
-    
-    .userFunctions:hover ul {
+
+    /* Add padding above the dropdown to prevent gap */
+    .userFunctions::after {
+      content: '';
+      position: absolute;
+      height: 20px;
+      width: 100%;
+      top: 100%;
+      left: 0;
+    }
+
+    /* Show dropdown when hovering over the icon OR the dropdown itself */
+    .userFunctions:hover ul,
+    .userFunctions ul:hover {
       display: block;
     }
-    
-    .userFunctions li {
-      padding: 8px 20px;
+
+    .userFunctions ul li {
+      margin: 0;
     }
-    
-    .userFunctions a {
+
+    .userFunctions ul a {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.75rem 1rem;
+      color: var(--text-dark);
       text-decoration: none;
-      color: #333;
+      transition: background-color 0.2s;
       font-size: 14px;
+      white-space: nowrap;
     }
-    
-    .userFunctions a:hover {
-      color: #4A8C6A;
+
+    .userFunctions ul a:hover {
+      background-color: var(--gray-bg);
+    }
+
+    .userFunctions ul i {
+      width: 20px;
+      text-align: center;
+      color: var(--primary-color);
+      font-size: 16px;
     }
     
     .NavigationMobile {
@@ -1189,20 +1214,26 @@
           </ul>
 
           <a class="highlightedLink" href="/map.html" data-translate="explore_map">Explore the Map</a>
-          <a class="highlightedLink" href="explore.html" data-translate="explore_collection">Explore by collection</a>
+          <a class="highlightedLink" href="browse-records.html" data-translate="explore_collection">Explore Library</a>
           <button class="highlightedLink" id="startTour" onclick="startTour()" data-translate="start_tour">
             <i class="fas fa-info-circle"></i> Start Tour
           </button>
      
           <div class="user-functions-container">
             <div class="userFunctions">
-              <i class="fas fa-user"></i>
+              <i class="fas fa-user-circle"></i>
               <ul>
                 <li>
-                  <a href="/log_in" data-translate="log_in">Log in</a>
+                  <a href="home.html">
+                    <i class="fas fa-book-reader"></i>
+                    Back to Library
+                  </a>
                 </li>
                 <li>
-                  <a href="/sign_up" data-translate="sign_up">Sign up</a>
+                  <a href="admin-landing.html">
+                    <i class="fas fa-cog"></i>
+                    Admin Dashboard
+                  </a>
                 </li>
               </ul>
             </div>
@@ -1232,13 +1263,19 @@
       
           <div class="user-functions-container">
             <div class="userFunctions">
-              <i class="fas fa-user"></i>
+              <i class="fas fa-user-circle"></i>
               <ul>
                 <li>
-                  <a href="/log_in" data-translate="log_in">Log in</a>
+                  <a href="home.html">
+                    <i class="fas fa-book-reader"></i>
+                    Back to Library
+                  </a>
                 </li>
                 <li>
-                  <a href="/sign_up" data-translate="sign_up">Sign up</a>
+                  <a href="admin-landing.html">
+                    <i class="fas fa-cog"></i>
+                    Admin Dashboard
+                  </a>
                 </li>
               </ul>
             </div>
@@ -1261,9 +1298,9 @@
               <i class="fas fa-map-marked-alt"></i>
               Explore the Map
             </a>
-            <a href="explore.html" class="hero-button secondary" data-translate="explore_collection">
+            <a href="browse-records.html" class="hero-button secondary" data-translate="explore_collection">
               <i class="fas fa-compass"></i>
-              Browse Collections
+              Browse Records
             </a>
           </div>
           
@@ -1299,42 +1336,42 @@
           Explore themes across the Lake Waikare Digital Library.
         </div>
         <div class="QuickStartsGrid">
-          <a href="/map.html/search/results?taxonomy_term_ids=1">
+          <a href="browse-records.html?collection=cultural" onclick="localStorage.setItem('selectedCollection', 'Cultural Heritage')">
             <div class="QuickStartItem">
               <div class="QuickStartIcon">🏺</div>
               <div class="QuickStartTitle" data-translate="maori_history">Māori History</div>
             </div>
           </a>
           
-          <a href="/map.html/search/results?taxonomy_term_ids=2">
+          <a href="browse-records.html?collection=environmental" onclick="localStorage.setItem('selectedCollection', 'Environmental Data')">
             <div class="QuickStartItem">
               <div class="QuickStartIcon">💧</div>
               <div class="QuickStartTitle" data-translate="water_quality">Water Quality Data</div>
             </div>
           </a>
           
-          <a href="/map.html/search/results?taxonomy_term_ids=3">
+          <a href="browse-records.html?collection=environmental" onclick="localStorage.setItem('selectedCollection', 'Environmental Data')">
             <div class="QuickStartItem">
               <div class="QuickStartIcon">🦅</div>
               <div class="QuickStartTitle" data-translate="flora_fauna">Local Flora & Fauna</div>
             </div>
           </a>
           
-          <a href="/map.html/search/results?taxonomy_term_ids=4">
+          <a href="browse-records.html?collection=cultural" onclick="localStorage.setItem('selectedCollection', 'Cultural Heritage')">
             <div class="QuickStartItem">
               <div class="QuickStartIcon">🗣️</div>
               <div class="QuickStartTitle" data-translate="oral_histories">Oral Histories</div>
             </div>
           </a>
           
-          <a href="/map.html/search/results?taxonomy_term_ids=5">
+          <a href="browse-records.html?collection=environmental" onclick="localStorage.setItem('selectedCollection', 'Environmental Data')">
             <div class="QuickStartItem">
               <div class="QuickStartIcon">🌍</div>
               <div class="QuickStartTitle" data-translate="environmental_change">Environmental Change</div>
             </div>
           </a>
           
-          <a href="/map.html/search/results?taxonomy_term_ids=6">
+          <a href="browse-records.html?collection=cultural" onclick="localStorage.setItem('selectedCollection', 'Cultural Heritage')">
             <div class="QuickStartItem">
               <div class="QuickStartIcon">🥗</div>
               <div class="QuickStartTitle" data-translate="traditional_food">Traditional Food Gathering</div>
@@ -1366,7 +1403,7 @@
             <p class="FeatureDescription" data-translate="collections_description">
               Collections group records by themes such as "Water Quality Timeline," "Māori Cultural Heritage," or "Wetland Restoration Projects." These curated groups tell comprehensive stories about Lake Waikare's past, present, and potential future through multiple interconnected records.
             </p>
-            <a href="/map.html" class="FeatureButton" data-translate="open_map">Open the map</a>
+            <a href="browse-records.html" class="FeatureButton" data-translate="browse_records">Browse Records</a>
           </div>
           <div class="FeatureVisual">
             <div class="icon">📚</div>

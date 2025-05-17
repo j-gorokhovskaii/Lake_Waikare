@@ -33,6 +33,7 @@
       --text-light: #666666;
       --sidebar-width: 80px;
       --sidebar-expanded: 200px;
+      --content-width: 480px;
     }
     
     body, html {
@@ -184,16 +185,65 @@
 
     .popup-content {
       padding: 10px;
+      max-width: 300px;
     }
 
     .popup-content h3 {
-      margin: 0 0 8px 0;
+      margin: 0 0 10px 0;
       color: var(--primary-color);
+      font-size: 1.2rem;
     }
 
     .popup-content p {
-      margin: 0;
+      margin: 0 0 15px 0;
       line-height: 1.4;
+      color: var(--text-dark);
+    }
+
+    .popup-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      margin-bottom: 15px;
+    }
+
+    .popup-tag {
+      background: var(--gray-bg);
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-size: 0.8rem;
+      color: var(--text-light);
+    }
+
+    .popup-buttons {
+      display: flex;
+      gap: 10px;
+    }
+
+    .popup-button {
+      flex: 1;
+      padding: 8px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      text-align: center;
+      text-decoration: none;
+      transition: background-color 0.2s;
+    }
+
+    .popup-button.primary {
+      background: var(--primary-color);
+      color: white;
+    }
+
+    .popup-button.secondary {
+      background: var(--gray-bg);
+      color: var(--text-dark);
+    }
+
+    .popup-button:hover {
+      opacity: 0.9;
     }
 
     .zoom-controls {
@@ -267,6 +317,249 @@
       font-size: 12px;
       color: var(--text-light);
     }
+
+    #content-panel {
+      position: fixed;
+      left: var(--sidebar-width);
+      top: 0;
+      width: var(--content-width);
+      height: 100%;
+      background-color: var(--light-bg);
+      overflow-y: auto;
+      padding: 20px;
+      box-sizing: border-box;
+      z-index: 900;
+      transition: left 0.3s ease;
+    }
+
+    .record-section {
+      margin-bottom: 2rem;
+    }
+
+    .section-title {
+      color: var(--text-dark);
+      font-size: 1.25rem;
+      font-weight: 500;
+      margin-bottom: 1rem;
+    }
+
+    .section-content {
+      color: var(--text-light);
+      line-height: 1.6;
+    }
+
+    .record-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-bottom: 2rem;
+    }
+
+    .record-tag {
+      background: var(--gray-bg);
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      font-size: 0.875rem;
+      color: var(--text-dark);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .record-tag i {
+      color: var(--primary-color);
+      font-size: 0.875rem;
+    }
+
+    .media-section {
+      margin-bottom: 2rem;
+    }
+
+    .media-title {
+      color: var(--text-dark);
+      font-size: 1.1rem;
+      font-weight: 500;
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid var(--gray-bg);
+    }
+
+    .media-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 1rem;
+    }
+
+    .media-item {
+      position: relative;
+      aspect-ratio: 1;
+      border-radius: 8px;
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    .placeholder-box {
+      background: var(--gray-bg);
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-light);
+      font-size: 0.875rem;
+    }
+
+    .documents-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+    }
+
+    .document-item {
+      background: var(--gray-bg);
+      padding: 1rem;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .document-item:hover {
+      background: #f0f0f0;
+    }
+
+    .document-item i {
+      font-size: 1.25rem;
+      color: var(--primary-color);
+    }
+
+    .document-label {
+      color: var(--text-dark);
+      font-size: 0.9rem;
+    }
+
+    .author-credit {
+      text-align: right;
+      color: var(--text-light);
+      font-size: 0.9rem;
+      margin-top: 2rem;
+      font-style: italic;
+    }
+
+    .created-date {
+      font-size: 0.8rem;
+      color: var(--text-light);
+      text-align: right;
+      font-style: italic;
+      margin-top: 0.5rem;
+    }
+
+    /* Handle sidebar hover state - only when content panel is visible */
+    #left-sidebar:hover ~ #content-panel[style*="display: block"] {
+      left: var(--sidebar-expanded);
+    }
+
+    #left-sidebar:hover ~ #map-container {
+      left: var(--sidebar-expanded);
+    }
+
+    /* Adjust map container based on content panel visibility */
+    #map-container {
+      position: fixed;
+      left: var(--sidebar-width);
+      top: 0;
+      right: 0;
+      height: 100%;
+      transition: left 0.3s ease;
+    }
+
+    #content-panel[style*="display: block"] ~ #map-container {
+      left: calc(var(--sidebar-width) + var(--content-width));
+    }
+
+    #left-sidebar:hover ~ #content-panel[style*="display: block"] ~ #map-container {
+      left: calc(var(--sidebar-expanded) + var(--content-width));
+    }
+
+    .search-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 15px;
+      margin-bottom: 20px;
+    }
+    
+    .header-content {
+      flex-grow: 1;
+    }
+
+    .header {
+      color: var(--primary-color);
+      margin: 0 0 0.5rem 0;
+      font-size: 24px;
+      font-weight: 600;
+    }
+
+    .close-tray {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      color: var(--text-light);
+      cursor: pointer;
+      font-size: 14px;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .close-tray:hover {
+      color: var(--text-dark);
+    }
+
+    .media-item.audio {
+      background: var(--gray-bg);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 1rem;
+    }
+
+    .media-item.audio i {
+      font-size: 1.5rem;
+      color: var(--primary-color);
+    }
+
+    .media-item.audio .media-label {
+      font-size: 0.875rem;
+      color: var(--text-dark);
+      text-align: center;
+    }
+
+    .view-record-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      padding: 0.25rem 0.5rem;
+      background-color: var(--gray-bg);
+      color: var(--text-light);
+      text-decoration: none;
+      border-radius: 4px;
+      font-size: 0.8rem;
+      transition: all 0.2s ease;
+    }
+
+    .view-record-button:hover {
+      background-color: var(--primary-color);
+      color: white;
+    }
+
+    .view-record-button i {
+      font-size: 0.8rem;
+    }
   </style>
 </head>
 
@@ -294,6 +587,69 @@
       <i class="fas fa-map-marked-alt"></i>
       <span>Map View</span>
     </a>
+  </div>
+
+  <!-- Content panel for record view -->
+  <div id="content-panel" style="display: none;">
+    <div class="search-header">
+      <div class="header-content">
+        <h2 class="header" id="record-title"></h2>
+        <a id="view-record-link" href="#" class="view-record-button">
+          <i class="fas fa-external-link-alt"></i>
+          View in Record Page
+        </a>
+      </div>
+      <a href="map.html" class="close-tray" onclick="hideSidebar()">
+        <i class="fas fa-times"></i>
+        Close tray
+      </a>
+    </div>
+
+    <div class="record-tags" id="record-tags"></div>
+
+    <div class="record-section">
+      <h2 class="section-title">Description</h2>
+      <div class="section-content" id="record-description"></div>
+    </div>
+
+    <div class="media-section">
+      <h3 class="media-title">Gallery</h3>
+      <div class="media-grid" id="record-images">
+        <div class="media-item">
+          <div class="placeholder-box">Image 1</div>
+        </div>
+        <div class="media-item">
+          <div class="placeholder-box">Image 2</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="media-section">
+      <h3 class="media-title">Audio</h3>
+      <div class="media-grid" id="record-audio">
+        <div class="media-item audio">
+          <i class="fas fa-microphone"></i>
+          <div class="media-label">Oral History 1</div>
+        </div>
+        <div class="media-item audio">
+          <i class="fas fa-microphone"></i>
+          <div class="media-label">Oral History 2</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="media-section">
+      <h3 class="media-title">Documents</h3>
+      <div class="documents-grid" id="record-documents">
+        <div class="document-item">
+          <i class="fas fa-file-pdf"></i>
+          <div class="document-label">Documentation</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="author-credit" id="record-author"></div>
+    <div class="created-date" id="record-date"></div>
   </div>
 
   <!-- Map container -->
@@ -349,56 +705,146 @@
     document.getElementById('zoomIn').addEventListener('click', () => map.zoomIn());
     document.getElementById('zoomOut').addEventListener('click', () => map.zoomOut());
 
-    // Define cultural site markers
-    const culturalSites = {
-      taurangamirumiru: L.marker([-37.4157, 175.2278], {
-        title: 'Taurangamirumiru Pā'
-      }).bindPopup('<div class="popup-content"><h3>Taurangamirumiru Pā</h3><p>Ancient pā site where the sisters Reipae and Reitu once lived. A significant cultural and historical location for local iwi.</p></div>'),
-      
-      hingakaka: L.marker([-37.4392, 175.2344], {
-        title: 'Hingakākā'
-      }).bindPopup('<div class="popup-content"><h3>Hingakākā</h3><p>Site of one of the largest intertribal battles in Aotearoa\'s history, fought in the late 1700s.</p></div>'),
-      
-      uenukuTapu: L.marker([-37.4486, 175.2167], {
-        title: 'Te Wāhi o Uenuku'
-      }).bindPopup('<div class="popup-content"><h3>Te Wāhi o Uenuku</h3><p>Sacred site where the ancient carved figure Uenuku was submerged in the lake before the Battle of Hingakākā.</p></div>'),
-      
-      waahiTapu: L.marker([-37.4234, 175.2089], {
-        title: 'Wāhi Tapu'
-      }).bindPopup('<div class="popup-content"><h3>Wāhi Tapu</h3><p>Sacred grounds where ancient ceremonies were performed and important tribal gatherings were held.</p></div>'),
-      
-      mahingaKai: L.marker([-37.4312, 175.2401], {
-        title: 'Mahinga Kai'
-      }).bindPopup('<div class="popup-content"><h3>Mahinga Kai</h3><p>Traditional food gathering area where tuna (eels), īnanga (whitebait), and waterfowl were harvested.</p></div>')
-    };
-
-    // Create a layer group for cultural sites
-    const culturalLayer = L.layerGroup(Object.values(culturalSites)).addTo(map);
-
-    // Handle layer toggles
-    document.getElementById('satellite-toggle').addEventListener('change', function() {
-      if (this.checked) {
-        satellite.addTo(map);
-      } else {
-        map.removeLayer(satellite);
-      }
-    });
-
-    document.getElementById('cultural-toggle').addEventListener('change', function() {
-      if (this.checked) {
-        culturalLayer.addTo(map);
-      } else {
-        map.removeLayer(culturalLayer);
-      }
-    });
-
-    // Reset view function
-    function resetView() {
-      map.setView([-37.4307, 175.2244], 13);
+    // Function to create popup content
+    function createPopupContent(site) {
+      return `
+        <div class="popup-content">
+          <h3>${site.title}</h3>
+          <div class="popup-tags">
+            <span class="popup-tag"><i class="fas fa-calendar"></i> ${site.year || 'Historical'}</span>
+            <span class="popup-tag"><i class="fas fa-user"></i> ${site.author || 'Traditional Knowledge'}</span>
+            <span class="popup-tag"><i class="fas fa-map-marker-alt"></i> ${site.location}</span>
+          </div>
+          <p>${site.overview}</p>
+          <div class="popup-buttons">
+            <a href="record-view.html?id=${site.id}" class="popup-button primary">View Record</a>
+            <button onclick="window.showSidebar('${site.id}')" class="popup-button secondary">Explore in Sidebar</button>
+          </div>
+        </div>
+      `;
     }
 
-    // Add all markers to the map
-    Object.values(culturalSites).forEach(marker => marker.addTo(map));
+    // Define cultural sites with more structured data
+    const culturalSites = {
+      taurangamirumiru: {
+        id: "taurangamirumiru",
+        title: "Taurangamirumiru Pā",
+        overview: "Ancient pā site where the sisters Reipae and Reitu once lived. A significant cultural and historical location for local iwi.",
+        year: "1700s",
+        author: "Ngāti Mahuta",
+        location: "Northern Shore",
+        coordinates: [-37.4157, 175.2278]
+      },
+
+      hingakaka: {
+        id: "hingakaka",
+        title: "Hingakākā",
+        overview: "Site of one of the largest intertribal battles in Aotearoa's history, fought in the late 1700s.",
+        year: "1780s",
+        author: "Multiple Iwi",
+        location: "Eastern Shore",
+        coordinates: [-37.4392, 175.2344]
+      },
+
+      uenukuTapu: {
+        id: "uenukutapu",
+        title: "Te Wāhi o Uenuku",
+        overview: "Sacred site where the ancient carved figure Uenuku was submerged in the lake before the Battle of Hingakākā.",
+        year: "Pre-1780s",
+        author: "Waikato Tribes",
+        location: "Southern Waters",
+        coordinates: [-37.4486, 175.2167]
+      }
+    };
+
+    // Create markers for each site
+    Object.entries(culturalSites).forEach(([id, site]) => {
+      site.marker = L.marker(site.coordinates, {
+        title: site.title,
+        icon: L.icon({
+          iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
+          shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
+          iconSize: [25, 41],
+          iconAnchor: [12, 41],
+          popupAnchor: [1, -34],
+          shadowSize: [41, 41]
+        })
+      }).bindPopup(createPopupContent(site));
+
+      site.marker.addTo(map);
+    });
+
+    // Function to open specific marker popup
+    function openMarkerPopup(markerId) {
+      const site = culturalSites[markerId];
+      if (site && site.marker) {
+        map.setView(site.coordinates, 15);
+        site.marker.openPopup();
+      }
+    }
+
+    // Check URL parameters for marker to show
+    const urlParams = new URLSearchParams(window.location.search);
+    const markerId = urlParams.get('marker');
+    if (markerId) {
+      openMarkerPopup(markerId);
+    }
+
+    function showSidebar(siteId) {
+      const site = culturalSites[siteId];
+      if (!site) return;
+
+      const contentPanel = document.getElementById('content-panel');
+      const mapContainer = document.getElementById('map-container');
+
+      // Update content panel with record details
+      document.getElementById('record-title').textContent = site.title;
+      
+      // Update view record link
+      document.getElementById('view-record-link').href = `record-view.html?id=${site.id}`;
+
+      // Update tags
+      const tagsHtml = `
+        <div class="record-tag">
+          <i class="fas fa-calendar"></i>
+          ${site.year || 'Historical'}
+        </div>
+        <div class="record-tag">
+          <i class="fas fa-user"></i>
+          ${site.author || 'Traditional Knowledge'}
+        </div>
+        <div class="record-tag">
+          <i class="fas fa-map-marker-alt"></i>
+          ${site.location}
+        </div>
+      `;
+      document.getElementById('record-tags').innerHTML = tagsHtml;
+
+      // Update description
+      document.getElementById('record-description').textContent = site.overview;
+
+      // Update author and date
+      document.getElementById('record-author').textContent = `Written by: ${site.author || 'Traditional Knowledge'}`;
+      document.getElementById('record-date').textContent = `Created on: ${new Date().toLocaleDateString()}`;
+
+      // Show the panel and adjust map container
+      contentPanel.style.display = 'block';
+      mapContainer.style.left = `calc(var(--sidebar-width) + var(--content-width))`;
+
+      // Center map on the marker
+      map.setView(site.coordinates, 15);
+    }
+
+    function hideSidebar() {
+      const contentPanel = document.getElementById('content-panel');
+      const mapContainer = document.getElementById('map-container');
+      
+      contentPanel.style.display = 'none';
+      mapContainer.style.left = 'var(--sidebar-width)';
+    }
+
+    // Make showSidebar available globally
+    window.showSidebar = showSidebar;
   </script>
 </body>
 </html>

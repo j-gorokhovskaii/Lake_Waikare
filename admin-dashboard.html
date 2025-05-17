@@ -1,0 +1,987 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Dashboard - Lake Waikare Digital Library</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Add Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+         integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+         crossorigin=""/>
+    <!-- Add Leaflet JavaScript -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+         integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+         crossorigin=""></script>
+    <style>
+        :root {
+            --primary-color: #4A8C6A;
+            --secondary-color: #FFC000;
+            --dark-bg: #222222;
+            --light-bg: #ffffff;
+            --gray-bg: #f8f8f8;
+            --text-dark: #333333;
+            --text-light: #666666;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: var(--gray-bg);
+            min-height: 100vh;
+        }
+
+        .dashboard-header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .dashboard-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .admin-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .profile-dropdown {
+            display: none;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            min-width: 200px;
+            margin-top: 0.5rem;
+            padding: 0.5rem 0;
+            z-index: 1000;
+        }
+
+        .profile-dropdown.show {
+            display: block;
+        }
+
+        .profile-dropdown a {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1rem;
+            color: var(--text-dark);
+            text-decoration: none;
+            transition: background-color 0.2s;
+        }
+
+        .profile-dropdown a:hover {
+            background-color: var(--gray-bg);
+        }
+
+        .profile-dropdown i {
+            width: 20px;
+            text-align: center;
+            color: var(--primary-color);
+        }
+
+        .main-content {
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            min-height: calc(100vh - 80px);
+        }
+
+        .dashboard-card {
+            background: white;
+            border-radius: 8px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .card-title {
+            color: var(--primary-color);
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--gray-bg);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group:last-child {
+            margin-bottom: 0;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-dark);
+            font-weight: 500;
+        }
+
+        input[type="text"],
+        input[type="date"],
+        input[type="number"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+            margin-top: 0.25rem;
+            box-sizing: border-box;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .media-upload {
+            border: 2px dashed #ddd;
+            padding: 2rem;
+            text-align: center;
+            border-radius: 4px;
+            background: var(--gray-bg);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .media-upload:hover {
+            border-color: var(--primary-color);
+            background: #f0f0f0;
+        }
+
+        .upload-info {
+            font-size: 0.875rem;
+            color: var(--text-light);
+            margin-top: 0.5rem;
+        }
+
+        .media-preview {
+            flex: 1;
+            min-height: 100px;
+            border: 2px dashed #ddd;
+            border-radius: 4px;
+            padding: 1rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .preview-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 2px solid var(--gray-bg);
+            gap: 2rem;
+        }
+
+        .sensitivity-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin-left: 1rem;
+        }
+
+        .sensitivity-badge.sensitive {
+            background-color: #ffe5e5;
+            color: #d63031;
+        }
+
+        .sensitivity-badge.not-sensitive {
+            background-color: #e5f9e5;
+            color: #27ae60;
+        }
+
+        .year-select {
+            width: 150px;
+        }
+
+        .preview-section {
+            display: flex;
+            align-items: flex-start;
+            gap: 2rem;
+            flex: 1;
+        }
+
+        .preview-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .search-filters {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .search-box {
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+
+        .search-box input {
+            padding-left: 2.5rem;
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-light);
+        }
+
+        .records-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .record-card {
+            padding: 1.5rem;
+        }
+
+        .record-card h3 {
+            color: var(--primary-color);
+            margin: 0 0 0.5rem 0;
+        }
+
+        .record-meta {
+            font-size: 0.875rem;
+            color: var(--text-light);
+            margin-bottom: 0.5rem;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            min-width: 120px;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #3a7054;
+        }
+
+        .btn-secondary {
+            background-color: var(--secondary-color);
+            color: var(--text-dark);
+        }
+
+        .btn-secondary:hover {
+            background-color: #e6ac00;
+        }
+
+        .btn-danger {
+            background-color: #d63031;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background-color: #c42f2f;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+            margin-left: auto;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .status-draft {
+            background-color: #e9ecef;
+            color: #495057;
+        }
+
+        .status-published {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .tab-navigation {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            padding: 0.5rem;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .tab {
+            padding: 1rem 2rem;
+        }
+
+        .tab.active {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+        }
+
+        .modal-content {
+            position: relative;
+            background: white;
+            width: 90%;
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 2rem;
+            border-radius: 8px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-content form {
+            margin-top: 1.5rem;
+        }
+
+        .close-modal {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--text-light);
+        }
+
+        #locationMap {
+            height: 450px;
+        }
+
+        .coordinates-input {
+            display: grid;
+            grid-template-columns: 1fr 1fr auto;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            align-items: end;
+        }
+
+        .location-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--primary-color);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            border: none;
+            font-size: 1rem;
+        }
+
+        .location-button:hover {
+            background: #3a7054;
+        }
+
+        .location-display {
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+
+        @media (max-width: 768px) {
+            .coordinates-input {
+                grid-template-columns: 1fr;
+            }
+
+            .preview-container {
+                flex-direction: row;
+                flex-wrap: wrap;
+                gap: 1rem;
+            }
+
+            .preview-container button {
+                flex: 1;
+            }
+
+            .modal-content {
+                padding: 1.5rem;
+                margin: 1rem;
+                width: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="dashboard-header">
+        <div class="dashboard-title">
+            Lake Waikare Digital Library - Admin Dashboard
+        </div>
+        <div class="admin-info" id="profileButton">
+            <span>Welcome, Admin</span>
+            <i class="fas fa-user-circle"></i>
+            <div class="profile-dropdown" id="profileDropdown">
+                <a href="home.html">
+                    <i class="fas fa-book-reader"></i>
+                    Back to Library
+                </a>
+                <a href="admin-dashboard.html">
+                    <i class="fas fa-cog"></i>
+                    Admin Dashboard
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="tab-navigation">
+            <div class="tab active" data-tab="create">Create New Record</div>
+            <div class="tab" data-tab="manage">Manage Records</div>
+        </div>
+
+        <div class="dashboard-card" id="createRecord">
+            <h2 class="card-title">Create New Record</h2>
+            
+            <form id="recordForm">
+                <div class="form-group">
+                    <label for="title">Record Title</label>
+                    <input type="text" id="title" placeholder="Enter record title" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="author">Author (Optional)</label>
+                    <input type="text" id="author" placeholder="Enter author name">
+                </div>
+
+                <div class="form-group">
+                    <label for="category">Collection</label>
+                    <select id="category" required>
+                        <option value="cultural">Cultural Heritage</option>
+                        <option value="environmental">Environmental Data</option>
+                        <option value="historical">Historical Records</option>
+                        <option value="community">Community Stories</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="year">Year</label>
+                    <select id="year" class="year-select" required>
+                        <option value="">Select year</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="sensitivity">Content Sensitivity</label>
+                    <select id="sensitivity" required>
+                        <option value="not-sensitive">Not Sensitive</option>
+                        <option value="sensitive">Sensitive Content</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="overview">Overview</label>
+                    <textarea id="overview" rows="2" placeholder="Enter a brief overview of the record" required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="description">Data</label>
+                    <textarea id="description" rows="4" placeholder="Enter the record data" required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Documents</label>
+                    <div class="media-upload" id="documentUpload">
+                        <i class="fas fa-file-alt fa-2x" style="color: var(--primary-color)"></i>
+                        <p>Drop documents here or click to upload</p>
+                        <input type="file" hidden accept=".pdf,.doc,.docx,.txt">
+                        <div class="upload-info">Supported formats: PDF, DOC, DOCX, TXT</div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Images</label>
+                    <div class="media-upload" id="imageUpload">
+                        <i class="fas fa-image fa-2x" style="color: var(--primary-color)"></i>
+                        <p>Drop images here or click to upload</p>
+                        <input type="file" hidden accept="image/*" multiple>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Video</label>
+                    <div class="media-upload" id="videoUpload">
+                        <i class="fas fa-video fa-2x" style="color: var(--primary-color)"></i>
+                        <p>Drop video here or click to upload</p>
+                        <input type="file" hidden accept="video/*">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Audio</label>
+                    <div class="media-upload" id="audioUpload">
+                        <i class="fas fa-microphone fa-2x" style="color: var(--primary-color)"></i>
+                        <p>Drop audio file here or click to upload</p>
+                        <input type="file" hidden accept="audio/*">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Location</label>
+                    <button type="button" class="location-button" onclick="openLocationModal('create')">
+                        <i class="fas fa-map-marker-alt"></i>
+                        Set Location
+                    </button>
+                    <div class="location-display" id="createLocationDisplay">
+                        No location set
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="status">Status</label>
+                    <select id="status" required>
+                        <option value="draft">Draft</option>
+                        <option value="published">Published</option>
+                    </select>
+                </div>
+
+                <div class="preview-container">
+                    <button type="button" class="btn btn-primary">
+                        <i class="fas fa-eye"></i> Preview
+                    </button>
+                    <div class="action-buttons">
+                        <button type="button" class="btn btn-secondary">Save as Draft</button>
+                        <button type="submit" class="btn btn-primary">Publish Record</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="dashboard-card" id="manageRecords" style="display: none;">
+            <h2 class="card-title">Manage Records</h2>
+            
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="Search records..." class="search-input">
+            </div>
+
+            <div class="search-filters">
+                <div class="form-group">
+                    <label>Collection</label>
+                    <select>
+                        <option value="">All Collections</option>
+                        <option value="cultural">Cultural Heritage</option>
+                        <option value="environmental">Environmental Data</option>
+                        <option value="historical">Historical Records</option>
+                        <option value="community">Community Stories</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Status</label>
+                    <select>
+                        <option value="">All Status</option>
+                        <option value="draft">Draft</option>
+                        <option value="published">Published</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Date Range</label>
+                    <input type="date" placeholder="From">
+                </div>
+
+                <div class="form-group">
+                    <label>&nbsp;</label>
+                    <input type="date" placeholder="To">
+                </div>
+            </div>
+
+            <div class="records-grid">
+                <div class="record-card">
+                    <h3>Water Quality Data 2023</h3>
+                    <div class="record-meta">
+                        <span>Environmental Data</span> • <span>Published</span>
+                        <div class="sensitivity-badge not-sensitive">
+                            <i class="fas fa-unlock"></i> Not Sensitive
+                        </div>
+                    </div>
+                    <div class="record-meta">
+                        Author: Environmental Research Team • Year: 2023
+                    </div>
+                </div>
+
+                <div class="record-card">
+                    <h3>Oral History: Local Fishing Practices</h3>
+                    <div class="record-meta">
+                        <span>Cultural Heritage</span> • <span>Draft</span>
+                        <div class="sensitivity-badge sensitive">
+                            <i class="fas fa-lock"></i> Sensitive
+                        </div>
+                    </div>
+                    <div class="record-meta">
+                        Author: Local Elder • Year: 1950
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Location Modal -->
+    <div id="locationModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeLocationModal()">&times;</span>
+            <h2>Set Location</h2>
+            
+            <div class="coordinates-input">
+                <div class="form-group">
+                    <label>Latitude</label>
+                    <input type="number" id="latInput" step="any" placeholder="Enter latitude">
+                </div>
+                <div class="form-group">
+                    <label>Longitude</label>
+                    <input type="number" id="lngInput" step="any" placeholder="Enter longitude">
+                </div>
+                <button class="btn btn-primary" onclick="setCoordinates()">Set</button>
+            </div>
+
+            <div id="locationMap"></div>
+        </div>
+    </div>
+
+    <!-- Edit Record Modal -->
+    <div id="editRecordModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeEditModal()">&times;</span>
+            <h2>Edit Record</h2>
+            
+            <form id="editRecordForm">
+                <div class="form-group">
+                    <label for="editTitle">Record Title</label>
+                    <input type="text" id="editTitle" value="Water Quality Data 2023" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="editAuthor">Author (Optional)</label>
+                    <input type="text" id="editAuthor" value="Environmental Research Team" placeholder="Enter author name">
+                </div>
+
+                <div class="form-group">
+                    <label for="editCategory">Collection</label>
+                    <select id="editCategory" required>
+                        <option value="environmental" selected>Environmental Data</option>
+                        <option value="cultural">Cultural Heritage</option>
+                        <option value="historical">Historical Records</option>
+                        <option value="community">Community Stories</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="editYear">Year</label>
+                    <select id="editYear" class="year-select" required>
+                        <option value="">Select year</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="editSensitivity">Content Sensitivity</label>
+                    <select id="editSensitivity" required>
+                        <option value="not-sensitive" selected>Not Sensitive</option>
+                        <option value="sensitive">Sensitive Content</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="editOverview">Overview</label>
+                    <textarea id="editOverview" rows="2" required>Sample water quality data for Lake Waikare collected in 2023.</textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="editDescription">Data</label>
+                    <textarea id="editDescription" rows="4" required>Sample water quality data for Lake Waikare collected in 2023.</textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Document</label>
+                    <div class="media-upload" id="editDocumentUpload">
+                        <i class="fas fa-file-alt fa-2x" style="color: var(--primary-color)"></i>
+                        <p>Drop document here or click to upload</p>
+                        <input type="file" hidden accept=".pdf,.doc,.docx,.txt">
+                        <div class="upload-info">Supported formats: PDF, DOC, DOCX, TXT</div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Images</label>
+                    <div class="media-upload" id="editImageUpload">
+                        <i class="fas fa-image fa-2x" style="color: var(--primary-color)"></i>
+                        <p>Drop images here or click to upload</p>
+                        <input type="file" hidden accept="image/*" multiple>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Video</label>
+                    <div class="media-upload">
+                        <i class="fas fa-video fa-2x" style="color: var(--primary-color)"></i>
+                        <p>Drop video here or click to upload</p>
+                        <input type="file" hidden accept="video/*">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Audio</label>
+                    <div class="media-upload">
+                        <i class="fas fa-microphone fa-2x" style="color: var(--primary-color)"></i>
+                        <p>Drop audio here or click to upload</p>
+                        <input type="file" hidden accept="audio/*">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Location</label>
+                    <button type="button" class="location-button" onclick="openLocationModal('edit')">
+                        <i class="fas fa-map-marker-alt"></i>
+                        Update Location
+                    </button>
+                    <div class="location-display" id="editLocationDisplay">
+                        Lat: -37.4321, Lng: 175.2222
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="editStatus">Status</label>
+                    <select id="editStatus" required>
+                        <option value="draft">Draft</option>
+                        <option value="published" selected>Published</option>
+                    </select>
+                </div>
+
+                <div class="preview-container">
+                    <button type="button" class="btn btn-primary">
+                        <i class="fas fa-eye"></i> Preview
+                    </button>
+                    <div class="action-buttons">
+                        <button type="button" class="btn btn-secondary" onclick="closeEditModal()">Cancel</button>
+                        <button type="button" class="btn btn-danger" onclick="confirmDelete()">
+                            <i class="fas fa-trash"></i> Delete Record
+                        </button>
+                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div id="deleteConfirmModal" class="modal">
+        <div class="modal-content" style="max-width: 400px;">
+            <h2>Delete Record</h2>
+            <p style="margin: 1rem 0; color: var(--text-light);">Are you sure you want to delete this record? This action cannot be undone.</p>
+            <div class="action-buttons" style="margin-top: 2rem;">
+                <button type="button" class="btn btn-secondary" onclick="closeDeleteModal()">Cancel</button>
+                <button type="button" class="btn btn-danger" onclick="deleteRecord()">
+                    <i class="fas fa-trash"></i> Delete
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let map;
+        let marker;
+        let currentContext = 'create';
+
+        // Year options generator
+        function generateYearOptions() {
+            const currentYear = new Date().getFullYear();
+            let options = '<option value="">Select year</option>';
+            for (let year = currentYear; year >= 1800; year--) {
+                options += `<option value="${year}">${year}</option>`;
+            }
+            return options;
+        }
+
+        // Initialize year selects
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('year').innerHTML = generateYearOptions();
+            document.getElementById('editYear').innerHTML = generateYearOptions();
+        });
+
+        // Initialize map
+        function initMap() {
+            map = L.map('locationMap').setView([-37.43, 175.22], 13);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© OpenStreetMap contributors'
+            }).addTo(map);
+
+            map.on('click', function(e) {
+                setMarker(e.latlng);
+                document.getElementById('latInput').value = e.latlng.lat.toFixed(6);
+                document.getElementById('lngInput').value = e.latlng.lng.toFixed(6);
+            });
+        }
+
+        function setMarker(latlng) {
+            if (marker) {
+                marker.setLatLng(latlng);
+            } else {
+                marker = L.marker(latlng).addTo(map);
+            }
+        }
+
+        function setCoordinates() {
+            const lat = parseFloat(document.getElementById('latInput').value);
+            const lng = parseFloat(document.getElementById('lngInput').value);
+            
+            if (isNaN(lat) || isNaN(lng)) {
+                alert('Please enter valid coordinates');
+                return;
+            }
+
+            setMarker(L.latLng(lat, lng));
+            map.setView([lat, lng], 13);
+            
+            const displayElement = document.getElementById(currentContext + 'LocationDisplay');
+            displayElement.textContent = `Lat: ${lat.toFixed(6)}, Lng: ${lng.toFixed(6)}`;
+        }
+
+        function openLocationModal(context) {
+            currentContext = context;
+            document.getElementById('locationModal').style.display = 'block';
+            setTimeout(() => {
+                if (!map) {
+                    initMap();
+                }
+                map.invalidateSize();
+            }, 100);
+        }
+
+        function closeLocationModal() {
+            document.getElementById('locationModal').style.display = 'none';
+        }
+
+        function openEditModal() {
+            document.getElementById('editRecordModal').style.display = 'block';
+        }
+
+        function closeEditModal() {
+            document.getElementById('editRecordModal').style.display = 'none';
+        }
+
+        // File upload preview functionality
+        document.querySelectorAll('.media-upload').forEach(upload => {
+            upload.addEventListener('click', () => {
+                upload.querySelector('input[type="file"]').click();
+            });
+        });
+
+        // Tab navigation
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelector('.tab.active').classList.remove('active');
+                tab.classList.add('active');
+                
+                if (tab.dataset.tab === 'create') {
+                    document.getElementById('createRecord').style.display = 'block';
+                    document.getElementById('manageRecords').style.display = 'none';
+                } else {
+                    document.getElementById('createRecord').style.display = 'none';
+                    document.getElementById('manageRecords').style.display = 'block';
+                }
+            });
+        });
+
+        // Make record cards clickable
+        document.querySelectorAll('.record-card').forEach(card => {
+            card.addEventListener('click', openEditModal);
+        });
+
+        // Form submissions
+        document.getElementById('recordForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('Record saved! (Demo only)');
+        });
+
+        document.getElementById('editRecordForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('Record updated! (Demo only)');
+            closeEditModal();
+        });
+
+        // Close modals when clicking outside
+        window.onclick = function(event) {
+            if (event.target.className === 'modal') {
+                event.target.style.display = 'none';
+            }
+        }
+
+        // Profile dropdown functionality
+        const profileButton = document.getElementById('profileButton');
+        const profileDropdown = document.getElementById('profileDropdown');
+
+        profileButton.addEventListener('click', (e) => {
+            e.stopPropagation();
+            profileDropdown.classList.toggle('show');
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!profileButton.contains(e.target)) {
+                profileDropdown.classList.remove('show');
+            }
+        });
+
+        function confirmDelete() {
+            document.getElementById('deleteConfirmModal').style.display = 'block';
+        }
+
+        function closeDeleteModal() {
+            document.getElementById('deleteConfirmModal').style.display = 'none';
+        }
+
+        function deleteRecord() {
+            // Here you would typically make an API call to delete the record
+            alert('Record deleted! (Demo only)');
+            closeDeleteModal();
+            closeEditModal();
+        }
+    </script>
+</body>
+</html> 

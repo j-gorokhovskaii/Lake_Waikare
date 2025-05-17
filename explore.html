@@ -153,14 +153,16 @@
     
     .header {
       color: var(--primary-color);
-      margin-bottom: 20px;
-      font-size: 36px;
+      margin: 0;
+      font-size: 24px;
+      font-weight: 600;
     }
     
     .description {
       color: var(--text-dark);
       margin-bottom: 30px;
       line-height: 1.5;
+      padding-top: 15px;
     }
 
     .explore-filters {
@@ -336,20 +338,66 @@
     }
 
     .popup-content {
-      min-width: 200px;
+      padding: 10px;
+      max-width: 300px;
     }
 
     .popup-content h3 {
+      margin: 0 0 10px 0;
       color: var(--primary-color);
-      margin-bottom: 0.5rem;
-      font-size: 16px;
+      font-size: 1.2rem;
     }
 
     .popup-content p {
-      color: var(--text-light);
-      font-size: 14px;
+      margin: 0 0 15px 0;
       line-height: 1.4;
-      margin: 0;
+      color: var(--text-dark);
+    }
+
+    .popup-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      margin-bottom: 15px;
+    }
+
+    .popup-tag {
+      background: var(--gray-bg);
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-size: 0.8rem;
+      color: var(--text-light);
+    }
+
+    .popup-buttons {
+      display: flex;
+      gap: 10px;
+    }
+
+    .popup-button {
+      flex: 1;
+      padding: 8px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      text-align: center;
+      text-decoration: none;
+      transition: background-color 0.2s;
+    }
+
+    .popup-button.primary {
+      background: var(--primary-color);
+      color: white;
+    }
+
+    .popup-button.secondary {
+      background: var(--gray-bg);
+      color: var(--text-dark);
+    }
+
+    .popup-button:hover {
+      opacity: 0.9;
     }
 
     /* Enhanced Popup Styles */
@@ -377,10 +425,6 @@
         border-radius: 12px;
         font-size: 0.8rem;
         margin-top: 5px;
-    }
-
-    .popup-content {
-        padding: 15px;
     }
 
     .popup-section {
@@ -453,35 +497,6 @@
         border-top: 1px solid var(--gray-bg);
     }
 
-    .popup-button {
-        flex: 1;
-        padding: 8px;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-        font-size: 0.9rem;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 5px;
-        transition: all 0.2s;
-    }
-
-    .popup-button.primary {
-        background: var(--primary-color);
-        color: white;
-    }
-
-    .popup-button.secondary {
-        background: var(--gray-bg);
-        color: var(--text-dark);
-    }
-
-    .popup-button:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    }
-
     .resources-list {
         list-style: none;
         padding: 0;
@@ -529,6 +544,30 @@
     .tab-content.active {
         display: block;
     }
+
+    .search-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 15px;
+      margin-bottom: 20px;
+    }
+    
+    .close-tray {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      color: var(--text-light);
+      cursor: pointer;
+      font-size: 14px;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .close-tray:hover {
+      color: var(--text-dark);
+    }
   </style>
 </head>
 
@@ -560,7 +599,13 @@
 
   <!-- Content panel on the left -->
   <div id="content-panel">
-    <h1 class="header">Explore Collections</h1>
+    <div class="search-header">
+      <h2 class="header">Explore Collections</h2>
+      <a href="map.html" class="close-tray">
+        <i class="fas fa-times"></i>
+        Close tray
+      </a>
+    </div>
     
     <p class="description">
       Discover curated collections of Lake Waikare's rich history, environmental data, 
@@ -660,29 +705,15 @@
       </div>
     </div>
 
-    <a class="highlightedLink" href="/map.html">Explore the Map</a>
       
-    <div class="user-functions-container">
-      <div class="userFunctions">
-        <i class="fas fa-user"></i>
-        <ul>
-          <li>
-            <a href="/log_in">Log in</a>
-          </li>
-          <li>
-            <a href="/sign_up">Sign up</a>
-          </li>
-        </ul>
-      </div>
-    </div>
   </div>
 
   <!-- Map container -->
   <div id="map-container">
     <div id="map"></div>
     <div class="zoom-controls">
-      <div class="zoom-button">+</div>
-      <div class="zoom-button">-</div>
+      <div class="zoom-button" id="zoomIn"><i class="fas fa-plus"></i></div>
+      <div class="zoom-button" id="zoomOut"><i class="fas fa-minus"></i></div>
     </div>
     <div class="attribution">© OpenStreetMap contributors</div>
   </div>
@@ -714,33 +745,8 @@
     }).addTo(map);
 
     // Handle zoom controls
-    const zoomInBtn = document.querySelector('.zoom-button:first-child');
-    const zoomOutBtn = document.querySelector('.zoom-button:last-child');
-
-    zoomInBtn.addEventListener('click', () => {
-      map.zoomIn();
-      zoomInBtn.classList.add('active');
-      setTimeout(() => zoomInBtn.classList.remove('active'), 200);
-    });
-
-    zoomOutBtn.addEventListener('click', () => {
-      map.zoomOut();
-      zoomOutBtn.classList.add('active');
-      setTimeout(() => zoomOutBtn.classList.remove('active'), 200);
-    });
-
-    // Add keyboard support for zooming
-    document.addEventListener('keydown', (e) => {
-      if (e.key === '+') {
-        map.zoomIn();
-        zoomInBtn.classList.add('active');
-        setTimeout(() => zoomInBtn.classList.remove('active'), 200);
-      } else if (e.key === '-') {
-        map.zoomOut();
-        zoomOutBtn.classList.add('active');
-        setTimeout(() => zoomOutBtn.classList.remove('active'), 200);
-      }
-    });
+    document.getElementById('zoomIn').addEventListener('click', () => map.zoomIn());
+    document.getElementById('zoomOut').addEventListener('click', () => map.zoomOut());
 
     // Define cultural site markers with custom icons
     const customIcon = L.icon({
@@ -752,315 +758,109 @@
         shadowSize: [41, 41]
     });
 
-    // Define cultural sites data with enhanced popup content
+    function createPopupContent(site) {
+      return `
+        <div class="popup-content">
+          <h3>${site.title}</h3>
+          <div class="popup-tags">
+            <span class="popup-tag"><i class="fas fa-calendar"></i> ${site.year || 'Historical'}</span>
+            <span class="popup-tag"><i class="fas fa-user"></i> ${site.author || 'Traditional Knowledge'}</span>
+            <span class="popup-tag"><i class="fas fa-map-marker-alt"></i> ${site.location}</span>
+          </div>
+          <p>${site.overview}</p>
+          <div class="popup-buttons">
+            <a href="record-view.html?id=${site.id}" class="popup-button primary">View Record</a>
+            <button onclick="showSidebar('${site.id}')" class="popup-button secondary">Explore in Sidebar</button>
+          </div>
+        </div>
+      `;
+    }
+
+    function showSidebar(siteId) {
+      // This function would be implemented to show the record in a sidebar
+      console.log('Show sidebar for:', siteId);
+      // You can implement the sidebar functionality here
+    }
+
+    // Define cultural sites with more structured data
     const culturalSites = {
-        taurangamirumiru: L.marker([-37.4157, 175.2278], {
-            title: 'Taurangamirumiru Pā',
-            icon: customIcon
-        }).bindPopup(createPopupContent({
-            title: 'Taurangamirumiru Pā',
-            type: 'Cultural & Historical Site',
-            description: 'Ancient pā site where the sisters Reipae and Reitu once lived. A significant cultural and historical location for local iwi.',
-            details: {
-                'Time Period': 'Pre-1800s',
-                'Status': 'Protected Site',
-                'Access': 'Guided Tours Only',
-                'Iwi': 'Local Iwi Connection'
-            },
-            gallery: [
-                'images/taurangamirumiru1.jpg',
-                'images/taurangamirumiru2.jpg',
-                'images/taurangamirumiru3.jpg'
-            ],
-            resources: [
-                { icon: 'fas fa-book', text: 'Historical Documentation' },
-                { icon: 'fas fa-video', text: 'Oral History Recordings' },
-                { icon: 'fas fa-map-marked-alt', text: 'Site Map & Guide' }
-            ],
-            sections: [
-                {
-                    title: 'Historical Significance',
-                    content: 'This pā site holds great historical and cultural significance as the residence of the sisters Reipae and Reitu, whose stories are deeply woven into local tribal narratives.'
-                },
-                {
-                    title: 'Archaeological Findings',
-                    content: 'Recent archaeological studies have revealed evidence of extensive occupation, including traditional food storage pits and defensive structures.'
-                },
-                {
-                    title: 'Cultural Practices',
-                    content: 'The site continues to be of importance for cultural practices and educational purposes, helping to maintain connections with ancestral heritage.'
-                }
-            ]
-        }), { className: 'custom-popup' }),
+      taurangamirumiru: L.marker([-37.4157, 175.2278], {
+        title: "Taurangamirumiru Pā",
+        icon: L.icon({
+          iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
+          shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
+          iconSize: [25, 41],
+          iconAnchor: [12, 41],
+          popupAnchor: [1, -34],
+          shadowSize: [41, 41]
+        })
+      }).bindPopup(createPopupContent({
+        id: "taurangamirumiru",
+        title: "Taurangamirumiru Pā",
+        overview: "Ancient pā site where the sisters Reipae and Reitu once lived. A significant cultural and historical location for local iwi.",
+        year: "1700s",
+        author: "Ngāti Mahuta",
+        location: "Northern Shore"
+      })),
 
-        hingakaka: L.marker([-37.4392, 175.2344], {
-            title: 'Hingakākā',
-            icon: customIcon
-        }).bindPopup(createPopupContent({
-            title: 'Hingakākā',
-            type: 'Historical Battle Site',
-            description: 'Site of one of the largest intertribal battles in Aotearoa\'s history, fought in the late 1700s.',
-            details: {
-                'Time Period': 'Late 1700s',
-                'Status': 'Historical Site',
-                'Access': 'Public Access',
-                'Significance': 'Major Battle Site'
-            },
-            gallery: [
-                'images/hingakaka1.jpg',
-                'images/hingakaka2.jpg',
-                'images/hingakaka3.jpg'
-            ],
-            resources: [
-                { icon: 'fas fa-book', text: 'Battle Documentation' },
-                { icon: 'fas fa-scroll', text: 'Historical Records' },
-                { icon: 'fas fa-landmark', text: 'Memorial Information' }
-            ],
-            sections: [
-                {
-                    title: 'Battle History',
-                    content: 'This site witnessed one of the largest intertribal battles in New Zealand history, marking a significant moment in Māori warfare and tribal relations.'
-                },
-                {
-                    title: 'Archaeological Evidence',
-                    content: 'The area contains various artifacts and evidence from the battle, providing insights into traditional warfare methods and tribal alliances.'
-                },
-                {
-                    title: 'Cultural Significance',
-                    content: 'Today, the site serves as a reminder of historical events and their impact on tribal relationships and territorial boundaries.'
-                }
-            ]
-        }), { className: 'custom-popup' }),
+      hingakaka: L.marker([-37.4392, 175.2344], {
+        title: "Hingakākā",
+        icon: L.icon({
+          iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
+          shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
+          iconSize: [25, 41],
+          iconAnchor: [12, 41],
+          popupAnchor: [1, -34],
+          shadowSize: [41, 41]
+        })
+      }).bindPopup(createPopupContent({
+        id: "hingakaka",
+        title: "Hingakākā",
+        overview: "Site of one of the largest intertribal battles in Aotearoa's history, fought in the late 1700s.",
+        year: "1780s",
+        author: "Multiple Iwi",
+        location: "Eastern Shore"
+      })),
 
-        uenukuTapu: L.marker([-37.4486, 175.2167], {
-            title: 'Te Wāhi o Uenuku',
-            icon: customIcon
-        }).bindPopup(createPopupContent({
-            title: 'Te Wāhi o Uenuku',
-            type: 'Sacred Site',
-            description: 'Sacred site where the ancient carved figure Uenuku was submerged in the lake before the Battle of Hingakākā.',
-            details: {
-                'Time Period': 'Pre-1800s',
-                'Status': 'Sacred Site',
-                'Access': 'Cultural Permission Required',
-                'Significance': 'Spiritual Location'
-            },
-            gallery: [
-                'images/uenuku1.jpg',
-                'images/uenuku2.jpg',
-                'images/uenuku3.jpg'
-            ],
-            resources: [
-                { icon: 'fas fa-pray', text: 'Spiritual Significance' },
-                { icon: 'fas fa-history', text: 'Historical Context' },
-                { icon: 'fas fa-map', text: 'Site Location Guide' }
-            ],
-            sections: [
-                {
-                    title: 'Spiritual Significance',
-                    content: 'This sacred site holds deep spiritual meaning, particularly in relation to the carved figure Uenuku and its role in tribal history.'
-                },
-                {
-                    title: 'Historical Events',
-                    content: 'The site gained additional significance when the Uenuku carving was submerged here before the Battle of Hingakākā.'
-                },
-                {
-                    title: 'Current Practices',
-                    content: 'Today, the site continues to be respected as a place of spiritual significance and cultural ceremonies.'
-                }
-            ]
-        }), { className: 'custom-popup' }),
-
-        waahiTapu: L.marker([-37.4234, 175.2089], {
-            title: 'Wāhi Tapu',
-            icon: customIcon
-        }).bindPopup(createPopupContent({
-            title: 'Wāhi Tapu',
-            type: 'Sacred Ceremonial Ground',
-            description: 'Sacred grounds where ancient ceremonies were performed and important tribal gatherings were held.',
-            details: {
-                'Time Period': 'Ancient - Present',
-                'Status': 'Protected Site',
-                'Access': 'Cultural Protocol Required',
-                'Usage': 'Ceremonial Ground'
-            },
-            gallery: [
-                'images/waahitapu1.jpg',
-                'images/waahitapu2.jpg',
-                'images/waahitapu3.jpg'
-            ],
-            resources: [
-                { icon: 'fas fa-drum', text: 'Ceremonial Practices' },
-                { icon: 'fas fa-users', text: 'Tribal Gatherings' },
-                { icon: 'fas fa-hand-paper', text: 'Visiting Protocol' }
-            ],
-            sections: [
-                {
-                    title: 'Ceremonial History',
-                    content: 'This wāhi tapu has been a sacred place for ceremonies and tribal gatherings for generations.'
-                },
-                {
-                    title: 'Cultural Protocols',
-                    content: 'Specific tikanga and protocols must be observed when visiting or conducting ceremonies at this site.'
-                },
-                {
-                    title: 'Modern Usage',
-                    content: 'The site continues to be used for important cultural ceremonies and educational purposes.'
-                }
-            ]
-        }), { className: 'custom-popup' }),
-
-        mahingaKai: L.marker([-37.4312, 175.2401], {
-            title: 'Mahinga Kai',
-            icon: customIcon
-        }).bindPopup(createPopupContent({
-            title: 'Mahinga Kai',
-            type: 'Traditional Food Gathering Site',
-            description: 'Traditional food gathering area where tuna (eels), īnanga (whitebait), and waterfowl were harvested.',
-            details: {
-                'Resources': 'Tuna, Īnanga, Waterfowl',
-                'Season': 'Varies by Species',
-                'Status': 'Active Gathering Site',
-                'Access': 'Local Community'
-            },
-            gallery: [
-                'images/mahingakai1.jpg',
-                'images/mahingakai2.jpg',
-                'images/mahingakai3.jpg'
-            ],
-            resources: [
-                { icon: 'fas fa-fish', text: 'Fishing Methods' },
-                { icon: 'fas fa-calendar-alt', text: 'Seasonal Guide' },
-                { icon: 'fas fa-leaf', text: 'Conservation Practices' }
-            ],
-            sections: [
-                {
-                    title: 'Traditional Methods',
-                    content: 'This site preserves traditional food gathering practices, including specific techniques for catching tuna and īnanga.'
-                },
-                {
-                    title: 'Seasonal Patterns',
-                    content: 'Different resources are gathered according to seasonal patterns and traditional knowledge.'
-                },
-                {
-                    title: 'Conservation',
-                    content: 'Modern conservation practices are integrated with traditional gathering methods to ensure sustainability.'
-                }
-            ]
-        }), { className: 'custom-popup' })
+      uenukuTapu: L.marker([-37.4486, 175.2167], {
+        title: "Te Wāhi o Uenuku",
+        icon: L.icon({
+          iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
+          shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
+          iconSize: [25, 41],
+          iconAnchor: [12, 41],
+          popupAnchor: [1, -34],
+          shadowSize: [41, 41]
+        })
+      }).bindPopup(createPopupContent({
+        id: "uenukutapu",
+        title: "Te Wāhi o Uenuku",
+        overview: "Sacred site where the ancient carved figure Uenuku was submerged in the lake before the Battle of Hingakākā.",
+        year: "Pre-1780s",
+        author: "Waikato Tribes",
+        location: "Southern Waters"
+      }))
     };
 
+    // Create the cultural layer with fewer markers
+    const culturalLayer = L.layerGroup(Object.values(culturalSites));
+
     // Add all markers to the map
-    Object.values(culturalSites).forEach(marker => marker.addTo(map));
+    culturalLayer.addTo(map);
 
     // Handle collection card clicks
     document.querySelectorAll('.collection-card').forEach(card => {
         card.addEventListener('click', () => {
             const title = card.querySelector('.collection-title').textContent;
             // Find corresponding marker and focus on it
-            Object.entries(culturalSites).forEach(([key, marker]) => {
-                if (marker.options.title.includes(title.split(' ')[0])) {
-                    map.setView(marker.getLatLng(), 15);
-                    marker.openPopup();
+            culturalLayer.eachLayer((layer) => {
+                if (layer.options.title.includes(title.split(' ')[0])) {
+                    map.setView(layer.getLatLng(), 15);
+                    layer.openPopup();
                 }
             });
         });
     });
-
-    // Function to create rich popup content
-    function createPopupContent(data) {
-        return `
-            <div class="popup-header">
-                <h3>${data.title}</h3>
-                <div class="popup-type-badge">${data.type}</div>
-            </div>
-            <div class="popup-content">
-                <div class="popup-tabs">
-                    <div class="popup-tab active" onclick="switchTab(event, 'overview')">Overview</div>
-                    <div class="popup-tab" onclick="switchTab(event, 'details')">Details</div>
-                    <div class="popup-tab" onclick="switchTab(event, 'resources')">Resources</div>
-                </div>
-
-                <div id="overview" class="tab-content active">
-                    <div class="popup-section">
-                        <div class="popup-description">${data.description}</div>
-                    </div>
-                    ${data.sections.map(section => `
-                        <div class="popup-section">
-                            <div class="popup-section-title">${section.title}</div>
-                            <div class="popup-description">${section.content}</div>
-                        </div>
-                    `).join('')}
-                </div>
-
-                <div id="details" class="tab-content">
-                    <div class="popup-details">
-                        ${Object.entries(data.details).map(([label, value]) => `
-                            <div class="detail-item">
-                                <div class="detail-label">${label}</div>
-                                <div class="detail-value">${value}</div>
-                            </div>
-                        `).join('')}
-                    </div>
-                </div>
-
-                <div id="resources" class="tab-content">
-                    <ul class="resources-list">
-                        ${data.resources.map(resource => `
-                            <li class="resource-item">
-                                <i class="${resource.icon}"></i>
-                                ${resource.text}
-                            </li>
-                        `).join('')}
-                    </ul>
-                </div>
-
-                <div class="popup-actions">
-                    <button class="popup-button primary" onclick="startTour('${data.title}')">
-                        <i class="fas fa-walking"></i> Start Tour
-                    </button>
-                    <button class="popup-button secondary" onclick="learnMore('${data.title}')">
-                        <i class="fas fa-info-circle"></i> Learn More
-                    </button>
-                </div>
-            </div>
-        `;
-    }
-
-    // Tab switching functionality
-    function switchTab(event, tabId) {
-        const popup = event.target.closest('.popup-content');
-        
-        // Update tab states
-        popup.querySelectorAll('.popup-tab').forEach(tab => {
-            tab.classList.remove('active');
-        });
-        event.target.classList.add('active');
-
-        // Update content visibility
-        popup.querySelectorAll('.tab-content').forEach(content => {
-            content.classList.remove('active');
-        });
-        popup.querySelector(`#${tabId}`).classList.add('active');
-    }
-
-    // Function to show full-size image
-    function showFullImage(imgSrc) {
-        // Implement lightbox functionality
-        console.log('Show full image:', imgSrc);
-    }
-
-    // Function to start virtual tour
-    function startTour(siteTitle) {
-        // Implement tour functionality
-        console.log('Start tour for:', siteTitle);
-    }
-
-    // Function to show more information
-    function learnMore(siteTitle) {
-        // Implement additional information display
-        console.log('Learn more about:', siteTitle);
-    }
   </script>
 </body>
 </html> 
