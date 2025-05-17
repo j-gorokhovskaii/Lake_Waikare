@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Presentation Main page</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            height: 100%;
+            font-family: 'Segoe UI', sans-serif;
+            background-color: white;
+            color: #333;
+        }
+
+        /* 顶部红条 */
+        .header-bar {
+            background-color: #c62828;
+            /* 深红色 */
+            height: 100px;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding: 0 30px;
+        }
+
+        /* 学校 logo 和名字 */
+        .school-header {
+            background-color: white;
+            padding: 4px 10px;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .school-header img {
+            height: 50px;
+            display: block;
+        }
+
+        /* 中间标题部分 */
+        .center-content {
+            height: calc(100% - 100px);
+            /* 除去顶部横条 */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 2em;
+        }
+
+        .project-title {
+            font-size: 4em;
+            font-weight: bold;
+            margin-bottom: 0.5em;
+        }
+
+        .team {
+            font-size: 1.2em;
+            color: #666;
+        }
+
+        /* 右下角跳转按钮 */
+        .next-button {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            opacity: 0.4;
+            font-size: 2em;
+            color: #c62828;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .next-button:hover {
+            opacity: 1;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- 顶部红色横条 -->
+    <div class="header-bar">
+        <div class="school-header">
+            <img src="images/Waikato_logo.svg" alt="School Logo">
+        </div>
+    </div>
+
+    <!-- 中间标题内容 -->
+    <div class="center-content">
+        <div class="project-title">Lake Waikare Desktop-2</div>
+        <div class="team">
+            Joseph Gorokhovskaii (1048854)<br>
+            Chen Li (1672194)<br>
+            Pranavkrishnan Ravichandran (1660319)<br>
+            Hina Lin (1646541)
+        </div>
+    </div>
+
+    <!-- 右下角跳转按钮 -->
+    <button class="next-button" onclick="goToNext()">→</button>
+
+    <script>
+        function goToNext() {
+            window.location.href = "home.html";
+        }
+
+        document.addEventListener('keydown', function (e) {
+            if (e.key === "ArrowRight") {
+                goToNext();
+            }
+        });
+    </script>
+
+</body>
+
+</html>
