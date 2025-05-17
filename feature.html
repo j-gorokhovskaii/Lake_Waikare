@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Presentation Conclusion Page</title>
+    <title>Future Implementation Page</title>
     <style>
         * {
             margin: 0;
@@ -125,54 +125,50 @@
 
 <body>
 
-    <!-- 顶部红色横条 -->
-    <div class="header-bar">
-        <div class="main-topic">Conclusion</div>
+<!-- 顶部红色横条 -->
+<div class="header-bar">
+    <div class="main-topic">Future Implementation</div>
 
-        <div class="school-header">
-            <img src="images/Waikato_logo.svg" alt="School Logo">
-        </div>
+    <div class="school-header">
+        <img src="images/Waikato_logo.svg" alt="School Logo">
     </div>
+</div>
 
-    <!-- 中间标题内容 -->
-    <div class="center-content">
-        <p class="main-text">
-            Implement an improved user interface for the home page.
-        </p>
-        <p class="main-text">
-            Simplify the Kids Mode authentication.
-        </p>
-        <p class="main-text">
-            Activate Language Mode (toggle between English and Māori).
-        </p>
-        <p class="main-text">
-            Implement Backend Management System.
-        </p>
+<!-- 中间标题内容 -->
+<div class="center-content">
+    <p class="main-text">
+        AI Chatbox.
+    </p>
+    <p class="main-text">
+        Backend Profile
+    </p>
 
-    </div>
 
-    <button class="prev-button" onclick="goToPrevious()">←</button>
 
-    <!-- 右下角跳转按钮 -->
-    <button class="next-button" onclick="goToNext()">→</button>
+</div>
 
-    <script>
-        function goToNext() {
-            window.location.href = "thank-you.html";
+<button class="prev-button" onclick="goToPrevious()">←</button>
+
+<!-- 右下角跳转按钮 -->
+<button class="next-button" onclick="goToNext()">→</button>
+
+<script>
+    function goToNext() {
+        window.location.href = "conclusion.html";
+    }
+
+    function goToPrevious() {
+        history.back();
+    }
+
+    document.addEventListener('keydown', function (e) {
+        if (e.key === "ArrowRight") {
+            goToNext();
+        } else if (e.key === "ArrowLeft") {
+            goToPrevious();
         }
-
-        function goToPrevious() {
-            window.location.href="feature.html";
-        }
-
-        document.addEventListener('keydown', function (e) {
-            if (e.key === "ArrowRight") {
-                goToNext();
-            } else if (e.key === "ArrowLeft") {
-                goToPrevious();
-            }
-        });
-    </script>
+    });
+</script>
 
 </body>
 
