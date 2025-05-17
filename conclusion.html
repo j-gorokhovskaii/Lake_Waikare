@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Presentation Main Page</title>
+    <title>Presentation Conclusion Page</title>
     <style>
         * {
             margin: 0;
@@ -27,8 +27,14 @@
             width: 100%;
             display: flex;
             align-items: center;
-            justify-content: flex-end;
+            justify-content: space-between;
             padding: 0 30px;
+            color: white;
+        }
+
+        .main-topic {
+            font-size: 2.5em;
+            font-weight: bold;
         }
 
         /* 学校 logo 和名字 */
@@ -52,10 +58,14 @@
             /* 除去顶部横条 */
             display: flex;
             flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 2em;
+            align-items: flex-start;
+            /* 内容靠左 */
+            justify-content: flex-start;
+            /* 从顶部开始 */
+            padding: 80px 60px;
+            /* 上边距和左边距 */
+            text-align: left;
+            /* 文本左对齐 */
         }
 
         .project-title {
@@ -92,6 +102,8 @@
 
     <!-- 顶部红色横条 -->
     <div class="header-bar">
+        <div class="main-topic">Conclusion</div>
+
         <div class="school-header">
             <img src="images/Waikato_logo.svg" alt="School Logo">
         </div>
@@ -99,13 +111,7 @@
 
     <!-- 中间标题内容 -->
     <div class="center-content">
-        <div class="project-title">Lake Waikare Desktop-2</div>
-        <div class="team">
-            Joseph Gorokhovskaii (1048854)<br>
-            Chen Li (1672194)<br>
-            Pranavkrishnan Ravichandran (1660319)<br>
-            Hina Lin (1646541)
-        </div>
+        <div>Contents</div>
     </div>
 
     <!-- 右下角跳转按钮 -->
