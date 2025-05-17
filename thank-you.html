@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Presentation Main Page</title>
+    <title>Presentation Thank You Page</title>
     <style>
         * {
             margin: 0;
@@ -27,8 +27,14 @@
             width: 100%;
             display: flex;
             align-items: center;
-            justify-content: flex-end;
+            justify-content: space-between;
             padding: 0 30px;
+            color: white;
+        }
+
+        .main-topic {
+            font-size: 2.5em;
+            font-weight: bold;
         }
 
         /* 学校 logo 和名字 */
@@ -85,6 +91,34 @@
         .next-button:hover {
             opacity: 1;
         }
+
+        .thank-you {
+            font-size: 8em;
+            font-weight: bold;
+            color: #4A8C6A;
+            margin-bottom: 0.5em;
+        }
+
+        .qna {
+            font-size: 3em;
+            color: #555;
+        }
+
+        .prev-button {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            opacity: 0.4;
+            font-size: 2em;
+            color: #4A8C6A;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .prev-button:hover {
+            opacity: 1;
+        }
     </style>
 </head>
 
@@ -92,6 +126,8 @@
 
     <!-- 顶部红色横条 -->
     <div class="header-bar">
+        <div class="main-topic">Q&A</div>
+
         <div class="school-header">
             <img src="images/Waikato_logo.svg" alt="School Logo">
         </div>
@@ -99,26 +135,30 @@
 
     <!-- 中间标题内容 -->
     <div class="center-content">
-        <div class="project-title">Lake Waikare Desktop-2</div>
-        <div class="team">
-            Joseph Gorokhovskaii (1048854)<br>
-            Chen Li (1672194)<br>
-            Pranavkrishnan Ravichandran (1660319)<br>
-            Hina Lin (1646541)
-        </div>
+        <div class="thank-you">Thank you!</div>
+        <div class="qna">Q&A</div>
     </div>
 
+    <button class="prev-button" onclick="goToPrevious()">←</button>
+
     <!-- 右下角跳转按钮 -->
-    <button class="next-button" onclick="goToNext()">→</button>
+    <!-- <button class="next-button" onclick="goToNext()">→</button> -->
 
     <script>
-        function goToNext() {
-            window.location.href = "home.html";
+        // function goToNext() {
+        //     window.location.href = "home.html";
+        // }
+
+        function goToPrevious() {
+            history.back();
         }
 
         document.addEventListener('keydown', function (e) {
-            if (e.key === "ArrowRight") {
-                goToNext();
+            // if (e.key === "ArrowRight") {
+            //     goToNext();
+            // }
+            if (e.key === "ArrowLeft") {
+                goToPrevious();
             }
         });
     </script>

@@ -21,7 +21,7 @@
 
         /* 顶部红条 */
         .header-bar {
-            background-color: #c62828;
+            background-color: #4A8C6A;
             /* 深红色 */
             height: 100px;
             width: 100%;
@@ -86,13 +86,29 @@
             right: 30px;
             opacity: 0.4;
             font-size: 2em;
-            color: #c62828;
+            color: #4A8C6A;
             background: none;
             border: none;
             cursor: pointer;
         }
 
         .next-button:hover {
+            opacity: 1;
+        }
+
+        .prev-button {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            opacity: 0.4;
+            font-size: 2em;
+            color: #4A8C6A;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .prev-button:hover {
             opacity: 1;
         }
     </style>
@@ -114,17 +130,25 @@
         <div>Contents</div>
     </div>
 
+    <button class="prev-button" onclick="goToPrevious()">←</button>
+
     <!-- 右下角跳转按钮 -->
     <button class="next-button" onclick="goToNext()">→</button>
 
     <script>
         function goToNext() {
-            window.location.href = "home.html";
+            window.location.href = "thank-you.html";
+        }
+
+        function goToPrevious() {
+            history.back();
         }
 
         document.addEventListener('keydown', function (e) {
             if (e.key === "ArrowRight") {
                 goToNext();
+            } else if (e.key === "ArrowLeft") {
+                goToPrevious();
             }
         });
     </script>
