@@ -1,15 +1,19 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <title data-translate="site_title">Lake Waikare Digital Library</title>
   <meta name="csrf-param" content="authenticity_token" />
-  <meta name="csrf-token" content="DgNcPy0qhjDvOYhJlYlXyXhZ2T8nq5HqrJ+YQeBzOo9h9mqS6NbI5CHQTAihqcFtM5L5eLZQlUl69LAVoXOnaA==" />
-  
+  <meta name="csrf-token"
+    content="DgNcPy0qhjDvOYhJlYlXyXhZ2T8nq5HqrJ+YQeBzOo9h9mqS6NbI5CHQTAihqcFtM5L5eLZQlUl69LAVoXOnaA==" />
+
   <!-- Bootstrap Tour Dependencies -->
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tour/0.12.0/css/bootstrap-tour-standalone.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tour/0.12.0/css/bootstrap-tour-standalone.min.css"
+    rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tour/0.12.0/js/bootstrap-tour-standalone.min.js"></script>
-  
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tour/0.12.0/js/bootstrap-tour-standalone.min.js"></script>
+
   <meta name="tenant-id" content="64">
   <meta name="tenant-slug" content="lakewaikare">
 
@@ -17,22 +21,22 @@
   <meta name="user-name" content="">
   <meta name="user-token" content="">
   <meta name="user-is-admin" content="">
-  
+
   <meta property="og:type" content="article" />
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:site" content="https://twitter.com/LakeWaikareDigital" />
 
-  <link rel="canonical" href="https://www.lakewaikare.org"/>
-  <meta property="og:url" content="https://www.lakewaikare.org"/>
+  <link rel="canonical" href="https://www.lakewaikare.org" />
+  <meta property="og:url" content="https://www.lakewaikare.org" />
 
-  <meta property="og:title" content="Lake Waikare Digital Library"/>
-  <meta name="twitter:title" content="Lake Waikare Digital Library"/>
-  
+  <meta property="og:title" content="Lake Waikare Digital Library" />
+  <meta name="twitter:title" content="Lake Waikare Digital Library" />
+
   <!-- Add dark mode support -->
   <link rel="stylesheet" href="styles/dark-mode.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <script src="scripts/dark-mode.js" defer></script>
-  
+
   <style>
     :root {
       --primary-color: #4A8C6A;
@@ -45,9 +49,10 @@
       --sidebar-width: 80px;
       --sidebar-expanded: 200px;
     }
-    
+
     #left-sidebar {
-      width: var(--sidebar-width);
+      --sidebar-current-width: var(--sidebar-width);
+      width: var(--sidebar-current-width);
       height: 100%;
       background-color: black;
       position: fixed;
@@ -65,9 +70,10 @@
     }
 
     #left-sidebar:hover {
-      width: var(--sidebar-expanded);
+      --sidebar-current-width: var(--sidebar-expanded);
+      width: var(--sidebar-current-width);
     }
-    
+
     .sidebar-icon {
       width: 100%;
       height: 40px;
@@ -83,7 +89,8 @@
       border-radius: 4px;
     }
 
-    .sidebar-icon:hover, .sidebar-icon.active {
+    .sidebar-icon:hover,
+    .sidebar-icon.active {
       color: var(--primary-color);
       text-decoration: none;
       transform: translateX(5px);
@@ -110,27 +117,28 @@
     #left-sidebar:hover .sidebar-icon span {
       opacity: 1;
     }
-    
-    body, html {
+
+    body,
+    html {
       margin: 0;
       padding: 0;
       height: 100%;
       font-family: Arial, sans-serif;
     }
-    
+
     .Page {
       min-height: 100vh;
       display: flex;
       flex-direction: column;
     }
-    
+
     .SiteWrapper {
       flex: 1;
       display: flex;
       flex-direction: column;
       margin-left: var(--sidebar-width);
     }
-    
+
     .SiteHeader {
       background-color: #fff;
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -141,37 +149,37 @@
       position: relative;
       z-index: 100;
     }
-    
+
     .Logo {
       display: block;
       width: auto;
       text-decoration: none;
     }
-    
+
     .Logo span {
       font-size: 24px;
       font-weight: 700;
       color: #4A8C6A;
       letter-spacing: 0.5px;
     }
-    
+
     .Logo img {
       width: 100%;
       height: auto;
     }
-    
+
     .SearchContainer {
       flex: 1;
       max-width: 500px;
       margin: 0 20px;
       position: relative;
     }
-    
+
     .SearchForm {
       display: flex;
       align-items: center;
     }
-    
+
     .SearchInput {
       width: 100%;
       padding: 10px 40px 10px 15px;
@@ -183,12 +191,12 @@
       background-color: white;
       color: var(--text-dark);
     }
-    
+
     .SearchInput:focus {
       border-color: var(--primary-color);
       box-shadow: 0 0 0 3px rgba(74, 140, 106, 0.1);
     }
-    
+
     .SearchButton {
       position: absolute;
       right: 5px;
@@ -201,42 +209,42 @@
       cursor: pointer;
       transition: color 0.3s;
     }
-    
+
     .SearchButton:hover {
       color: #3a7054;
     }
-    
+
     .Hamburger {
       display: none;
     }
-    
+
     .Navigation {
       display: flex;
       align-items: center;
     }
-    
+
     .Navigation ul {
       display: flex;
       list-style: none;
       margin: 0;
       padding: 0;
     }
-    
+
     .Navigation li {
       margin: 0 15px;
     }
-    
+
     .Navigation a {
       text-decoration: none;
       color: #333;
       font-weight: 500;
       transition: color 0.2s;
     }
-    
+
     .Navigation a:hover {
       color: #4A8C6A;
     }
-    
+
     .highlightedLink {
       background-color: #4A8C6A;
       color: white !important;
@@ -247,18 +255,18 @@
       font-weight: bold;
       transition: background-color 0.2s;
     }
-    
+
     .highlightedLink:hover {
       background-color: #3a7054;
     }
-    
+
     .userFunctions {
       display: flex;
       align-items: center;
       margin-left: 20px;
       position: relative;
     }
-    
+
     .userFunctions > i {
       font-size: 24px;
       color: var(--text-dark);
@@ -313,6 +321,7 @@
 
     .userFunctions ul a:hover {
       background-color: var(--gray-bg);
+      color: var(--primary-color);
     }
 
     .userFunctions ul i {
@@ -321,11 +330,11 @@
       color: var(--primary-color);
       font-size: 16px;
     }
-    
+
     .NavigationMobile {
       display: none;
     }
-    
+
     .HeroHome {
       height: 800px;
       position: relative;
@@ -339,7 +348,7 @@
       perspective: 1000px;
       clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
     }
-    
+
     .HeroHome:before {
       content: '';
       position: absolute;
@@ -353,7 +362,7 @@
       transform-style: preserve-3d;
       will-change: transform;
     }
-    
+
     .particle {
       position: absolute;
       background: rgba(255, 255, 255, 0.1);
@@ -361,7 +370,7 @@
       pointer-events: none;
       z-index: 1;
     }
-    
+
     .HeroContent {
       position: relative;
       z-index: 2;
@@ -371,7 +380,7 @@
       transform-style: preserve-3d;
       will-change: transform;
     }
-    
+
     .HeroContent h1 {
       font-size: 72px;
       margin-bottom: 20px;
@@ -387,7 +396,7 @@
       backface-visibility: hidden;
       transform: translateZ(0);
     }
-    
+
     .title-word {
       display: inline-block;
       position: relative;
@@ -400,30 +409,32 @@
       transform: translateZ(0);
       transition: all 0.3s ease;
     }
-    
+
     .title-word:hover {
       transform: translateY(-2px);
       text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     }
-    
+
     .title-highlight {
       color: var(--secondary-color);
       text-shadow: 0 0 10px rgba(255, 192, 0, 0.5);
       animation: highlightPulse 2s infinite;
     }
-    
+
     @keyframes highlightPulse {
       0% {
         text-shadow: 0 0 10px rgba(255, 192, 0, 0.5);
       }
+
       50% {
         text-shadow: 0 0 20px rgba(255, 192, 0, 0.8);
       }
+
       100% {
         text-shadow: 0 0 10px rgba(255, 192, 0, 0.5);
       }
     }
-    
+
     .HeroContent h1:before,
     .HeroContent h1:after {
       content: '';
@@ -435,15 +446,15 @@
       background: linear-gradient(90deg, transparent, var(--secondary-color), transparent);
       opacity: 0.8;
     }
-    
+
     .HeroContent h1:before {
       top: -10px;
     }
-    
+
     .HeroContent h1:after {
       bottom: -10px;
     }
-    
+
     .HeroContent h2 {
       font-size: 32px;
       font-weight: 400;
@@ -453,7 +464,7 @@
       opacity: 0.9;
       animation: fadeInUp 1s ease-out 0.3s both;
     }
-    
+
     .hero-buttons {
       display: flex;
       gap: 30px;
@@ -462,7 +473,7 @@
       animation: fadeInUp 1s ease-out 0.6s both;
       perspective: 1000px;
     }
-    
+
     .hero-button {
       padding: 18px 40px;
       border-radius: 40px;
@@ -478,25 +489,25 @@
       transform-style: preserve-3d;
       box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
     }
-    
+
     .hero-button.primary {
       background: linear-gradient(45deg, var(--primary-color), #3a7054);
       color: white;
       border: 2px solid rgba(255, 255, 255, 0.2);
     }
-    
+
     .hero-button.secondary {
       background: rgba(255, 255, 255, 0.1);
       color: white;
       border: 2px solid rgba(255, 255, 255, 0.3);
       backdrop-filter: blur(5px);
     }
-    
+
     .hero-button:hover {
       transform: translateY(-5px) rotateX(10deg);
       box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
     }
-    
+
     .hero-stats {
       display: flex;
       justify-content: center;
@@ -506,7 +517,7 @@
       perspective: 1000px;
       position: relative;
     }
-    
+
     .stat-item {
       text-align: center;
       transform-style: preserve-3d;
@@ -516,12 +527,12 @@
       border-radius: 15px;
       backdrop-filter: blur(5px);
     }
-    
+
     .stat-item:hover {
       transform: translateY(-10px) rotateX(15deg);
       background: rgba(255, 255, 255, 0.1);
     }
-    
+
     .stat-number {
       font-size: 48px;
       font-weight: 800;
@@ -533,7 +544,7 @@
       text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
       position: relative;
     }
-    
+
     .stat-number:after {
       content: '+';
       position: absolute;
@@ -542,7 +553,7 @@
       font-size: 24px;
       color: var(--secondary-color);
     }
-    
+
     .hero-scroll-indicator {
       position: absolute;
       bottom: 40px;
@@ -562,45 +573,45 @@
       border: 2px solid rgba(255, 255, 255, 0.2);
       transition: all 0.3s ease;
     }
-    
+
     .hero-scroll-indicator:hover {
       background: rgba(255, 255, 255, 0.2);
       transform: translateX(-50%) scale(1.1);
     }
-    
+
     .hero-scroll-indicator i {
       font-size: 24px;
       color: white;
       opacity: 0.8;
       transition: all 0.3s ease;
     }
-    
+
     .hero-scroll-indicator:hover i {
       opacity: 1;
       transform: translateY(5px);
     }
-    
+
     @media (max-width: 768px) {
       .HeroHome {
         height: 700px;
         clip-path: polygon(0 0, 100% 0, 100% 90%, 0 100%);
       }
-      
+
       .HeroContent h1 {
         font-size: 48px;
       }
-      
+
       .hero-buttons {
         flex-direction: column;
         gap: 20px;
       }
-      
+
       .hero-stats {
         flex-direction: column;
         gap: 20px;
       }
     }
-    
+
     .HomeIntroduction {
       text-align: center;
       max-width: 900px;
@@ -609,19 +620,19 @@
       font-size: 18px;
       line-height: 1.6;
     }
-    
+
     .QuickStarts {
       padding: 40px 20px 80px;
       background-color: #f9f9f9;
     }
-    
+
     .QuickStartsTitle {
       text-align: center;
       margin-bottom: 40px;
       font-size: 18px;
       color: #666;
     }
-    
+
     .QuickStartsGrid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
@@ -629,12 +640,12 @@
       max-width: 1200px;
       margin: 0 auto;
     }
-    
+
     .QuickStartsGrid a {
       text-decoration: none;
       color: inherit;
     }
-    
+
     .QuickStartItem {
       background-color: white;
       border-radius: 8px;
@@ -649,35 +660,35 @@
       min-height: 160px;
       text-decoration: none;
     }
-    
+
     .QuickStartItem:hover {
       transform: translateY(-5px);
       box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
       background-color: #4A8C6A;
       text-decoration: none;
     }
-    
+
     .QuickStartItem:hover .QuickStartTitle {
       color: white;
       text-decoration: none;
     }
-    
+
     .QuickStartTitle {
       font-size: 20px;
       font-weight: 600;
       color: #4A8C6A;
       transition: color 0.3s;
     }
-    
+
     .QuickStartIcon {
       font-size: 32px;
       margin-bottom: 15px;
     }
-    
+
     .FeatureDemo {
       padding: 80px 20px;
     }
-    
+
     .FeatureItem {
       display: flex;
       align-items: center;
@@ -685,33 +696,33 @@
       margin: 0 auto 60px;
       gap: 40px;
     }
-    
+
     .FeatureItem:nth-child(even) {
       flex-direction: row-reverse;
     }
-    
+
     .FeatureContent {
       flex: 1;
     }
-    
+
     .FeatureIcon {
       font-size: 32px;
       color: #4A8C6A;
       margin-bottom: 15px;
     }
-    
+
     .FeatureTitle {
       font-size: 30px;
       margin: 0 0 20px;
       color: #333;
     }
-    
+
     .FeatureDescription {
       color: #666;
       line-height: 1.6;
       margin-bottom: 25px;
     }
-    
+
     .FeatureButton {
       display: inline-block;
       background-color: #4A8C6A;
@@ -722,11 +733,11 @@
       font-weight: 500;
       transition: background-color 0.2s;
     }
-    
+
     .FeatureButton:hover {
       background-color: #3a7054;
     }
-    
+
     .FeatureVisual {
       flex: 1;
       background-color: #f5f5f5;
@@ -740,26 +751,26 @@
       align-items: center;
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     }
-    
+
     .FeatureVisual .icon {
       font-size: 64px;
       margin-bottom: 20px;
       color: #4A8C6A;
     }
-    
+
     .FeatureVisual .text {
       font-size: 18px;
       color: #666;
       max-width: 300px;
       margin: 0 auto;
     }
-    
+
     .SecondaryFooter {
       background-color: var(--gray-bg);
       padding: 30px 0;
       text-align: center;
     }
-    
+
     .sponsorLogos {
       list-style: none;
       padding: 0;
@@ -769,21 +780,21 @@
       align-items: center;
       gap: 40px;
     }
-    
+
     .sponsorLogos li {
       margin: 0;
     }
-    
+
     .sponsorLogos a {
       display: block;
       text-decoration: none;
       transition: opacity 0.3s ease;
     }
-    
+
     .sponsorLogos a:hover {
       opacity: 0.8;
     }
-    
+
     .partner-logo {
       height: 60px;
       width: 120px;
@@ -791,7 +802,7 @@
       display: block;
       margin: 0 auto;
     }
-    
+
     .TertiaryFooter {
       background-color: #333;
       color: white;
@@ -800,12 +811,12 @@
       justify-content: space-between;
       align-items: center;
     }
-    
+
     .humapSignature {
       display: flex;
       align-items: center;
     }
-    
+
     .humapSignature a {
       display: flex;
       align-items: center;
@@ -813,42 +824,42 @@
       text-decoration: none;
       font-size: 14px;
     }
-    
+
     .humapSignature img {
       height: 20px;
       margin-left: 10px;
     }
-    
+
     .navigation {
       display: flex;
       list-style: none;
       margin: 0;
       padding: 0;
     }
-    
+
     .navigation li {
       margin-left: 20px;
     }
-    
+
     .navigation a {
       color: #ccc;
       text-decoration: none;
       font-size: 14px;
     }
-    
+
     .navigation a:hover {
       color: white;
     }
-    
+
     @media (max-width: 900px) {
       .Navigation {
         display: none;
       }
-      
+
       .Hamburger {
         display: block;
       }
-      
+
       .NavigationMobile {
         display: block;
         position: fixed;
@@ -860,56 +871,56 @@
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         z-index: 100;
       }
-      
+
       .NavigationMobile ul {
         list-style: none;
         padding: 0;
         margin: 0 0 20px;
       }
-      
+
       .NavigationMobile li {
         margin-bottom: 15px;
       }
-      
+
       .NavigationMobile a {
         color: #333;
         text-decoration: none;
         font-size: 16px;
       }
-      
+
       .FeatureItem {
         flex-direction: column !important;
         text-align: center;
       }
-      
+
       .FeatureVisual {
         width: 100%;
         min-height: 250px;
       }
-      
+
       .TertiaryFooter {
         flex-direction: column;
         gap: 20px;
       }
-      
+
       .navigation {
         flex-wrap: wrap;
         justify-content: center;
       }
-      
+
       .navigation li {
         margin: 5px 10px;
       }
-      
+
       .SearchContainer {
         display: none;
       }
     }
-    
+
     .dark-toolbar {
       background-color: var(--dark-bg);
     }
-    
+
     .dark-toolbar .SearchInput {
       background-color: var(--dark-bg);
       color: white;
@@ -927,7 +938,7 @@
     .dark-toolbar .SearchButton:hover {
       color: var(--secondary-color);
     }
-    
+
     .logo {
       width: 50px;
       height: 50px;
@@ -952,7 +963,7 @@
       transition: margin-left 0.3s ease;
     }
 
-    #left-sidebar:hover ~ .SiteWrapper {
+    #left-sidebar:hover~.SiteWrapper {
       margin-left: var(--sidebar-expanded);
     }
 
@@ -1016,8 +1027,14 @@
     }
 
     @keyframes bounce {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-5px); }
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-5px);
+      }
     }
 
     /* Add footer styles */
@@ -1116,19 +1133,42 @@
         transform: translateX(-50%);
       }
     }
+
+    .sidebar-navigation-buttons {
+      margin-top: auto;
+      padding: 20px 0;
+      display: flex;
+      gap: calc(var(--sidebar-current-width) * 0.3);
+      /* 侧边栏宽度的 25% */
+    }
+
+    .sidebar-navigation-buttons button {
+      background-color: transparent;
+      border: none;
+      color: white;
+      font-size: 20px;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+
+    .sidebar-navigation-buttons button:hover {
+      transform: scale(1.2);
+      color: var(--primary-color);
+      /* 选中时变色 */
+    }
   </style>
-  
+
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="apple-touch-icon" href="icon.png"/>
-  <link rel="icon" href="icon.png"/>
+  <link rel="apple-touch-icon" href="icon.png" />
+  <link rel="icon" href="icon.png" />
   <script>
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
       // Find all clickable elements containing the word 'map' (case insensitive)
       const mapLinks = document.querySelectorAll('a, button');
       mapLinks.forEach(link => {
         const text = link.textContent.toLowerCase();
         if (text.includes('map')) {
-          link.addEventListener('click', function(e) {
+          link.addEventListener('click', function (e) {
             e.preventDefault();
             window.location.href = 'map.html';
           });
@@ -1139,7 +1179,7 @@
     function toggleChildMode() {
       const toggle = document.getElementById('childModeToggle');
       const isChildMode = toggle.classList.contains('child-mode-active');
-      
+
       if (isChildMode) {
         // Switch to regular mode
         toggle.classList.remove('child-mode-active');
@@ -1179,10 +1219,11 @@
         <a class="Logo" href="home.html">
           <span data-translate="site_title">Lake Waikare Digital Library</span>
         </a>
-        
+
         <div class="SearchContainer">
           <form class="SearchForm" action="/search" method="GET">
-            <input type="text" class="SearchInput" name="q" placeholder="Search the library..." aria-label="Search" data-translate="search_placeholder">
+            <input type="text" class="SearchInput" name="q" placeholder="Search the library..." aria-label="Search"
+              data-translate="search_placeholder">
             <button type="submit" class="SearchButton" aria-label="Submit search">
               <i class="fas fa-search"></i>
             </button>
@@ -1218,7 +1259,7 @@
           <button class="highlightedLink" id="startTour" onclick="startTour()" data-translate="start_tour">
             <i class="fas fa-info-circle"></i> Start Tour
           </button>
-     
+
           <div class="user-functions-container">
             <div class="userFunctions">
               <i class="fas fa-user-circle"></i>
@@ -1260,7 +1301,7 @@
           </ul>
 
           <a class="highlightedLink" href="/map.html" data-translate="explore_map">Explore the Map</a>
-      
+
           <div class="user-functions-container">
             <div class="userFunctions">
               <i class="fas fa-user-circle"></i>
@@ -1292,7 +1333,7 @@
             <span class="title-word">Library</span>
           </h1>
           <h2 data-translate="site_subtitle">Preserving the culture and environment of Lake Waikare</h2>
-          
+
           <div class="hero-buttons">
             <a href="map.html" class="hero-button primary" data-translate="explore_map">
               <i class="fas fa-map-marked-alt"></i>
@@ -1303,7 +1344,7 @@
               Browse Records
             </a>
           </div>
-          
+
           <div class="hero-stats">
             <div class="stat-item">
               <div class="stat-number">500</div>
@@ -1318,111 +1359,117 @@
               <div class="stat-label" data-translate="contributors">Contributors</div>
             </div>
           </div>
-          
+
           <div class="hero-scroll-indicator" onclick="scrollToContent()">
             <i class="fas fa-chevron-down"></i>
           </div>
         </div>
       </div>
-      
+
       <div class="HomeIntroduction">
         <div data-translate="site_description">
-          Lake Waikare Digital Library is a free interactive resource that uses maps and user-generated content to blend history, geography, and digital technology. Users can access environmental data, cultural stories, and historical information about Lake Waikare while contributing their own knowledge to create a comprehensive repository of the lake's heritage.
+          Lake Waikare Digital Library is a free interactive resource that uses maps and user-generated content to blend
+          history, geography, and digital technology. Users can access environmental data, cultural stories, and
+          historical information about Lake Waikare while contributing their own knowledge to create a comprehensive
+          repository of the lake's heritage.
         </div>
       </div>
-      
+
       <div class="QuickStarts">
         <div class="QuickStartsTitle" data-translate="explore_themes">
           Explore themes across the Lake Waikare Digital Library.
         </div>
         <div class="QuickStartsGrid">
-          <a href="browse-records.html?collection=cultural" onclick="localStorage.setItem('selectedCollection', 'Cultural Heritage')">
-            <div class="QuickStartItem">
-              <div class="QuickStartIcon">🏺</div>
-              <div class="QuickStartTitle" data-translate="maori_history">Māori History</div>
-            </div>
-          </a>
-          
           <a href="browse-records.html?collection=environmental" onclick="localStorage.setItem('selectedCollection', 'Environmental Data')">
             <div class="QuickStartItem">
               <div class="QuickStartIcon">💧</div>
               <div class="QuickStartTitle" data-translate="water_quality">Water Quality Data</div>
             </div>
           </a>
-          
+
           <a href="browse-records.html?collection=environmental" onclick="localStorage.setItem('selectedCollection', 'Environmental Data')">
             <div class="QuickStartItem">
               <div class="QuickStartIcon">🦅</div>
               <div class="QuickStartTitle" data-translate="flora_fauna">Local Flora & Fauna</div>
             </div>
           </a>
-          
+
           <a href="browse-records.html?collection=cultural" onclick="localStorage.setItem('selectedCollection', 'Cultural Heritage')">
             <div class="QuickStartItem">
               <div class="QuickStartIcon">🗣️</div>
               <div class="QuickStartTitle" data-translate="oral_histories">Oral Histories</div>
             </div>
           </a>
-          
+
           <a href="browse-records.html?collection=environmental" onclick="localStorage.setItem('selectedCollection', 'Environmental Data')">
             <div class="QuickStartItem">
               <div class="QuickStartIcon">🌍</div>
               <div class="QuickStartTitle" data-translate="environmental_change">Environmental Change</div>
             </div>
           </a>
-          
+
           <a href="browse-records.html?collection=cultural" onclick="localStorage.setItem('selectedCollection', 'Cultural Heritage')">
             <div class="QuickStartItem">
               <div class="QuickStartIcon">🥗</div>
-              <div class="QuickStartTitle" data-translate="traditional_food">Traditional Food Gathering</div>
+              <div class="QuickStartTitle" data-translate="traditional_foods">Traditional Foods</div>
             </div>
           </a>
         </div>
       </div>
-      
+
       <div class="FeatureDemo">
         <div class="FeatureItem">
           <div class="FeatureContent">
             <div class="FeatureIcon">📍</div>
             <h3 class="FeatureTitle" data-translate="records_title">Records</h3>
             <p class="FeatureDescription" data-translate="records_description">
-              Records are the heart of our digital library, with each pin representing a story, historical fact, environmental data point, or cultural practice associated with Lake Waikare. Each record can include photos, audio from community elders, videos, and text documenting the lake's rich heritage.
+              Records are the heart of our digital library, with each pin representing a story, historical fact,
+              environmental data point, or cultural practice associated with Lake Waikare. Each record can include
+              photos, audio from community elders, videos, and text documenting the lake's rich heritage.
             </p>
-            <a href="/map.html/browse" class="FeatureButton" data-translate="browse_records">Browse records on the map</a>
+            <a href="/map.html/browse" class="FeatureButton" data-translate="browse_records">Browse records on the
+              map</a>
           </div>
           <div class="FeatureVisual">
             <div class="icon">📍</div>
-            <div class="text" data-translate="discover_stories">Discover stories and data points across Lake Waikare's landscape</div>
+            <div class="text" data-translate="discover_stories">Discover stories and data points across Lake Waikare's
+              landscape</div>
           </div>
         </div>
-        
+
         <div class="FeatureItem">
           <div class="FeatureContent">
             <div class="FeatureIcon">📚</div>
             <h3 class="FeatureTitle" data-translate="collections_title">Collections</h3>
             <p class="FeatureDescription" data-translate="collections_description">
-              Collections group records by themes such as "Water Quality Timeline," "Māori Cultural Heritage," or "Wetland Restoration Projects." These curated groups tell comprehensive stories about Lake Waikare's past, present, and potential future through multiple interconnected records.
+              Collections group records by themes such as "Water Quality Timeline," "Māori Cultural Heritage," or
+              "Wetland Restoration Projects." These curated groups tell comprehensive stories about Lake Waikare's past,
+              present, and potential future through multiple interconnected records.
             </p>
             <a href="browse-records.html" class="FeatureButton" data-translate="browse_records">Browse Records</a>
           </div>
           <div class="FeatureVisual">
             <div class="icon">📚</div>
-            <div class="text" data-translate="explore_collections">Explore themed collections that tell Lake Waikare's stories</div>
+            <div class="text" data-translate="explore_collections">Explore themed collections that tell Lake Waikare's
+              stories</div>
           </div>
         </div>
-        
+
         <div class="FeatureItem">
           <div class="FeatureContent">
             <div class="FeatureIcon">🗺️</div>
             <h3 class="FeatureTitle" data-translate="map_overlays_title">Map Overlays</h3>
             <p class="FeatureDescription" data-translate="map_overlays_description">
-              Our interactive map overlays show how Lake Waikare has changed over time. View historical aerial photographs, land use maps, depth charts, and environmental data visualizations. Toggle between the standard satellite view and our special children's illustrated mode for younger users.
+              Our interactive map overlays show how Lake Waikare has changed over time. View historical aerial
+              photographs, land use maps, depth charts, and environmental data visualizations. Toggle between the
+              standard satellite view and our special children's illustrated mode for younger users.
             </p>
             <a href="/map.html/overlays" class="FeatureButton" data-translate="browse_overlays">Browse the overlays</a>
           </div>
           <div class="FeatureVisual">
             <div class="icon">🗺️</div>
-            <div class="text" data-translate="visualize_changes">Visualize changes over time with interactive map layers</div>
+            <div class="text" data-translate="visualize_changes">Visualize changes over time with interactive map layers
+            </div>
           </div>
         </div>
       </div>
@@ -1431,12 +1478,14 @@
         <ul class="sponsorLogos">
           <li>
             <a target="_blank" href="https://www.waikato.ac.nz/">
-              <img src="images/partners/University_of_Waikato_logo.svg" alt="University of Waikato" class="partner-logo">
+              <img src="images/partners/University_of_Waikato_logo.svg" alt="University of Waikato"
+                class="partner-logo">
             </a>
           </li>
           <li>
             <a target="_blank" href="https://www.waikatoregion.govt.nz/">
-              <img src="images/partners/Waikato_District_Council_logo.svg" alt="Waikato Regional Council" class="partner-logo">
+              <img src="images/partners/Waikato_District_Council_logo.svg" alt="Waikato Regional Council"
+                class="partner-logo">
             </a>
           </li>
           <li>
@@ -1453,7 +1502,8 @@
   <div id="left-sidebar">
     <div class="logo">LW</div>
     <button id="language-toggle" onclick="languageManager.toggleLanguage()">
-      <img class="language-flag" src="images/Tino_Rangatiratanga_Maori_sovereignty_movement_flag.svg" alt="Te Reo Māori">
+      <img class="language-flag" src="images/Tino_Rangatiratanga_Maori_sovereignty_movement_flag.svg"
+        alt="Te Reo Māori">
       <span class="language-tooltip" data-translate="switch_language">Switch to English</span>
     </button>
     <a href="home.html" class="sidebar-icon active">
@@ -1476,6 +1526,16 @@
       <i class="fas fa-map-marked-alt"></i>
       <span data-translate="map_view">Map View</span>
     </a>
+
+    <div class="sidebar-navigation-buttons">
+      <button onclick="goBack()">
+        <i class="fas fa-arrow-left"></i>
+      </button>
+      <button onclick="goForward()">
+        <i class="fas fa-arrow-right"></i>
+      </button>
+    </div>
+
   </div>
 
   <footer class="SiteFooter">
@@ -1490,7 +1550,7 @@
           <li><a href="child-mode.html" data-translate="kids_mode">Kids Mode</a></li>
         </ul>
       </div>
-      
+
       <div class="footer-section">
         <h3 data-translate="resources">Resources</h3>
         <ul>
@@ -1547,11 +1607,11 @@
       const hero = document.querySelector('.HeroHome');
       const content = document.querySelector('.HeroContent');
       const stats = document.querySelector('.hero-stats');
-      
+
       window.addEventListener('mousemove', (e) => {
         const x = e.clientX / window.innerWidth;
         const y = e.clientY / window.innerHeight;
-        
+
         hero.style.transform = `perspective(1000px) rotateX(${(y - 0.5) * 5}deg) rotateY(${(x - 0.5) * 5}deg)`;
         content.style.transform = `translateZ(50px)`;
         stats.style.transform = `translateZ(30px)`;
@@ -1563,8 +1623,17 @@
       createParticles();
       handleParallax();
     });
+
+    function goBack() {
+      window.location.href = "stackholder.html";
+    }
+
+    function goForward() {
+      window.location.href = "feature.html";
+    }
   </script>
   <script src="scripts/dark-mode.js"></script>
   <script src="scripts/tour.js"></script>
 </body>
+
 </html>

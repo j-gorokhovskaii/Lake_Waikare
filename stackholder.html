@@ -62,7 +62,7 @@
             /* 内容靠左 */
             justify-content: flex-start;
             /* 从顶部开始 */
-            padding: 80px 60px;
+            padding: 20px 100px;
             /* 上边距和左边距 */
             text-align: left;
             /* 文本左对齐 */
@@ -112,20 +112,39 @@
             opacity: 1;
         }
 
-        .main-text {
-            font-size: 2em;
-            /* 更大字号 */
-            line-height: 1.5em;
-            /* 更舒服的行距 */
-            margin-bottom: 2em;
-            /* 段落间距 */
-            max-width: 90%;
-            color: #333;
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 40px 80px;
+            /* 上下40px，左右80px */
+            width: 100%;
+            margin-top: 40px;
         }
 
-        .center-content strong {
+        .member {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .member img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 16px;
+        }
+
+        .name {
             font-weight: bold;
-            /* 强调 Lake Waikare */
+            font-size: 1.2em;
+            margin-bottom: 6px;
+        }
+
+        .role {
+            font-size: 1em;
+            color: #666;
         }
     </style>
 </head>
@@ -134,7 +153,7 @@
 
     <!-- 顶部红色横条 -->
     <div class="header-bar">
-        <div class="main-topic">Introduction & Project Goal</div>
+        <div class="main-topic">Our Stakeholders</div>
 
         <div class="school-header">
             <img src="images/Waikato_logo.svg" alt="School Logo">
@@ -143,14 +162,28 @@
 
     <!-- 中间标题内容 -->
     <div class="center-content">
-        <p class="main-text">
-            This platform specifically focuses on the dying <strong>Lake Waikare</strong> and aims to preserve Māori
-            culture and stories passed down through the generations.
-        </p>
-        <p class="main-text">
-            Its core purpose is to create a platform that promotes learning and brings in awareness on the pollution
-            plaguing <strong>Lake Waikare</strong>.
-        </p>
+        <div class="team-grid">
+            <div class="member">
+                <img src="images/Glen.png" alt="Glen">
+                <div class="name">Glen Tupuhi</div>
+                <div class="role">Client and Major Stakeholder</div>
+            </div>
+            <div class="member">
+                <img src="images/David.png" alt="David">
+                <div class="name">David Bainbridge</div>
+                <div class="role">Program Coordinator</div>
+            </div>
+            <div class="member">
+                <img src="images/Colin.png" alt="Colin">
+                <div class="name">Colin Pilbrow</div>
+                <div class="role">Project Manager</div>
+            </div>
+            <div class="member">
+                <img src="images/Alvin.png" alt="Alvin">
+                <div class="name">Alvin Yeo</div>
+                <div class="role">Course Instructor</div>
+            </div>
+        </div>
     </div>
 
     <button class="prev-button" onclick="goToPrevious()">←</button>
@@ -160,11 +193,11 @@
 
     <script>
         function goToNext() {
-            window.location.href = "stackholder.html";
+            window.location.href = "home.html";
         }
 
         function goToPrevious() {
-            window.location.href = "index.html";
+            window.location.href = "introduction.html";
         }
 
         document.addEventListener('keydown', function (e) {

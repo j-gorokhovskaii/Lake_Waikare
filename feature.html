@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Presentation Conclusion Page</title>
+    <title>Future Implementation Page</title>
     <style>
         * {
             margin: 0;
@@ -107,6 +107,7 @@
             border: none;
             cursor: pointer;
         }
+
         .main-text {
             font-size: 2em;
             /* 更大字号 */
@@ -117,6 +118,7 @@
             max-width: 90%;
             color: #333;
         }
+
         .prev-button:hover {
             opacity: 1;
         }
@@ -127,7 +129,7 @@
 
     <!-- 顶部红色横条 -->
     <div class="header-bar">
-        <div class="main-topic">Conclusion</div>
+        <div class="main-topic">Future Implementation</div>
 
         <div class="school-header">
             <img src="images/Waikato_logo.svg" alt="School Logo">
@@ -136,18 +138,12 @@
 
     <!-- 中间标题内容 -->
     <div class="center-content">
-        <p class="main-text">
-            Implement an improved user interface for the home page.
-        </p>
-        <p class="main-text">
-            Simplify the Kids Mode authentication.
-        </p>
-        <p class="main-text">
-            Activate Language Mode (toggle between English and Māori).
-        </p>
-        <p class="main-text">
-            Implement Backend Management System.
-        </p>
+        <p class="main-text">Adding time-slider controls to visualize environmental changes over decades.</p>
+        <p class="main-text"> Develop an interactive map system tailored for young children, featuring a cartoon
+            character that can interact with map in a game-like interface.</p>
+        <p class="main-text"> Supporting 3D terrain visualization to better understand watershed dynamics.</p>
+        <p class="main-text"> Expanding on the current bilingual approach (English and te reo Māori) on implement a
+            translation management system</p>
 
     </div>
 
@@ -158,11 +154,11 @@
 
     <script>
         function goToNext() {
-            window.location.href = "thank-you.html";
+            window.location.href = "conclusion.html";
         }
 
         function goToPrevious() {
-            window.location.href="feature.html";
+            window.location.href = "home.html";
         }
 
         document.addEventListener('keydown', function (e) {
