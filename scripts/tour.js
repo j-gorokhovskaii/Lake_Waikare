@@ -38,9 +38,9 @@ var tour = new Tour({
       placement: "top"
     },
     {
-      element: ".SiteFooter",
-      title: "Partnerships & Resources",
-      content: "Our digital library is a collaborative effort supported by the University of Waikato, Waikato Regional Council, and local iwi. In the footer, you'll find additional resources, site navigation, and ways to get involved with preserving Lake Waikare's heritage.",
+      element: ".SecondaryFooter",
+      title: "Key Partnerships",
+      content: "Our digital library is proudly supported by three major partners: The University of Waikato (academic research and educational resources), Waikato Regional Council (environmental data and regional governance), and Local Iwi Partnership (cultural knowledge and community engagement). These partnerships ensure comprehensive coverage of Lake Waikare's heritage.",
       placement: "top"
     }
   ],
