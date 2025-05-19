@@ -68,6 +68,8 @@ class VerificationManager {
     }
 
     verifyColors() {
+        window.location.href = 'home.html';
+
         if (this.timeLeft <= 0) {
             this.closeVerification();
             return;
