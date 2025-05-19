@@ -1,0 +1,114 @@
+:root {
+    /* Traditional Māori colors */
+    --maori-red: #C8102E;      /* Traditional red (Kōwhai) */
+    --maori-black: #000000;    /* Traditional black (Pango) */
+    --maori-white: #FFFFFF;    /* Traditional white (Mā) */
+    --maori-earth: #8B4513;    /* Earth tone (Oneone) */
+    --maori-green: #2E8B57;    /* Forest green (Kākāriki) */
+    --maori-blue: #1E3F66;     /* Deep blue (Kahurangi) */
+    
+    /* Theme colors */
+    --primary-color: var(--maori-red);
+    --secondary-color: var(--maori-black);
+    --accent-color: var(--maori-earth);
+    --background-color: var(--maori-white);
+    --text-color: var(--maori-black);
+}
+
+/* Māori-inspired patterns and borders */
+.maori-border {
+    border: 2px solid var(--maori-red);
+    position: relative;
+}
+
+.maori-border::before {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    right: -4px;
+    bottom: -4px;
+    border: 1px solid var(--maori-black);
+    pointer-events: none;
+}
+
+/* Traditional Māori pattern backgrounds */
+.maori-pattern {
+    background-image: url('../images/maori-pattern.png');
+    background-repeat: repeat;
+    opacity: 0.1;
+}
+
+/* Māori-inspired typography */
+.maori-heading {
+    font-family: 'Tiro Maori', serif;
+    color: var(--maori-red);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* Navigation styling */
+.maori-nav {
+    background-color: var(--maori-black);
+    color: var(--maori-white);
+}
+
+.maori-nav a {
+    color: var(--maori-white);
+    text-decoration: none;
+    padding: 0.5em 1em;
+    border-left: 2px solid var(--maori-red);
+}
+
+.maori-nav a:hover {
+    background-color: var(--maori-red);
+    color: var(--maori-white);
+}
+
+/* Button styling */
+.maori-button {
+    background-color: var(--maori-red);
+    color: var(--maori-white);
+    border: 2px solid var(--maori-black);
+    padding: 0.5em 1.5em;
+    text-transform: uppercase;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.maori-button:hover {
+    background-color: var(--maori-black);
+    color: var(--maori-white);
+    border-color: var(--maori-red);
+}
+
+/* Card styling */
+.maori-card {
+    background-color: var(--maori-white);
+    border: 2px solid var(--maori-black);
+    box-shadow: 4px 4px 0 var(--maori-red);
+    transition: transform 0.3s ease;
+}
+
+.maori-card:hover {
+    transform: translateY(-4px);
+}
+
+/* Footer styling */
+.maori-footer {
+    background-color: var(--maori-black);
+    color: var(--maori-white);
+    border-top: 4px solid var(--maori-red);
+}
+
+/* Responsive design adjustments */
+@media (max-width: 768px) {
+    .maori-nav {
+        flex-direction: column;
+    }
+    
+    .maori-nav a {
+        border-left: none;
+        border-bottom: 2px solid var(--maori-red);
+    }
+} 

@@ -3,7 +3,11 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Presentation Main Page</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="home.title">Lake Waikare Digital Library</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/maori-theme.css">
+    <link href="https://fonts.googleapis.com/css2?family=Tiro+Maori&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -88,29 +92,43 @@
     </style>
 </head>
 
-<body>
-
-    <!-- 顶部红色横条 -->
-    <div class="header-bar">
-        <div class="school-header">
-            <img src="images/Waikato_logo.svg" alt="School Logo">
+<body data-i18n-title="home.title" data-i18n-description="home.subtitle">
+    <!-- Header with Māori styling -->
+    <header class="maori-nav">
+        <div class="school-header maori-border">
+            <img src="images/Waikato_logo.svg" alt="University of Waikato Logo">
         </div>
-    </div>
+        <nav>
+            <a href="#" data-i18n="navigation.home">Home</a>
+            <a href="map.html" data-i18n="navigation.map">Map</a>
+            <a href="explore.html" data-i18n="navigation.explore">Explore</a>
+            <a href="search.html" data-i18n="navigation.search">Search</a>
+        </nav>
+    </header>
 
-    <!-- 中间标题内容 -->
-    <div class="center-content">
-        <div class="project-title">Lake Waikare Desktop-2</div>
-        <div class="team">
-            Joseph Gorokhovskaii (1048854)<br>
-            Chen Li (1672194)<br>
-            Pranavkrishnan Ravichandran (1660319)<br>
-            Hina Lin (1646541)
+    <!-- Main content with Māori styling -->
+    <main class="center-content maori-pattern">
+        <h1 class="maori-heading" data-i18n="home.title">Lake Waikare Digital Library</h1>
+        <p class="maori-text" data-i18n="home.subtitle">A collection of stories and treasures from Lake Waikare</p>
+        
+        <div class="team maori-card">
+            <h2 data-i18n="common.team">Our Team</h2>
+            <p>Joseph Gorokhovskaii (1048854)</p>
+            <p>Chen Li (1672194)</p>
+            <p>Pranavkrishnan Ravichandran (1660319)</p>
+            <p>Hina Lin (1646541)</p>
         </div>
-    </div>
+    </main>
 
-    <!-- 右下角跳转按钮 -->
-    <button class="next-button" onclick="goToNext()">→</button>
+    <!-- Footer with Māori styling -->
+    <footer class="maori-footer">
+        <p data-i18n="footer.copyright">© 2024 Lake Waikare Digital Library</p>
+    </footer>
 
+    <!-- Navigation button with Māori styling -->
+    <button class="maori-button next-button" onclick="goToNext()" data-i18n="common.next">→</button>
+
+    <script src="scripts/maori-language.js"></script>
     <script>
         function goToNext() {
             window.location.href = "introduction.html";
@@ -122,7 +140,6 @@
             }
         });
     </script>
-
 </body>
 
 </html>

@@ -1,0 +1,54 @@
+{
+    "navigation": {
+        "home": "Kāinga",
+        "map": "Mahere",
+        "explore": "Toro",
+        "search": "Rapu",
+        "about": "Mō",
+        "contact": "Whakapā"
+    },
+    "common": {
+        "welcome": "Nau mai ki te Pātaka Pukapuka Matihiko o Te Waikare",
+        "loading": "E utaina ana...",
+        "error": "He hapa",
+        "success": "Kua pai",
+        "search": "Rapu",
+        "submit": "Tukuna",
+        "cancel": "Whakakore",
+        "save": "Tiaki",
+        "delete": "Muku",
+        "edit": "Whakatika"
+    },
+    "home": {
+        "title": "Te Pātaka Pukapuka Matihiko o Te Waikare",
+        "subtitle": "He kohinga o ngā kōrero me ngā taonga o Te Waikare",
+        "featured": "Ngā Kaupapa Matua",
+        "latest": "Ngā Kōrero Hou"
+    },
+    "map": {
+        "title": "Te Mahere o Te Waikare",
+        "layers": "Ngā Papa",
+        "legend": "Tohu",
+        "zoom": "Whakarahi",
+        "pan": "Neke"
+    },
+    "explore": {
+        "title": "Toro i ngā Kōrero",
+        "categories": "Ngā Kāwai",
+        "stories": "Ngā Kōrero",
+        "photos": "Ngā Whakaahua",
+        "videos": "Ngā Ataata"
+    },
+    "search": {
+        "title": "Rapu",
+        "placeholder": "Tuhia tō rapu ki konei...",
+        "filters": "Ngā Tātari",
+        "results": "Ngā Hua"
+    },
+    "footer": {
+        "copyright": "© 2024 Te Pātaka Pukapuka Matihiko o Te Waikare",
+        "privacy": "Kaupapahere Tūmataiti",
+        "terms": "Ngā Ture",
+        "contact": "Whakapā"
+    }
+} 
