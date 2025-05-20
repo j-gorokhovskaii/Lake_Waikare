@@ -388,6 +388,194 @@
             font-style: italic;
             margin-top: auto;
         }
+
+        select[multiple] {
+            height: auto;
+            min-height: 120px;
+            padding: 0.5rem;
+        }
+
+        select[multiple] option {
+            padding: 0.5rem;
+            margin-bottom: 0.25rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        select[multiple] option:checked {
+            background: var(--primary-color) linear-gradient(0deg, var(--primary-color) 0%, var(--primary-color) 100%);
+            color: white;
+        }
+
+        select[multiple] option:hover {
+            background-color: #f0f0f0;
+        }
+
+        .multiselect-wrapper {
+            position: relative;
+            width: 100%;
+        }
+
+        .multiselect-selected {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            padding: 0.75rem;
+            min-height: 42px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+
+        .multiselect-selected:hover {
+            border-color: var(--primary-color);
+        }
+
+        .selected-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            flex: 1;
+        }
+
+        .selected-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            padding: 0.1rem 0.5rem;
+            background: var(--gray-bg);
+            border-radius: 4px;
+            font-size: 0.9rem;
+            color: var(--text-dark);
+        }
+
+        .selected-tag i {
+            cursor: pointer;
+            color: var(--text-light);
+            font-size: 0.8rem;
+        }
+
+        .selected-tag i:hover {
+            color: #d63031;
+        }
+
+        .multiselect-placeholder {
+            color: var(--text-light);
+        }
+
+        .multiselect-placeholder.hide {
+            display: none;
+        }
+
+        .multiselect-selected i.fa-chevron-down {
+            margin-left: auto;
+            color: var(--text-light);
+            font-size: 0.8rem;
+        }
+
+        .multiselect-dropdown {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-top: 0.25rem;
+            max-height: 200px;
+            overflow-y: auto;
+            z-index: 1000;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .multiselect-dropdown.show {
+            display: block;
+        }
+
+        .multiselect-option {
+            display: flex;
+            align-items: center;
+            padding: 0.5rem 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .multiselect-option:hover {
+            background: var(--gray-bg);
+        }
+
+        .multiselect-option input[type="checkbox"] {
+            margin-right: 0.75rem;
+            cursor: pointer;
+        }
+
+        .multiselect-option label {
+            margin: 0;
+            cursor: pointer;
+            flex: 1;
+            font-size: 1rem;
+            color: var(--text-dark);
+        }
+
+        /* Style the checkboxes to be more consistent */
+        .multiselect-option input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+        }
+
+        .multiselect-option input[type="checkbox"]:checked {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        .content-type-tags {
+            margin-top: 1.5rem;
+            padding-top: 1rem;
+            border-top: 1px solid #eee;
+        }
+
+        .type-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            margin-top: 0.5rem;
+        }
+
+        .type-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            color: var(--text-dark);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .type-tag:hover {
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .type-tag.active {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .type-tag i {
+            font-size: 0.9rem;
+        }
     </style>
 </head>
 <body>
@@ -405,10 +593,10 @@
 
         <div class="search-section">
             <div class="view-toggle">
-                <button class="view-button active" onclick="toggleView('grid')" title="Grid View">
+                <button class="view-button" onclick="toggleView('grid')" title="Grid View">
                     <i class="fas fa-th-large"></i>
                 </button>
-                <button class="view-button" onclick="toggleView('list')" title="List View">
+                <button class="view-button active" onclick="toggleView('list')" title="List View">
                     <i class="fas fa-list"></i>
                 </button>
             </div>
@@ -453,17 +641,23 @@
                         <option value="surrounding">Surrounding Areas</option>
                     </select>
                 </div>
+            </div>
 
-                <div class="filter-group">
-                    <label class="filter-label">Content Type</label>
-                    <select id="typeFilter">
-                        <option value="">All Types</option>
-                        <option value="document">Documents</option>
-                        <option value="image">Images</option>
-                        <option value="video">Videos</option>
-                        <option value="audio">Audio Recordings</option>
-                        <option value="data">Data Sets</option>
-                    </select>
+            <div class="content-type-tags">
+                <label class="filter-label">Content Types</label>
+                <div class="type-tags">
+                    <div class="type-tag" onclick="toggleTypeTag('document', 'Documents')" data-value="document">
+                        <i class="fas fa-file-alt"></i> Documents
+                    </div>
+                    <div class="type-tag" onclick="toggleTypeTag('image', 'Images')" data-value="image">
+                        <i class="fas fa-image"></i> Images
+                    </div>
+                    <div class="type-tag" onclick="toggleTypeTag('video', 'Videos')" data-value="video">
+                        <i class="fas fa-video"></i> Videos
+                    </div>
+                    <div class="type-tag" onclick="toggleTypeTag('audio', 'Audio Recordings')" data-value="audio">
+                        <i class="fas fa-microphone"></i> Audio Recordings
+                    </div>
                 </div>
             </div>
 
@@ -491,7 +685,7 @@
         </div>
 
         <div class="records-container">
-            <div class="records-grid" id="recordsGrid">
+            <div class="records-grid hidden" id="recordsGrid">
                 <!-- Sample Records -->
                 <a href="record-view.html" class="record-card">
                     <h3 class="record-title">Water Quality Analysis 2023</h3>
@@ -558,7 +752,7 @@
                 </a>
             </div>
 
-            <div class="records-list" id="recordsList">
+            <div class="records-list active" id="recordsList">
                 <a href="record-view.html" class="list-item">
                     <h3 class="record-title">Water Quality Analysis 2023</h3>
                     <div class="record-meta">
@@ -627,6 +821,9 @@
 
         // Initialize with collection filter if present
         document.addEventListener('DOMContentLoaded', function() {
+            // Initialize with list view
+            toggleView('list');
+            
             // Get collection from URL parameter
             const urlParams = new URLSearchParams(window.location.search);
             const collection = urlParams.get('collection');
@@ -671,11 +868,26 @@
                 collection: document.getElementById('collectionFilter').value,
                 time: document.getElementById('timeFilter').value,
                 geo: document.getElementById('geoFilter').value,
-                type: document.getElementById('typeFilter').value
+                type: Array.from(document.querySelectorAll('.type-tag.active')).map(tag => ({
+                    value: tag.getAttribute('data-value'),
+                    label: tag.textContent.trim()
+                }))
             };
 
             Object.entries(filters).forEach(([key, value]) => {
-                if (value) {
+                if (Array.isArray(value)) {
+                    value.forEach(val => {
+                        if (val) {
+                            const tag = document.createElement('div');
+                            tag.className = 'filter-tag';
+                            tag.innerHTML = `
+                                ${val.label}
+                                <i class="fas fa-times" onclick="clearTypeFilter('${val.value}')"></i>
+                            `;
+                            activeFilters.appendChild(tag);
+                        }
+                    });
+                } else if (value) {
                     const tag = document.createElement('div');
                     tag.className = 'filter-tag';
                     tag.innerHTML = `
@@ -689,6 +901,14 @@
 
         function clearFilter(filterType) {
             document.getElementById(`${filterType}Filter`).value = '';
+            updateFilters();
+        }
+
+        function clearTypeFilter(value) {
+            const tag = document.querySelector(`.type-tag[data-value="${value}"]`);
+            if (tag) {
+                tag.classList.remove('active');
+            }
             updateFilters();
         }
 
@@ -738,6 +958,12 @@
             listRecords.forEach(record => {
                 listContainer.appendChild(record);
             });
+        }
+
+        function toggleTypeTag(value, label) {
+            const tag = document.querySelector(`.type-tag[data-value="${value}"]`);
+            tag.classList.toggle('active');
+            updateFilters();
         }
     </script>
 </body>
