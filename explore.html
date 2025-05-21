@@ -6,7 +6,7 @@
   <title>Lake Waikare Digital Library - Explore</title>
   <meta name="csrf-param" content="authenticity_token" />
   <meta name="csrf-token" content="0X9UWZkQtKntUcdEFvcF/0bcGu+8Zmhs/qMO7I4OFm2+imL0XOz6fSO4AwUi15NbDRc6qC2dbM8oyCa4zw6Lig==" />
-  
+
   <link rel="apple-touch-icon" href="icon.png"/>
   <link rel="icon" href="icon.png"/>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -35,11 +35,11 @@
       height: 100%;
       font-family: 'Segoe UI', Arial, sans-serif;
     }
-    
+
     .dark-toolbar {
       background-color: var(--dark-bg);
     }
-    
+
     #left-sidebar {
       width: var(--sidebar-width);
       height: 100%;
@@ -54,7 +54,7 @@
       z-index: 1000;
       transition: width 0.3s ease;
     }
-    
+
     #left-sidebar:hover {
       width: var(--sidebar-expanded);
     }
@@ -122,7 +122,7 @@
     .logo:hover {
       transform: scale(1.1);
     }
-    
+
     #content-panel {
       position: fixed;
       left: var(--sidebar-width);
@@ -135,7 +135,7 @@
       box-sizing: border-box;
       transition: left 0.3s ease;
     }
-    
+
     #map-container {
       position: fixed;
       left: calc(var(--sidebar-width) + var(--content-width));
@@ -146,18 +146,18 @@
       overflow: hidden;
       transition: left 0.3s ease;
     }
-    
+
     .map-image {
       display: none;
     }
-    
+
     .header {
       color: var(--primary-color);
       margin: 0;
       font-size: 24px;
       font-weight: 600;
     }
-    
+
     .description {
       color: var(--text-dark);
       margin-bottom: 30px;
@@ -280,7 +280,7 @@
       gap: 10px;
       z-index: 800;
     }
-    
+
     .zoom-button {
       width: 30px;
       height: 30px;
@@ -553,7 +553,7 @@
       padding-bottom: 15px;
       margin-bottom: 20px;
     }
-    
+
     .close-tray {
       display: flex;
       align-items: center;
@@ -606,9 +606,9 @@
         Close tray
       </a>
     </div>
-    
+
     <p class="description">
-      Discover curated collections of Lake Waikare's rich history, environmental data, 
+      Discover curated collections of Lake Waikare's rich history, environmental data,
       and cultural heritage. Browse through our digital archives and interactive exhibits.
     </p>
 
@@ -637,7 +637,7 @@
 
     <div class="collection-grid">
       <div class="collection-card">
-        <div class="collection-image"></div>
+        <img class="collection-image" src="images/water.jpeg"/>
         <div class="collection-content">
           <div class="collection-title">Water Quality Monitoring</div>
           <div class="collection-description">
@@ -654,7 +654,7 @@
       </div>
 
       <div class="collection-card">
-        <div class="collection-image"></div>
+        <img class="collection-image" src="images/maori.jpg"/>
         <div class="collection-content">
           <div class="collection-title">Māori Cultural Heritage</div>
           <div class="collection-description">
@@ -671,7 +671,7 @@
       </div>
 
       <div class="collection-card">
-        <div class="collection-image"></div>
+        <img class="collection-image" src="images/wetland.jpg"/>
         <div class="collection-content">
           <div class="collection-title">Wetland Restoration</div>
           <div class="collection-description">
@@ -688,7 +688,7 @@
       </div>
 
       <div class="collection-card">
-        <div class="collection-image"></div>
+        <img class="collection-image" src="images/lake.webp"/>
         <div class="collection-content">
           <div class="collection-title">Historical Photographs</div>
           <div class="collection-description">
@@ -705,7 +705,7 @@
       </div>
     </div>
 
-      
+
   </div>
 
   <!-- Map container -->
@@ -863,4 +863,4 @@
     });
   </script>
 </body>
-</html> 
+</html>
