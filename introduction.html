@@ -127,6 +127,28 @@
             font-weight: bold;
             /* 强调 Lake Waikare */
         }
+
+        .objectives-list {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .objectives-list li {
+            font-size: 2em;
+            line-height: 1.5em;
+            margin-bottom: 1em;
+            position: relative;
+            padding-left: 1.5em;
+        }
+
+        .objectives-list li::before {
+            content: "•";
+            color: #4A8C6A;
+            font-size: 1.5em;
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
     </style>
 </head>
 
@@ -144,13 +166,13 @@
     <!-- 中间标题内容 -->
     <div class="center-content">
         <p class="main-text">
-            This platform specifically focuses on the dying <strong>Lake Waikare</strong> and aims to preserve Māori
-            culture and stories passed down through the generations.
+            We have three key objectives:
         </p>
-        <p class="main-text">
-            Its core purpose is to create a platform that promotes learning and brings in awareness on the pollution
-            plaguing <strong>Lake Waikare</strong>.
-        </p>
+        <ul class="objectives-list">
+            <li>First, to preserve Māori culture and heritage connected to <strong>Lake Waikare</strong></li>
+            <li>Second, to engage younger generations who may be disconnected from their heritage</li>
+            <li>And third, to raise awareness about the lake's environmental degradation</li>
+        </ul>
     </div>
 
     <button class="prev-button" onclick="goToPrevious()">←</button>

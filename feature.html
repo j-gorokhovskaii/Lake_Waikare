@@ -113,7 +113,7 @@
             /* 更大字号 */
             line-height: 1.5em;
             /* 更舒服的行距 */
-            margin-bottom: 1em;
+            margin-bottom: 2em;
             /* 段落间距 */
             max-width: 90%;
             color: #333;
@@ -121,6 +121,32 @@
 
         .prev-button:hover {
             opacity: 1;
+        }
+
+        .features-list {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .features-list li {
+            font-size: 2em;
+            line-height: 1.5em;
+            margin-bottom: 1em;
+            position: relative;
+            padding-left: 1.5em;
+        }
+
+        .features-list li::before {
+            content: "•";
+            color: #4A8C6A;
+            font-size: 1.5em;
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+
+        .center-content strong {
+            font-weight: bold;
         }
     </style>
 </head>
@@ -138,13 +164,12 @@
 
     <!-- 中间标题内容 -->
     <div class="center-content">
-        <p class="main-text">Adding time-slider controls to visualize environmental changes over decades.</p>
-        <p class="main-text"> Develop an interactive map system tailored for young children, featuring a cartoon
-            character that can interact with map in a game-like interface.</p>
-        <p class="main-text"> Implementing a panoramic tour of select locations on the lake.</p>
-        <p class="main-text"> Expanding on the current bilingual approach (English and te reo Māori) on implement a
-            translation management system</p>
-
+        <ul class="features-list">
+            <li>Adding time-slider controls to visualize environmental changes over decades.</li>
+            <li>Develop an interactive map system tailored for young children, featuring a cartoon character that can interact with map in a game-like interface.</li>
+            <li>Implementing a panoramic tour of select locations on the lake.</li>
+            <li>Expanding on the current bilingual approach (English and te reo Māori) on implement a translation management system</li>
+        </ul>
     </div>
 
     <button class="prev-button" onclick="goToPrevious()">←</button>

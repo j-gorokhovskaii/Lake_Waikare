@@ -112,13 +112,39 @@
             /* 更大字号 */
             line-height: 1.5em;
             /* 更舒服的行距 */
-            margin-bottom: 1em;
+            margin-bottom: 2em;
             /* 段落间距 */
             max-width: 90%;
             color: #333;
         }
         .prev-button:hover {
             opacity: 1;
+        }
+
+        .conclusion-list {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .conclusion-list li {
+            font-size: 2em;
+            line-height: 1.5em;
+            margin-bottom: 1em;
+            position: relative;
+            padding-left: 1.5em;
+        }
+
+        .conclusion-list li::before {
+            content: "•";
+            color: #4A8C6A;
+            font-size: 1.5em;
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+
+        .center-content strong {
+            font-weight: bold;
         }
     </style>
 </head>
@@ -137,18 +163,14 @@
     <!-- 中间标题内容 -->
     <div class="center-content">
         <p class="main-text">
-            Implement an improved user interface for the home page.
+            Prototype successfully demonstrates digital preservation potential for Lake Waikare's culture and environment
         </p>
-        <p class="main-text">
-            Simplify the Kids Mode authentication.
-        </p>
-        <p class="main-text">
-            Activate Language Mode (toggle between English and Māori).
-        </p>
-        <p class="main-text">
-            Implement Backend Management System.
-        </p>
-
+        <ul class="conclusion-list">
+            <li><strong>Key features delivered:</strong> bilingual interface, interactive mapping, Child Mode, and multiple navigation options</li>
+            <li><strong>Feedback incorporated for future improvements:</strong> simplified interface and clearer user interactions</li>
+            <li><strong>Next phase:</strong> address feedback, enhance technical capabilities, and expand community engagement</li>
+            <li><strong>Vision:</strong> a comprehensive platform preserving Māori heritage while promoting environmental awareness</li>
+        </ul>
     </div>
 
     <button class="prev-button" onclick="goToPrevious()">←</button>
